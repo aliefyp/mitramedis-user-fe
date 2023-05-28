@@ -1,28 +1,27 @@
 import './App.css';
-import Sidebar from './components/Sidebar';
-import Navbar from './components/Navbar';
-import type { CustomFlowbiteTheme } from 'flowbite-react';
-import { Flowbite } from 'flowbite-react';
-
-const customTheme: CustomFlowbiteTheme = {
-  button: {
-    color: {
-      // primary: 'bg-red-500 hover:bg-red-600',
-    },
-  },
-};
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import Layout from './components/Layout';
+import Dashboard from './pages/dashboard';
 
 function App() {
   return (
-    <Flowbite theme={{ theme: customTheme }}>
-      <div className="min-h-screen max-h-screen flex bg-slate-100 dark:bg-slate-700">
-        <Sidebar />
-
-        <div className='w-full'>
-          <Navbar />
-        </div>
-      </div>
-    </Flowbite>
+    <RouterProvider router={
+      createBrowserRouter([
+        {
+          path: "/",
+          element: <Layout />,
+          children: [
+            {
+              path: "",
+              element: <Dashboard />,
+            },
+          ],
+        },
+      ])}
+    />
   );
 }
 

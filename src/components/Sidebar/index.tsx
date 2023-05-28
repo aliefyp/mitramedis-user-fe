@@ -17,7 +17,7 @@ const SideBar = () => {
   const [activeMenu, setActiveMenu] = useState('Dashboard');
 
   return (
-    <div className="py-16 pl-16 pr-2 h-screen bg-white dark:bg-slate-800 shadow-md">
+    <div className="py-12 pl-16 pr-2 h-screen bg-white dark:bg-slate-800 shadow-md">
       <Sidebar aria-label="Menu">
         <Sidebar.Logo className="pb-16" href="/" img="http://placehold.it/80x80" imgAlt="Promedik">
           Promedik
