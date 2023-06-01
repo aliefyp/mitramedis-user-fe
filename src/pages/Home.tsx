@@ -63,7 +63,7 @@ const Dashboard = () => {
                 <p className="font-semibold text-lg text-slate-800 dark:text-slate-50">{item.name}</p>
                 <p className="text-sm text-slate-500 dark:text-slate-200">Diagnosa: {item.diagnose}</p>
               </div>
-              <a href="#" className="text-sm font-semibold text-teal-500 dark:text-teal-200">Selengkapnya</a>
+              <a href="#home" className="text-sm font-semibold text-teal-500 dark:text-teal-200">Selengkapnya</a>
             </div>
           ))}
         </section>
