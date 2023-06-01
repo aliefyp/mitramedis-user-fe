@@ -1,51 +1,54 @@
-import { FaHome, FaNotesMedical, FaUsers, FaSignOutAlt, FaPhoneAlt, FaRegSun, FaChevronLeft } from 'react-icons/fa';
-import { useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import { Sidebar } from "flowbite-react";
+import Drawer from '../Drawer';
+import useAppContext from '../../context/AppContext';
+import { SidebarProps } from "./interface";
 
-const MAIN_MENU = [
-  { text: 'Dashboard', icon: FaHome, active: true },
-  { text: 'Pasien', icon: FaUsers },
-  { text: 'Rekam Medis', icon: FaNotesMedical  },
-]
+const Panel = ({ children }: { children: ReactNode }) => {
+  return (
+    <nav className={`py-12 pl-16 pr-2 h-screen bg-white dark:bg-slate-800 shadow-md z-20`}>
+      {children}
+    </nav>
+  )
+}
 
-const SETTING_MENU = [
-  { text: 'Pengaturan', icon: FaRegSun },
-  { text: 'Hubungi Kami', icon: FaPhoneAlt },
-  { text: 'Logout', icon: FaSignOutAlt },
-]
-const SideBar = () => {
+const SideBar = ({ menus }: SidebarProps) => {
+  const triggerRef = useRef(null);
   const [activeMenu, setActiveMenu] = useState('Dashboard');
+  const { isMobile } = useAppContext();
+
+  const Container = isMobile ? Drawer : Panel;
 
   return (
-    <div className="py-12 pl-16 pr-2 h-screen bg-white dark:bg-slate-800 shadow-md">
-      <Sidebar aria-label="Menu">
-        <Sidebar.Logo className="pb-16" href="/" img="http://placehold.it/80x80" imgAlt="Promedik">
-          Promedik
-        </Sidebar.Logo>
-        <Sidebar.Items>
-          <Sidebar.ItemGroup>
-            <p className="mb-4 text-neutral-400 text-xs font-extrabold">
-              MENU
-            </p>
-            {MAIN_MENU.map(item => (
-              <Sidebar.Item href="#" icon={item.icon} active={item.text === activeMenu} onClick={() => setActiveMenu(item.text)}>
-                {item.text}
-              </Sidebar.Item>
+    <>
+      {/* hamburger menu */}
+      {/* <div className='fixed top-12 left-8' ref={triggerRef}>
+        <TbMenu2 className='cursor-pointer text-4xl text-slate-800 dark:text-slate-50' />
+      </div> */}
+
+      {/* main panel */}
+      <Container name="sidebar" trigger={triggerRef}>
+        <Sidebar aria-label="Menu">
+          <Sidebar.Logo className="pb-8 sm:pb-16" href="/" img="http://placehold.it/80x80" imgAlt="Promedik">
+            Mitramedis
+          </Sidebar.Logo>
+          <Sidebar.Items>
+            {menus.map((menu) => (
+              <Sidebar.ItemGroup className="mt-24 border-none">
+                <p className="mb-4 text-neutral-400 text-xs font-extrabold">
+                  {menu.title}
+                </p>
+                {menu.items.map(item => (
+                  <Sidebar.Item href="#" icon={item.icon} active={item.text === activeMenu} onClick={() => setActiveMenu(item.text)}>
+                    {item.text}
+                  </Sidebar.Item>
+                ))}
+              </Sidebar.ItemGroup>
             ))}
-          </Sidebar.ItemGroup>
-          <Sidebar.ItemGroup className="mt-24 border-none">
-            <p className="mb-4 text-neutral-400 text-xs font-extrabold">
-              EXTRAS
-            </p>
-            {SETTING_MENU.map(item => (
-              <Sidebar.Item href="#" icon={item.icon} active={item.text === activeMenu} onClick={() => setActiveMenu(item.text)}>
-                {item.text}
-              </Sidebar.Item>
-            ))}
-          </Sidebar.ItemGroup>
-        </Sidebar.Items>
-      </Sidebar>
-    </div>
+          </Sidebar.Items>
+        </Sidebar>
+      </Container>
+    </>
   )
 }
 
