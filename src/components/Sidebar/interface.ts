@@ -1,3 +1,4 @@
+import { MutableRefObject } from "react";
 import { IconType } from "react-icons";
 
 interface Item {
@@ -12,4 +13,5 @@ interface Menu {
 
 export interface SidebarProps {
   menus: Menu[];
+  trigger: MutableRefObject<HTMLButtonElement | null>;
 }

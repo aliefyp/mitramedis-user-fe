@@ -3,7 +3,7 @@ import { TbReportMedical, TbMedicineSyrup, TbUsers, TbLayoutDashboard, TbLogout,
 export const MAIN_MENU = {
   title: 'MENU',
   items: [
-    { text: 'Dashboard', icon: TbLayoutDashboard, active: true },
+    { text: 'Home', icon: TbLayoutDashboard, active: true },
     { text: 'Pasien', icon: TbUsers },
     { text: 'Rekam Medis', icon: TbReportMedical },
     { text: 'Daftar Obat', icon: TbMedicineSyrup },

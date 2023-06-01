@@ -1,4 +1,4 @@
-import { ReactNode, useRef, useState } from "react";
+import { ReactNode, useState } from "react";
 import { Sidebar } from "flowbite-react";
 import Drawer from '../Drawer';
 import useAppContext from '../../context/AppContext';
@@ -6,14 +6,13 @@ import { SidebarProps } from "./interface";
 
 const Panel = ({ children }: { children: ReactNode }) => {
   return (
-    <nav className={`py-12 pl-16 pr-2 h-screen bg-white dark:bg-slate-800 shadow-md z-20`}>
+    <nav className="py-12 pl-12 pr-2 h-screen bg-white dark:bg-slate-800 shadow-md z-20">
       {children}
     </nav>
   )
 }
 
-const SideBar = ({ menus }: SidebarProps) => {
-  const triggerRef = useRef(null);
+const SideBar = ({ menus, trigger }: SidebarProps) => {
   const [activeMenu, setActiveMenu] = useState('Dashboard');
   const { isMobile } = useAppContext();
 
@@ -27,7 +26,7 @@ const SideBar = ({ menus }: SidebarProps) => {
       </div> */}
 
       {/* main panel */}
-      <Container name="sidebar" trigger={triggerRef}>
+      <Container name="sidebar" trigger={trigger}>
         <Sidebar aria-label="Menu">
           <Sidebar.Logo className="pb-8 sm:pb-16" href="/" img="http://placehold.it/80x80" imgAlt="Promedik">
             Mitramedis
