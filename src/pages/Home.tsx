@@ -29,7 +29,7 @@ const Dashboard = () => {
       <section className="max-w-screen-md">
         <div className="flex flex-col justify-center">
           <h1 className="mb-4 text-4xl sm:text-3xl font-extrabold tracking-tight leading-none text-slate-800 md:text-4xl lg:text-5xl dark:text-white">
-            {`${Greeting}, Dokter Risky!`}
+            {`${Greeting.greeting}, Dokter Risky!`}
           </h1>
           <p className="mb-4 lg:mb-8 text-lg font-normal text-slate-500 lg:text-xl dark:text-slate-200">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam volutpat tincidunt nulla, sit amet hendrerit lacus elementum vitae. Etiam malesuada ante augue, nec venenatis neque commodo nec.
