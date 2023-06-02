@@ -21,7 +21,7 @@ const Dashboard = () => {
     if (hourNow < 11) return { greeting: 'Selamat Pagi', message: '' };
     if (hourNow < 15) return { greeting: 'Selamat Siang', message: '' };
     if (hourNow < 18) return { greeting: 'Selamat Sore', message: '' };
-    return 'Selamat Malam';
+    return { greeting: 'Selamat Malam', message: '' };
   }, []);
 
   return (
