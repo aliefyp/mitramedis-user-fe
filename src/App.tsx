@@ -6,6 +6,7 @@ import {
 import Layout from './components/Layout';
 import Dashboard from './pages/Home';
 import { AppProvider } from './context/AppContext';
+import Login from './pages/Login';
 
 function App() {
   return (
@@ -22,6 +23,10 @@ function App() {
               },
             ],
           },
+          {
+            path: "/login",
+            element: <Login />
+          }
         ])}
       />
     </AppProvider>
