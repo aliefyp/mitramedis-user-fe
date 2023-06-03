@@ -18,9 +18,11 @@ const Login = () => {
             <img className="w-8 h-8 mr-2" src="http://placehold.it/32x32" alt="logo" />
             Mitramedis
           </div>
-          <img className="grow m-0" src="/ilus_login.svg" alt="Login" />
+          <div className="grow px-8 sm:px-4 flex flex-col items-center justify-center">
+            <img className="m-0 mx-auto" src="/ilus_login.svg" alt="Login" />
+          </div>
           <div className="space-y-4">
-            <h1 className="text-5xl font-bold leading tracking-tight text-slate-50 mb-8">
+            <h1 className="text-4xl sm:text-5xl font-bold leading tracking-tight text-slate-50 mb-0 sm:mb-12">
               Kelola klinik jadi lebih mudah
             </h1>
           </div>
