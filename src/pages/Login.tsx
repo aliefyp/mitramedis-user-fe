@@ -1,4 +1,12 @@
+import { useNavigate } from "react-router-dom";
+
 const Login = () => {
+  const navigate = useNavigate();
+
+  const handleSubmit = () => {
+    navigate('/')
+  }
+
   return (
     <section className="bg-slate-200 dark:bg-slate-800 p-0 sm:p-16 h-screen">
 
@@ -24,7 +32,7 @@ const Login = () => {
             <h1 className="text-3xl font-bold leading tracking-tight text-slate-800 dark:text-slate-50">
               Login
             </h1>
-            <form className="space-y-4 " action="#">
+            <form className="space-y-4 " onSubmit={handleSubmit}>
               <div>
                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                   Email
@@ -98,7 +106,7 @@ const Login = () => {
           </div>
         </div>
       </div> */}
-    </section>
+    </section >
   )
 }
 
