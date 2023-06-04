@@ -4,9 +4,10 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Layout from './components/Layout';
-import Dashboard from './pages/Home';
+import Home from './pages/Home';
 import { AppProvider } from './context/AppContext';
 import Login from './pages/Login';
+import Pasien from './pages/Pasien';
 
 function App() {
   return (
@@ -19,7 +20,11 @@ function App() {
             children: [
               {
                 path: "",
-                element: <Dashboard />,
+                element: <Home />,
+              },
+              {
+                path: "pasien",
+                element: <Pasien />,
               },
             ],
           },
