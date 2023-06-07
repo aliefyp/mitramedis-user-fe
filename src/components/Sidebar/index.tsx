@@ -1,7 +1,7 @@
 import { ReactNode, useState } from "react";
 import { Sidebar } from "flowbite-react";
-import Drawer from '../Drawer';
-import useAppContext from '../../context/AppContext';
+import Drawer from 'components/Drawer';
+import useAppContext from 'context/AppContext';
 import { SidebarProps } from "./interface";
 
 const Panel = ({ children }: { children: ReactNode }) => {

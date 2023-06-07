@@ -2,7 +2,7 @@ import { Button, Card, Table, Tooltip } from "flowbite-react";
 import { useState } from "react";
 import { FaDownload, FaEye, FaPencilAlt, FaPlus } from "react-icons/fa";
 import { useDebounce } from "use-debounce";
-import SearchBar from "../components/SearchBar";
+import SearchBar from "components/SearchBar";
 
 const PATIENT_TABLE_ROW = ['No. Rekam Medis', 'Nama', 'Umur', 'NIK', 'Alamat', 'Opsi']
 

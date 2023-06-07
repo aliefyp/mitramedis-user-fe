@@ -1,13 +1,13 @@
-import './App.css';
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import Layout from './components/Layout';
-import Home from './pages/Home';
-import { AppProvider } from './context/AppContext';
-import Login from './pages/Login';
-import Pasien from './pages/Pasien';
+import Layout from 'components/Layout';
+import { AppProvider } from 'context/AppContext';
+import Home from 'pages/Home';
+import Login from 'pages/Login';
+import Pasien from 'pages/Pasien';
+import './App.css';
 
 function App() {
   return (
