@@ -8,33 +8,36 @@ import Home from 'pages/Home';
 import Login from 'pages/Login';
 import Pasien from 'pages/Pasien';
 import './App.css';
+import 'flowbite';
 
 function App() {
   return (
-    <AppProvider>
-      <RouterProvider router={
-        createBrowserRouter([
-          {
-            path: "/",
-            element: <Layout />,
-            children: [
-              {
-                path: "",
-                element: <Home />,
-              },
-              {
-                path: "pasien",
-                element: <Pasien />,
-              },
-            ],
-          },
-          {
-            path: "/login",
-            element: <Login />
-          }
-        ])}
-      />
-    </AppProvider>
+    <>
+      <AppProvider>
+        <RouterProvider router={
+          createBrowserRouter([
+            {
+              path: "/",
+              element: <Layout />,
+              children: [
+                {
+                  path: "",
+                  element: <Home />,
+                },
+                {
+                  path: "pasien",
+                  element: <Pasien />,
+                },
+              ],
+            },
+            {
+              path: "/login",
+              element: <Login />
+            }
+          ])}
+        />
+      </AppProvider>
+    </>
   );
 }
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { Avatar, Flowbite, DarkThemeToggle, Sidebar } from 'flowbite-react';
 import type { CustomFlowbiteTheme } from 'flowbite-react';
 import { MAIN_MENU, SETTING_MENU } from './constants';
@@ -10,10 +10,19 @@ const customTheme: CustomFlowbiteTheme = {
       // primary: 'bg-red-500 hover:bg-red-600',
     },
   },
+  textInput: {
+    field: {
+      input: {
+        withShadow: {
+          on: 'true'
+        }
+      }
+    }
+  }
 };
 
 const Layout = () => {
-  const [activeMenu, setActiveMenu] = useState('Dashboard');
+  const { pathname } = useLocation();
 
   return (
     <Flowbite theme={{ theme: customTheme }}>
@@ -28,8 +37,7 @@ const Layout = () => {
                 </svg>
               </button>
               <a href="/" className="flex ml-2 md:mr-24">
-                <img src="http://placehold.it/80x80" className="h-8 mr-3" alt="Mitramedis Logo" />
-                <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Mitramedis</span>
+                <img src="/logo_mitramedis.png" className="h-8 mr-3" alt="Mitramedis Logo" />
               </a>
             </div>
             <div className="flex items-center">
@@ -73,7 +81,7 @@ const Layout = () => {
 
 
       <aside id="logo-sidebar" className="fixed top-0 left-0 w-64 sm:w-80 z-40 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
-        <div className="h-full pr-2 sm:pl-12 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+        <div className="h-full pr-2 pl-1 sm:pl-6 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
           <Sidebar aria-label="Menu">
             <Sidebar.Items>
               {[MAIN_MENU, SETTING_MENU].map((menu) => (
@@ -82,7 +90,7 @@ const Layout = () => {
                     {menu.title}
                   </p>
                   {menu.items.map(item => (
-                    <Sidebar.Item href="#" icon={item.icon} active={item.text === activeMenu} onClick={() => setActiveMenu(item.text)}>
+                    <Sidebar.Item href={item.url} icon={item.icon} active={item.url === pathname}>
                       {item.text}
                     </Sidebar.Item>
                   ))}
@@ -94,7 +102,7 @@ const Layout = () => {
       </aside>
 
       <div className="sm:ml-80 mt-16 min-h-screen bg-slate-100 dark:bg-slate-700">
-        <div className='px-4 py-6 sm:px-12 sm:py-16'>
+        <div className='px-4 py-6 sm:px-6 sm:py-8'>
           {/* <h1 className="mb-4 text-2xl font-extrabold text-slate-800 dark:text-slate-50">Home</h1> */}
           <Outlet />
         </div>
