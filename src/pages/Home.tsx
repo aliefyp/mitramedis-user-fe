@@ -25,7 +25,7 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 pt-4">
       <section className="max-w-screen-md">
         <div className="flex flex-col justify-center">
           <h1 className="mb-4 text-4xl sm:text-3xl font-extrabold tracking-tight leading-none text-slate-800 md:text-4xl lg:text-5xl dark:text-white">
