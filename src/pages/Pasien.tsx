@@ -1,6 +1,6 @@
 import { Button, Card, Pagination, Table, Tooltip } from "flowbite-react";
 import { useState } from "react";
-import { FaDownload, FaEye, FaPencilAlt, FaPlus } from "react-icons/fa";
+import { FaEye, FaPencilAlt, FaPlus } from "react-icons/fa";
 import { useDebounce } from "use-debounce";
 import PageHeading from "components/PageHeading";
 import SearchBar from "components/SearchBar";
