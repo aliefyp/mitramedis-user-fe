@@ -74,9 +74,9 @@ const Layout = () => {
             </Nav>
           ))}
         </Sidebar>
-        <div className='grow bg-slate-100 dark:bg-slate-700 px-4 py-6 sm:px-6 sm:py-8'>
+        <div className='w-full'>
           {isMobile && (
-            <header className="flex items-center justify-between pt-2 pb-4 sticky top-0">
+            <header className="flex items-center justify-between bg-slate-100 dark:bg-slate-700 px-4 pt-4 pb-2 sticky top-0">
               <div></div>
               <div className='flex items-center space-x-2'>
                 <DarkThemeToggle />
@@ -84,7 +84,11 @@ const Layout = () => {
               </div>
             </header>
           )}
-          <Outlet />
+          <div className='grow min-h-screen bg-slate-100 dark:bg-slate-700 px-4 py-6 sm:px-6 sm:py-8'>
+            <div className='max-w-screen-xl mx-auto'>
+              <Outlet />
+            </div>
+          </div>
         </div>
       </div>
     </Flowbite>

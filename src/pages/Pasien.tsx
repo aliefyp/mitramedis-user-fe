@@ -95,13 +95,13 @@ const Pasien = () => {
               ))}
             </Table.Body>
           </Table>
-          <div className="flex justify-center mt-4">
-            <Pagination
-              currentPage={currentPage}
-              onPageChange={page => setCurrentPage(page)}
-              totalPages={100}
-            />
-          </div>
+        </div>
+        <div className="flex justify-center mt-4">
+          <Pagination
+            currentPage={currentPage}
+            onPageChange={page => setCurrentPage(page)}
+            totalPages={100}
+          />
         </div>
       </Card>
     </div>

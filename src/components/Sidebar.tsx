@@ -55,7 +55,7 @@ function Sidebar({
               >
                 <div className="relative w-screen" style={{ width }}>
                   <div className="h-full flex flex-col py-6 shadow-xl overflow-y-scroll bg-white dark:bg-slate-800">
-                    <div className="flex justify-between items-center px-4 sm:px-6">
+                    <div className="flex justify-between items-center mb-8 px-4 sm:px-6">
                       <Dialog.Title className="text-lg font-bold">
                         {title}
                       </Dialog.Title>
@@ -82,7 +82,7 @@ function Sidebar({
       style={{ width }}
     >
       {title && (
-        <div className="px-6 py-8">
+        <div className="px-6 py-8 mb-8">
           <h2 className="font-bold">{title}</h2>
         </div>
       )}
