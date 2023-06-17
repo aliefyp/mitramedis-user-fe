@@ -3,7 +3,7 @@ import {
   Routes,
 } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { AuthProvider, useIsAuthenticated } from "react-auth-kit";
+import { AuthProvider } from "react-auth-kit";
 import { AppProvider } from 'context/AppContext';
 import { ToasterProvider } from 'context/ToasterContext';
 import Layout from 'components/Layout';
@@ -43,9 +43,9 @@ function App() {
                 <Route path="" element={<Home />} />
                 <Route path="/pasien" element={<Pasien />} />
                 <Route path="/logout" element={<Logout />} />
+                <Route path="*" element={<Error />} />
               </Route>
               <Route path="/login" element={<Login />} />
-              <Route path="*" element={<Error />} />
             </Routes>
           </AuthProvider>
         </AppProvider>
