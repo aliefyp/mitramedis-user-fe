@@ -84,7 +84,7 @@ const Layout = () => {
               </div>
             </header>
           )}
-          <div className='grow min-h-screen bg-slate-100 dark:bg-slate-700 px-4 py-6 sm:px-6 sm:py-8'>
+          <div className='grow min-h-screen bg-slate-100 dark:bg-slate-700 px-4 py-6 sm:px-6 sm:pt-12'>
             <div className='max-w-screen-xl mx-auto'>
               <Outlet />
             </div>

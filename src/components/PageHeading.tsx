@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 import { Breadcrumb } from 'flowbite-react';
-import { TbLayoutDashboard } from 'react-icons/tb';
 
 interface Breadcrumbs {
   text: string;
@@ -17,7 +16,7 @@ const PageHeading = ({ title, breadcrumbs }: PageHeadingProps) => {
   return (
     <div className="mb-8 space-y-2">
       <Breadcrumb aria-label="Main breadcrumb">
-        <Breadcrumb.Item href="/" icon={TbLayoutDashboard}>
+        <Breadcrumb.Item href="/">
           Dashboard
         </Breadcrumb.Item>
         {breadcrumbs?.map(item => (

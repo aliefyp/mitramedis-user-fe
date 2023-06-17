@@ -31,7 +31,7 @@ const PATIENT_DATA = [
   }
 ]
 
-const Pasien = () => {
+const PasienPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchText, setSearchText] = useState('');
   const [value] = useDebounce(searchText, 500);
@@ -108,4 +108,4 @@ const Pasien = () => {
   )
 }
 
-export default Pasien;
+export default PasienPage;

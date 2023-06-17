@@ -9,6 +9,8 @@ import Login from 'pages/Login';
 import Pasien from 'pages/Pasien';
 import './App.css';
 import 'flowbite';
+import Error from "pages/Error";
+import PasienForm from "pages/PasienForm";
 
 function App() {
   return (
@@ -19,6 +21,7 @@ function App() {
             {
               path: "/",
               element: <Layout />,
+              errorElement: <Error />,
               children: [
                 {
                   path: "",
@@ -28,6 +31,10 @@ function App() {
                   path: "pasien",
                   element: <Pasien />,
                 },
+                {
+                  path: "pasien/new",
+                  element: <PasienForm />
+                }
               ],
             },
             {

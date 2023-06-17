@@ -1,4 +1,3 @@
-import Input from "components/Input";
 import { useForm } from "react-hook-form";
 // import { useNavigate } from "react-router-dom";
 
@@ -21,7 +20,7 @@ const Login = () => {
       <div className="flex bg-white p-2 flex-col sm:flex-row rounded-none sm:rounded-3xl h-auto sm:h-full shadow dark:bg-teal-800">
 
         {/* left section */}
-        <div className="w-full sm:w-1/2 p-4 space-y-4 sm:p-8 bg-gradient-to-r from-brand3 to-brand1 rounded-3xl flex flex-col">
+        <div className="w-full sm:w-1/2 p-4 space-y-4 sm:p-8 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-3xl flex flex-col">
           <div className="flex items-center mb-6 text-2xl font-semibold text-slate-50 dark:text-slate-800">
             <img className="w-8 h-8 mr-2" src="http://placehold.it/32x32" alt="logo" />
             Mitramedis
@@ -43,32 +42,46 @@ const Login = () => {
               Login
             </h1>
             <form className="space-y-4 " onSubmit={handleSubmit(onSubmit)}>
-              <Input
-                label="Email"
-                type="email"
-                id="email"
-                placeholder="name@company.com"
-                {...register('email')}
-              />
-              <Input
-                label="Password"
-                type="password"
-                id="email"
-                placeholder="••••••••"
-                {...register('password')}
-              />
-              <div className="flex items-center justify-end">
-                {/* <div className="flex items-start">
+              <div>
+                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="name@company.com"
+                  {...register('email')}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                />
+              </div>
+              <div>
+                <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="••••••••"
+                  {...register('password')}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-start">
                   <div className="flex items-center h-5">
-                    <Input id="remember" aria-describedby="remember" type="checkbox" {...register('remember')} />
+                    <input
+                      id="remember"
+                      aria-describedby="remember"
+                      type="checkbox"
+                      {...register('remember')}
+                      className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" 
+                    />
                   </div>
                   <div className="ml-3 text-sm">
                     <label htmlFor="remember" className="text-gray-500 dark:text-gray-300">Ingat saya</label>
                   </div>
-                </div> */}
+                </div>
                 <a href="#login" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Lupa password?</a>
               </div>
-              <button className="w-full text-slate-50 font-extrabold bg-brand1 hover:bg-brand1 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+              <button className="w-full text-slate-50 font-extrabold bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                 Login
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
