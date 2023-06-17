@@ -1,40 +1,69 @@
-import Input from "components/Input";
+import { useSignIn } from "react-auth-kit";
 import { useForm } from "react-hook-form";
-// import crypto from "crypto-js";
-// import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-type FormValues = {
-  email: string;
-  password: string;
-  // remember: boolean;
-}
+import Button from "components/Button";
+import Input from "components/Input";
+import useLogin from 'hooks/auth/useLogin';
+import useToaster from 'context/ToasterContext';
+import { LoginParam } from "types/login";
+import { useEffect } from "react";
+
 
 const Login = () => {
-  const { register, handleSubmit } = useForm<FormValues>()
-  // const navigate = useNavigate();
+  const { register, handleSubmit } = useForm<LoginParam>();
+  const { isLoggingIn, login } = useLogin();
+  const { open: openToaster } = useToaster();
+  const signIn = useSignIn();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const source = new URLSearchParams(location.search).get('source');
 
-  const onSubmit = (val: FormValues) => {
-    // const body = JSON.stringify(val);
-    // const key = process.env.REACT_APP_SIGN_KEY || '';
-    
-    // const encoded = crypto.HmacSHA1(body, key).toString(crypto.enc.Hex);
+  const onSubmit = async (val: LoginParam) => {
+    try {
+      const response = await login(val);
 
-    // const urlParam = new URLSearchParams(val).toString();
+      if (response.success) {
+        signIn({
+          token: response.data.access_token,
+          expiresIn: response.data.expired_at,
+          tokenType: 'Bearer',
+          authState: { email: val.email }
+        })
 
-    // console.log(urlParam)
-    
-    fetch(`${process.env.REACT_APP_API_ENDPOINT}/v1/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams(val),
-    }).then(res => res.json())
-      .then(res => console.log(res))
-      .catch(err => {
-        console.log('error', err)
-      });
+        openToaster({
+          title: 'Selamat Datang',
+          message: 'Selamat bekerja kembali!',
+          variant: 'success',
+          autoClose: true,
+        })
+        
+        navigate('/')
+      } else {
+        throw new Error(response.message)
+      }
+    } catch (err) {
+      const message = err instanceof Error 
+        ? err.message
+        : 'Silahkan coba lagi';
+
+      openToaster({
+        title: 'Login Gagal',
+        message,
+        variant: 'error',
+      })
+    }
   }
+
+  useEffect(() => {
+    if (source === 'nologin') {
+      openToaster({
+        title: 'Sesi Anda Habis',
+        message: 'Silahkan login kembali',
+        variant: 'error',
+      })
+    }
+  }, [])
 
   return (
     <section className="bg-slate-200 dark:bg-slate-800 p-0 sm:p-16 h-screen">
@@ -88,9 +117,11 @@ const Login = () => {
                 </div> */}
                 <a href="#login" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Lupa password?</a>
               </div>
-              <button className="w-full text-slate-50 font-extrabold bg-brand1 hover:bg-brand1 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+              <Button type="submit" loading={isLoggingIn} color="primary" className="w-full">
                 Login
-              </button>
+              </Button>
+              {/* <button className="w-full text-slate-50 font-extrabold bg-brand1 hover:bg-brand1 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+              </button> */}
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Belum punya akun? <a href="#login" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Daftar</a>
               </p>

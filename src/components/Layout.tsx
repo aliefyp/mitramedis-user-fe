@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
+import { useIsAuthenticated } from 'react-auth-kit';
 import { DarkThemeToggle, Flowbite } from 'flowbite-react';
 import type { CustomFlowbiteTheme } from 'flowbite-react';
 import { TbReportMedical, TbMedicineSyrup, TbUsers, TbLayoutDashboard, TbLogout, TbHeadset, TbSettings } from 'react-icons/tb';
@@ -7,7 +8,8 @@ import { HiMenu } from 'react-icons/hi';
 import useAppContext from 'context/AppContext';
 import Nav from 'components/Nav';
 import NavLink from 'components/NavLink';
-import Sidebar from './Sidebar';
+import Sidebar from 'components/Sidebar';
+import Typography from 'components/Typography';
 
 const customTheme: CustomFlowbiteTheme = {
   button: {
@@ -36,8 +38,8 @@ export const MAIN_MENU = {
   ]
 };
 
-export const SETTING_MENU = {
-  title: 'EXTRAS',
+export const EXTRAS_MENU = {
+  title: 'LAINNYA',
   items: [
     { text: 'Pengaturan', icon: TbSettings, url: '/pengaturan' },
     { text: 'Hubungi Kami', icon: TbHeadset, url: '/help' },
@@ -49,7 +51,10 @@ export const SETTING_MENU = {
 const Layout = () => {
   const [open, setOpen] = useState(false);
   const { isMobile } = useAppContext();
+  const isAuthenticated = useIsAuthenticated();
 
+  if (!isAuthenticated()) return <Navigate replace to="/login" />;
+  
   return (
     <Flowbite theme={{ theme: customTheme }}>
       <div className='flex w-full'>
@@ -60,11 +65,11 @@ const Layout = () => {
             <img src="/logo_mitramedis.png" alt="mitramedis" width={80} />
           }
         >
-          {[MAIN_MENU, SETTING_MENU].map(menu => (
+          {[MAIN_MENU, EXTRAS_MENU].map(menu => (
             <Nav orientation="vertical" className='mb-8'>
-              <p className="mb-4 text-neutral-400 text-xs font-extrabold">
+              <Typography as="p" smaller className="mb-4 text-neutral-400 text-xs font-extrabold">
                 {menu.title}
-              </p>
+              </Typography>
               {menu.items.map((menu) => (
                 <NavLink key={menu.url} onClick={() => setOpen(false)} to={menu.url}>
                   <menu.icon className="mr-4" size={20} />

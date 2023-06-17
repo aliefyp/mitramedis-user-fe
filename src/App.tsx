@@ -1,50 +1,56 @@
 import {
-  createBrowserRouter,
-  RouterProvider,
+  Route,
+  Routes,
 } from "react-router-dom";
-import Layout from 'components/Layout';
+import { QueryClient, QueryClientProvider } from "react-query";
+import { AuthProvider, useIsAuthenticated } from "react-auth-kit";
 import { AppProvider } from 'context/AppContext';
+import { ToasterProvider } from 'context/ToasterContext';
+import Layout from 'components/Layout';
 import Home from 'pages/Home';
 import Login from 'pages/Login';
+import Logout from 'pages/Logout';
 import Pasien from 'pages/Pasien';
 import './App.css';
 import 'flowbite';
 import Error from "pages/Error";
-import PasienForm from "pages/PasienForm";
+// import PasienForm from "pages/PasienForm";
+
+// Create a client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 0,
+      suspense: true
+    }
+  }
+});
 
 function App() {
   return (
-    <>
-      <AppProvider>
-        <RouterProvider router={
-          createBrowserRouter([
-            {
-              path: "/",
-              element: <Layout />,
-              errorElement: <Error />,
-              children: [
-                {
-                  path: "",
-                  element: <Home />,
-                },
-                {
-                  path: "pasien",
-                  element: <Pasien />,
-                },
-                {
-                  path: "pasien/new",
-                  element: <PasienForm />
-                }
-              ],
-            },
-            {
-              path: "/login",
-              element: <Login />
-            }
-          ])}
-        />
-      </AppProvider>
-    </>
+    <ToasterProvider>
+      <QueryClientProvider client={queryClient}>
+        <AppProvider>
+          <AuthProvider
+            authType="cookie"
+            authName={process.env.REACT_APP_SESSION_PREFIX || ''}
+            cookieDomain={window.location.hostname}
+            cookieSecure={process.env.NODE_ENV === 'production'}
+          >
+            <Routes>
+              <Route path="/" element={<Layout />}>
+                <Route path="" element={<Home />} />
+                <Route path="/pasien" element={<Pasien />} />
+                <Route path="/logout" element={<Logout />} />
+              </Route>
+              <Route path="/login" element={<Login />} />
+              <Route path="*" element={<Error />} />
+            </Routes>
+          </AuthProvider>
+        </AppProvider>
+      </QueryClientProvider>
+    </ToasterProvider>
   );
 }
 
