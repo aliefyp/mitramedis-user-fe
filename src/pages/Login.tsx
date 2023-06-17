@@ -63,7 +63,7 @@ const Login = () => {
         variant: 'error',
       })
     }
-  }, [])
+  }, [openToaster, source])
 
   return (
     <section className="bg-slate-200 dark:bg-slate-800 p-0 sm:p-16 h-screen">
