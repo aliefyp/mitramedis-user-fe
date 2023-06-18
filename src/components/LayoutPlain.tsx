@@ -9,7 +9,7 @@ const LayoutPlain = ({ children }: LayoutPlainProps) => {
   return (
     <div className="flex min-h-screen w-screen flex-col bg-slate-200 dark:bg-slate-800">
       <div className="flex justify-center px-8 py-4 sm:justify-start">
-        <img className="h-20" src="/icon_logo_main.png" alt="logo" />
+        <img className="h-16 md:h-20" src="/icon_logo_main.png" alt="logo" />
       </div>
       <section className="flex h-full grow items-center justify-center p-8">
         {children}

@@ -1,48 +1,43 @@
 import { Fragment, useEffect, useState } from "react";
-import { useSignIn } from "react-auth-kit";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Transition } from "@headlessui/react";
 
 import Button from "components/Button";
 import Input from "components/Input";
 import LayoutPlain from "components/LayoutPlain";
-import useLogin from "hooks/auth/useLogin";
+import useRegister from "hooks/auth/useRegister";
 import useToaster from "context/ToasterContext";
-import { LoginParam } from "types/login";
+import { RegisterParam } from "types/register";
 import Card from "components/Card";
 
+interface RegisterForm extends RegisterParam {
+  confirm_password: string;
+}
+
 const Login = () => {
-  const { register, handleSubmit } = useForm<LoginParam>();
-  const { isLoggingIn, login } = useLogin();
+  const { register, handleSubmit, watch } = useForm<RegisterForm>();
+  const { isRegistering, register: submitRegister } = useRegister();
   const { open: openToaster } = useToaster();
-  const signIn = useSignIn();
   const navigate = useNavigate();
-  const location = useLocation();
-  const source = new URLSearchParams(location.search).get("source");
 
   const [show, setShow] = useState(false);
 
-  const onSubmit = async (val: LoginParam) => {
+  const onSubmit = async (val: RegisterForm) => {
     try {
-      const response = await login(val);
-
+      const { confirm_password, ...rest } = val;
+      const response = await submitRegister(rest);
       if (response.success) {
-        signIn({
-          token: response.data.access_token,
-          expiresIn: response.data.expired_at,
-          tokenType: "Bearer",
-          authState: { email: val.email },
-        });
-
         openToaster({
-          title: "Selamat Datang",
-          message: "Selamat bekerja kembali!",
+          title: "Pendaftaran Berhasil",
+          message: "Silakan cek email Anda untuk melakukan verifikasi",
           variant: "success",
           autoClose: true,
         });
 
-        navigate("/");
+        setTimeout(() => {
+          navigate("/login");
+        }, 3000);
       } else {
         throw new Error(response.message);
       }
@@ -50,22 +45,12 @@ const Login = () => {
       const message = err instanceof Error ? err.message : "Silahkan coba lagi";
 
       openToaster({
-        title: "Login Gagal",
+        title: "Pendaftaran Belum Berhasil",
         message,
         variant: "error",
       });
     }
   };
-
-  useEffect(() => {
-    if (source === "nologin") {
-      openToaster({
-        title: "Sesi Anda Habis",
-        message: "Silahkan login kembali",
-        variant: "error",
-      });
-    }
-  }, [openToaster, source]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -83,7 +68,7 @@ const Login = () => {
           enterTo="opacity-100 translate-y-0"
         >
           <div>
-            <Card className="mx-auto flex min-w-[70vw] max-w-3xl flex-col overflow-hidden sm:min-w-0 sm:flex-row">
+            <Card className="mx-auto flex min-w-[70vw] max-w-4xl flex-col overflow-hidden sm:min-w-0 sm:flex-row">
               {/* left section */}
               <div className="hidden w-full bg-gradient-to-b from-brand3 to-brand1 px-8 pb-12 pt-8 sm:block">
                 <div className="align-center flex h-full flex-col justify-center gap-4">
@@ -108,12 +93,26 @@ const Login = () => {
               <div className="flex w-full shrink-0 flex-col items-center justify-center space-y-4 p-4 py-8 sm:w-1/2 sm:p-16">
                 <div className="w-full space-y-4 md:space-y-6">
                   <h1 className="leading text-3xl font-bold tracking-tight text-slate-800 dark:text-slate-50">
-                    Login
+                    Daftar
                   </h1>
                   <form
                     className="space-y-4 "
                     onSubmit={handleSubmit(onSubmit)}
                   >
+                    <Input
+                      label="Nama Lengkap"
+                      type="full_name"
+                      id="full_name"
+                      placeholder="Nama Langkap"
+                      {...register("full_name")}
+                    />
+                    <Input
+                      label="Nomor Telepon"
+                      type="number"
+                      id="phone_number"
+                      placeholder="0812345xxxx"
+                      {...register("phone_number")}
+                    />
                     <Input
                       label="Email"
                       type="email"
@@ -124,41 +123,40 @@ const Login = () => {
                     <Input
                       label="Password"
                       type="password"
-                      id="email"
-                      placeholder="••••••••"
+                      id="password"
+                      placeholder="Masukkan password"
                       {...register("password")}
                     />
-                    <div className="flex items-center justify-end">
-                      {/* <div className="flex items-start">
-                            <div className="flex items-center h-5">
-                              <Input id="remember" aria-describedby="remember" type="checkbox" {...register('remember')} />
-                            </div>
-                            <div className="ml-3 text-sm">
-                              <label htmlFor="remember" className="text-gray-500 dark:text-gray-300">Ingat saya</label>
-                            </div>
-                          </div> */}
-                      <a
-                        href="#login"
-                        className="text-primary-600 dark:text-primary-500 text-sm font-medium hover:underline"
+                    <Input
+                      label="Ulangi Password"
+                      type="password"
+                      id="confirm_password"
+                      placeholder="Ulangi password"
+                      {...register("confirm_password", {
+                        validate: (val: string) => {
+                          if (watch("password") !== val) {
+                            return "Password Anda tidak cocok";
+                          }
+                        },
+                      })}
+                    />
+                    <div className="pt-4">
+                      <Button
+                        type="submit"
+                        loading={isRegistering}
+                        color="primary"
+                        className="mt-8 w-full"
                       >
-                        Lupa password?
-                      </a>
+                        Daftar Sekarang
+                      </Button>
                     </div>
-                    <Button
-                      type="submit"
-                      loading={isLoggingIn}
-                      color="primary"
-                      className="w-full"
-                    >
-                      Login
-                    </Button>
                     <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                      Belum punya akun?{" "}
+                      Sudah punya akun?{" "}
                       <a
-                        href="/register"
+                        href="/login"
                         className="text-primary-600 dark:text-primary-500 font-medium hover:underline"
                       >
-                        Daftar
+                        Masuk
                       </a>
                     </p>
                   </form>

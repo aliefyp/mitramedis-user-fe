@@ -1,19 +1,17 @@
-import {
-  Route,
-  Routes,
-} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { AuthProvider } from "react-auth-kit";
-import { AppProvider } from 'context/AppContext';
-import { ToasterProvider } from 'context/ToasterContext';
-import Layout from 'components/Layout';
-import Home from 'pages/Home';
-import Login from 'pages/Login';
-import Logout from 'pages/Logout';
-import Pasien from 'pages/Pasien';
-import './App.css';
-import 'flowbite';
+import { AppProvider } from "context/AppContext";
+import { ToasterProvider } from "context/ToasterContext";
+import Layout from "components/Layout";
 import Error from "pages/Error";
+import Home from "pages/Home";
+import Login from "pages/Login";
+import Register from "pages/Register";
+import Logout from "pages/Logout";
+import Pasien from "pages/Pasien";
+import "./App.css";
+import "flowbite";
 // import PasienForm from "pages/PasienForm";
 
 // Create a client
@@ -22,9 +20,9 @@ const queryClient = new QueryClient({
     queries: {
       refetchOnWindowFocus: false,
       retry: 0,
-      suspense: true
-    }
-  }
+      suspense: true,
+    },
+  },
 });
 
 function App() {
@@ -34,9 +32,9 @@ function App() {
         <AppProvider>
           <AuthProvider
             authType="cookie"
-            authName={process.env.REACT_APP_SESSION_PREFIX || ''}
+            authName={process.env.REACT_APP_SESSION_PREFIX || ""}
             cookieDomain={window.location.hostname}
-            cookieSecure={process.env.NODE_ENV === 'production'}
+            cookieSecure={process.env.NODE_ENV === "production"}
           >
             <Routes>
               <Route path="/" element={<Layout />}>
@@ -46,6 +44,7 @@ function App() {
                 <Route path="*" element={<Error />} />
               </Route>
               <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
             </Routes>
           </AuthProvider>
         </AppProvider>
