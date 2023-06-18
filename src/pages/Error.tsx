@@ -1,20 +1,24 @@
-import { Button, Card } from "flowbite-react";
+import Button from "components/Button";
 
 const Error = () => {
   return (
-    <Card>
-      <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
-          <div className="mx-auto max-w-screen-sm text-center">
-              <h1 className="mb-4 text-7xl tracking-tight font-extrabold lg:text-9xl text-primary-600 dark:text-primary-500">404</h1>
-              <p className="mb-4 text-3xl tracking-tight font-bold text-gray-900 md:text-4xl dark:text-white">Oops..</p>
-              <p className="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">Halaman tidak ditemukan</p>
-              <a href="/">
-                <Button size="xl" className="mx-auto inline-block">Kembali ke Home</Button>
-              </a>
-          </div>   
+    <div className="mx-auto max-w-screen-xl px-4 py-8 lg:px-6 lg:py-16">
+      <div className="mx-auto max-w-screen-sm space-y-4 text-center">
+        <img
+          src="/img_404.svg"
+          alt="Not Found"
+          className=" mx-auto mb-8 max-w-md"
+        />
+        <p className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white md:text-4xl">
+          Oops..
+        </p>
+        <p className="text-lg font-light text-gray-500 dark:text-gray-400">
+          Halaman tidak ditemukan
+        </p>
+        <Button className="mx-auto inline-block">Kembali ke Home</Button>
       </div>
-    </Card>
-  )
-}
+    </div>
+  );
+};
 
 export default Error;
