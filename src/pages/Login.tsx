@@ -32,7 +32,11 @@ const Login = () => {
           token: response.data.access_token,
           expiresIn: response.data.expired_at,
           tokenType: "Bearer",
-          authState: { email: val.email },
+          authState: {
+            userId: response.data.user_id,
+            clinicId: response.data.clinic_id,
+            token: response.data.access_token,
+          },
         });
 
         openToaster({
