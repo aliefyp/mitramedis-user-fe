@@ -1,3 +1,9 @@
+export interface UserParam {
+  userId: string;
+  clinicId: string;
+  token: string;
+}
+
 export interface UserType {
   user_id: string;
   phone_number: number;

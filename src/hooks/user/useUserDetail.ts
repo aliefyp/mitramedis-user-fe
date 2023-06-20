@@ -1,8 +1,8 @@
 import axios from "axios";
-import { useMutation } from "react-query";
-import { UserResponse } from "types/user";
+import { useQuery } from "react-query";
+import { UserParam, UserResponse } from "types/user";
 
-const getUserDetail = async ({ userId, clinicId, token}: { userId: string, clinicId: string, token: string }): Promise<UserResponse> => {
+const getUserDetail = async ({ userId, clinicId, token}: UserParam): Promise<UserResponse> => {
   const { data } = await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/user/${userId}`, { headers: {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}`,
@@ -12,9 +12,8 @@ const getUserDetail = async ({ userId, clinicId, token}: { userId: string, clini
   return data;
 };
 
-function useUserDetail() {
-  const { isLoading, mutateAsync } = useMutation(getUserDetail);
-  return { isLoading, getUserDetail: mutateAsync };
+function useUserDetail({ userId, clinicId, token }: UserParam) {
+  return useQuery("user", () => getUserDetail({ userId, clinicId, token }));
 }
 
 export default useUserDetail;

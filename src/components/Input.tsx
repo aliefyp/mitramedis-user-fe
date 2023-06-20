@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React from "react";
+import React, { ReactNode } from "react";
 import Typography from "./Typography";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -10,9 +10,10 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   id?: string;
   label?: string;
   name: string;
+  suffix?: ReactNode;
   onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
+}
 
 export default React.forwardRef<HTMLInputElement, InputProps>(function Input(
   {
@@ -22,6 +23,8 @@ export default React.forwardRef<HTMLInputElement, InputProps>(function Input(
     helper,
     label,
     name,
+    prefix,
+    suffix,
     onBlur,
     onChange,
     ...restProps
@@ -29,7 +32,7 @@ export default React.forwardRef<HTMLInputElement, InputProps>(function Input(
   ref
 ) {
   return (
-    <div className={clsx("space-y-1", className)}>
+    <div className={clsx("relative space-y-1", className)}>
       {label && (
         <label
           htmlFor={name}
@@ -38,19 +41,31 @@ export default React.forwardRef<HTMLInputElement, InputProps>(function Input(
           {label}
         </label>
       )}
-      <input
-        name={name}
-        id={name}
-        autoComplete={autoComplete}
-        className={clsx(
-          "px-2 py-2 focus:border-indigo-500 block w-full border rounded-md",
-          error ? "border-red-500" : "border-gray-300"
+      <div className="flex w-full rounded-md border">
+        {Boolean(prefix) && (
+          <div className="flex items-center justify-center bg-gray-200 px-4">
+            {prefix}
+          </div>
         )}
-        onBlur={onBlur}
-        onChange={onChange}
-        ref={ref}
-        {...restProps}
-      />
+        <input
+          name={name}
+          id={name}
+          autoComplete={autoComplete}
+          className={clsx(
+            "w-full rounded-md border-none px-2 py-2 focus:border-gray-500",
+            error ? "border-red-500" : "border-gray-300"
+          )}
+          onBlur={onBlur}
+          onChange={onChange}
+          ref={ref}
+          {...restProps}
+        />
+        {Boolean(suffix) && (
+          <div className="flex items-center justify-center bg-gray-200 px-4">
+            {suffix}
+          </div>
+        )}
+      </div>
       {helper && (
         <Typography
           className={clsx("mt-1", error ? "text-red-500" : "text-gray-600")}

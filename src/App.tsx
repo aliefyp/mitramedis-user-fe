@@ -9,7 +9,7 @@ import Home from "pages/Home";
 import Login from "pages/Login";
 import Register from "pages/Register";
 import Logout from "pages/Logout";
-import Pasien from "pages/Pasien";
+import Pasien from "pages/Pasien/index";
 import "./App.css";
 import "flowbite";
 // import PasienForm from "pages/PasienForm";
