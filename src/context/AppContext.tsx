@@ -1,4 +1,4 @@
-import getCookie from "helpers/getCookie";
+// import getCookie from "helpers/getCookie";
 // import useUserDetail from "hooks/user/useUserDetail";
 import { useAuthUser } from "react-auth-kit";
 import {
@@ -7,25 +7,25 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useMemo,
+  // useMemo,
   useRef,
   useState,
 } from "react";
-import { UserType } from "types/user";
+// import { UserType } from "types/user";
 import axios from "axios";
 
 const MOBILE_BREAKPOINT = 640;
 
 interface AppContextInterface {
   isMobile: boolean;
-  userDetail: UserType | null;
+  // userDetail: UserType | null;
 }
 
 export const AppContext = createContext({} as AppContextInterface);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const hasAuth = useRef(false);
-  const [userDetail, setUserDetail] = useState<UserType | null>(null);
+  // const [userDetail, setUserDetail] = useState<UserType | null>(null);
   const [isMobile, setIsMobile] = useState(
     window.innerWidth <= MOBILE_BREAKPOINT
   );
@@ -48,6 +48,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   const handleUserDetail = useCallback(
     async (userId: string, clinicId: string, token: string) => {
+      console.log("get user data");
       try {
         // const response = await getUserDetail({ userId, clinicId, token });
 
@@ -75,7 +76,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         const message =
           err instanceof Error ? err.message : "Silahkan coba lagi";
 
-        // console.error(message);
+        console.error(message);
       }
     },
     []
@@ -99,7 +100,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     <AppContext.Provider
       value={{
         isMobile,
-        userDetail,
       }}
     >
       {children}

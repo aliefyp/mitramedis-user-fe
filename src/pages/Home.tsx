@@ -1,4 +1,3 @@
-import useAppContext from "context/AppContext";
 import { Avatar, Card } from "flowbite-react";
 import { useMemo } from "react";
 import { FaUserEdit, FaUserShield } from "react-icons/fa";
@@ -17,8 +16,6 @@ const HISTORY = [
 ];
 
 const Home = () => {
-  const { userDetail } = useAppContext();
-
   const Greeting = useMemo(() => {
     const hourNow = new Date().getHours();
     if (hourNow < 11) return { greeting: "Selamat Pagi", message: "" };
@@ -32,7 +29,7 @@ const Home = () => {
       <section className="max-w-screen-md">
         <div className="flex flex-col justify-center">
           <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-slate-800 dark:text-white sm:text-3xl md:text-4xl lg:text-5xl">
-            {`${Greeting.greeting}, Dokter ${userDetail?.full_name}!`}
+            {`${Greeting.greeting}, Dokter Risky!`}
           </h1>
           <p className="mb-4 text-lg font-normal text-slate-500 dark:text-slate-200 lg:mb-8 lg:text-xl">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
