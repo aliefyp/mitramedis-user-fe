@@ -1,4 +1,5 @@
-import { ReactNode } from "react";
+import clsx from "clsx";
+import { ReactElement, ReactNode } from "react";
 
 interface Item {
   key: string;
@@ -7,11 +8,12 @@ interface Item {
 
 interface DataDisplayProps {
   items: Item[];
+  className?: string;
 }
 
-const DataDisplay = ({ items }: DataDisplayProps) => {
+const DataDisplay = ({ items, className, ...rest }: DataDisplayProps) => {
   return (
-    <dl className="divide-y divide-gray-100">
+    <dl className={clsx("divide-y divide-gray-100", className)} {...rest}>
       {items.map((item, index) => (
         <div
           key={index}
