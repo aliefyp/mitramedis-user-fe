@@ -5,11 +5,12 @@ import { AppProvider } from "context/AppContext";
 import { ToasterProvider } from "context/ToasterContext";
 import Layout from "components/Layout";
 import Error from "pages/Error";
-import Home from "pages/Home";
+import Home from "pages/Home/index";
 import Login from "pages/Login";
 import Register from "pages/Register";
 import Logout from "pages/Logout";
 import Pasien from "pages/Pasien/index";
+import PasienForm from "pages/PasienForm/index";
 import "./App.css";
 import "flowbite";
 // import PasienForm from "pages/PasienForm";
@@ -40,6 +41,11 @@ function App() {
               <Route path="/" element={<Layout />}>
                 <Route path="" element={<Home />} />
                 <Route path="/pasien" element={<Pasien />} />
+                <Route path="/pasien/new" element={<PasienForm type="new" />} />
+                <Route
+                  path="/pasien/edit"
+                  element={<PasienForm type="edit" />}
+                />
                 <Route path="/logout" element={<Logout />} />
                 <Route path="*" element={<Error />} />
               </Route>

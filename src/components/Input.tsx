@@ -2,11 +2,12 @@ import clsx from "clsx";
 import React, { ReactNode } from "react";
 import Typography from "./Typography";
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  autoComplete?: "given-name";
+export interface InputProps extends React.HTMLProps<HTMLInputElement> {
   className?: string;
   error?: boolean;
   helper?: string;
+  icon?: ReactNode;
+  iconPlacement?: "left" | "right";
   id?: string;
   label?: string;
   name: string;
@@ -15,44 +16,89 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default React.forwardRef<HTMLInputElement, InputProps>(function Input(
+interface LabelProps extends React.HTMLProps<HTMLLabelElement> {
+  children: ReactNode | string;
+  required?: boolean;
+}
+
+const Label = ({ children, required, htmlFor }: LabelProps) => {
+  return (
+    <label
+      htmlFor={htmlFor}
+      className="block text-sm font-medium text-gray-700"
+    >
+      {children}
+      {required && <span className="text-red-600">*</span>}
+    </label>
+  );
+};
+
+const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
   {
     autoComplete,
     className,
     error,
     helper,
+    icon,
+    iconPlacement,
+    id,
     label,
     name,
     prefix,
+    required,
     suffix,
+    type,
     onBlur,
     onChange,
     ...restProps
   },
   ref
 ) {
+  if (type === "radio") {
+    return (
+      <div className={clsx("my-2 flex items-center gap-2", className)}>
+        <input
+          type="radio"
+          id={id}
+          name={name}
+          onBlur={onBlur}
+          onChange={onChange}
+          ref={ref}
+          {...restProps}
+        />
+        <Label htmlFor={id} required={required}>
+          {label}
+        </Label>
+      </div>
+    );
+  }
+
   return (
-    <div className={clsx("relative space-y-1", className)}>
+    <div className={clsx("relative space-y-2", className)}>
       {label && (
-        <label
-          htmlFor={name}
+        <Label
+          required={required}
           className="block text-sm font-medium text-gray-700"
+          htmlFor={name}
         >
           {label}
-        </label>
+        </Label>
       )}
-      <div className="flex w-full rounded-md border">
+      <div className="flex w-full rounded-md border bg-slate-50">
         {Boolean(prefix) && (
-          <div className="flex items-center justify-center bg-gray-200 px-4">
+          <div className="flex shrink-0 items-center justify-center bg-gray-200 px-4">
             {prefix}
           </div>
         )}
+        {icon && iconPlacement === "left" && (
+          <div className="flex items-center justify-center px-4">{icon}</div>
+        )}
         <input
+          id={id}
           name={name}
-          id={name}
           autoComplete={autoComplete}
           className={clsx(
-            "w-full rounded-md border-none px-2 py-2 focus:border-gray-500",
+            "w-full rounded-md border-none bg-transparent px-2 py-2 focus:border-gray-500",
             error ? "border-red-500" : "border-gray-300"
           )}
           onBlur={onBlur}
@@ -60,6 +106,9 @@ export default React.forwardRef<HTMLInputElement, InputProps>(function Input(
           ref={ref}
           {...restProps}
         />
+        {icon && iconPlacement === "right" && (
+          <div className="flex items-center justify-center px-4">{icon}</div>
+        )}
         {Boolean(suffix) && (
           <div className="flex items-center justify-center bg-gray-200 px-4">
             {suffix}
@@ -77,3 +126,5 @@ export default React.forwardRef<HTMLInputElement, InputProps>(function Input(
     </div>
   );
 });
+
+export default Object.assign(Input, { Label });

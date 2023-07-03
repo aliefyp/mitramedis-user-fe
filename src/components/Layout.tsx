@@ -64,7 +64,7 @@ const Layout = () => {
 
   return (
     <Flowbite theme={{ theme: customTheme }}>
-      <div className="flex w-full">
+      <div className="flex h-screen w-full">
         <Sidebar
           open={open}
           setOpen={setOpen}
@@ -92,7 +92,7 @@ const Layout = () => {
             </Nav>
           ))}
         </Sidebar>
-        <div className="w-full">
+        <div className="w-full overflow-y-auto ">
           {isMobile && (
             <header className="sticky top-0 flex items-center justify-between bg-slate-100 px-4 pb-2 pt-4 dark:bg-slate-700">
               <div></div>
