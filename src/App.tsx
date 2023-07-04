@@ -11,6 +11,7 @@ import Register from "pages/Register";
 import Logout from "pages/Logout";
 import Pasien from "pages/Pasien/index";
 import PasienForm from "pages/PasienForm/index";
+import RekamMedis from "pages/RekamMedis/index";
 import RekamMedisForm from "pages/RekamMedisForm/index";
 import "./App.css";
 import "flowbite";
@@ -46,8 +47,9 @@ function App() {
                   path="/pasien/edit"
                   element={<PasienForm type="edit" />}
                 />
+                <Route path="/rekam-medis" element={<RekamMedis />} />
                 <Route
-                  path="/rekammedis/new"
+                  path="/rekam-medis/new"
                   element={<RekamMedisForm type="new" />}
                 />
                 <Route path="/logout" element={<Logout />} />
