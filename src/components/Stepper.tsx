@@ -14,7 +14,9 @@ const Stepper = ({ activeIndex = 1, steps }: StepperProps) => {
           <div
             className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full `}
             style={{
-              background: `radial-gradient(closest-side, white 79%, transparent 80% 100%), conic-gradient(limegreen 25%, lightgray 0)`,
+              background: `radial-gradient(closest-side, white 79%, transparent 80% 100%), conic-gradient(limegreen ${
+                ((activeIndex + 1) / steps.length) * 100
+              }%, lightgray 0)`,
             }}
           >
             <Typography bold>{`${activeIndex + 1}/${steps.length}`}</Typography>
