@@ -15,10 +15,10 @@ interface PageHeadingProps {
 const PageHeading = ({ title, breadcrumbs }: PageHeadingProps) => {
   return (
     <div className="mb-8 space-y-2">
-      <Breadcrumb aria-label="Main breadcrumb">
+      <Breadcrumb aria-label="Main breadcrumb" className="hidden md:block">
         {breadcrumbs?.map((item) => (
           <Breadcrumb.Item
-            className="text-sm font-bold uppercase tracking-widest"
+            className="text-xs font-bold uppercase tracking-widest md:text-sm"
             href={item.url}
           >
             {item.text}

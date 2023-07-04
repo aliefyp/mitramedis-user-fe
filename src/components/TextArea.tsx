@@ -2,7 +2,7 @@ import clsx from "clsx";
 import React from "react";
 import Typography from "./Typography";
 
-type TextAreaProps = {
+interface TextAreaProps extends React.HTMLProps<HTMLTextAreaElement> {
   className?: string;
   error?: boolean;
   helper?: string;
@@ -11,7 +11,7 @@ type TextAreaProps = {
   onBlur?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   placeholder?: string;
-};
+}
 
 export default React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
   function TextArea(
@@ -33,7 +33,7 @@ export default React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
           name={name}
           rows={3}
           className={clsx(
-            "focus:border-indigo-500 mt-1 block w-full border rounded-md",
+            "mt-1 block w-full rounded-md border focus:border-indigo-500",
             error ? "border-red-500" : "border-gray-300"
           )}
           onBlur={onBlur}

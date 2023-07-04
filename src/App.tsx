@@ -11,9 +11,9 @@ import Register from "pages/Register";
 import Logout from "pages/Logout";
 import Pasien from "pages/Pasien/index";
 import PasienForm from "pages/PasienForm/index";
+import RekamMedisForm from "pages/RekamMedisForm/index";
 import "./App.css";
 import "flowbite";
-// import PasienForm from "pages/PasienForm";
 
 // Create a client
 const queryClient = new QueryClient({
@@ -45,6 +45,10 @@ function App() {
                 <Route
                   path="/pasien/edit"
                   element={<PasienForm type="edit" />}
+                />
+                <Route
+                  path="/rekammedis/new"
+                  element={<RekamMedisForm type="new" />}
                 />
                 <Route path="/logout" element={<Logout />} />
                 <Route path="*" element={<Error />} />
