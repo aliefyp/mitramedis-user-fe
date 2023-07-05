@@ -28,7 +28,7 @@ const SearchPasien = ({ open, onClose }: SearchPasienProps) => {
   const [query, setQuery] = useState("");
 
   const handlePasienClick = (item: PasienType) => {
-    console.log(item);
+    navigate("/rekam-medis/new");
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,10 +66,12 @@ const SearchPasien = ({ open, onClose }: SearchPasienProps) => {
             <Typography className="text-sm text-gray-500">
               Tidak dapat menemukan pasien?
             </Typography>
-            <Button type="button" color="primary" onClick={() => navigate("/pasien/new")}>
-              <div className="flex items-center gap-2">
-                Input Pasien Baru
-              </div>
+            <Button
+              type="button"
+              color="primary"
+              onClick={() => navigate("/pasien/new")}
+            >
+              <div className="flex items-center gap-2">Input Pasien Baru</div>
             </Button>
           </div>
         </div>

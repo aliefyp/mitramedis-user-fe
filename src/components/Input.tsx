@@ -104,6 +104,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
           onBlur={onBlur}
           onChange={onChange}
           ref={ref}
+          type={type}
           {...restProps}
         />
         {icon && iconPlacement === "right" && (
