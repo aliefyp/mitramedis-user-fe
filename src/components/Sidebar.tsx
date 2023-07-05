@@ -17,9 +17,9 @@ function Sidebar({
   open,
   setOpen,
   title,
-  width = 280
+  width = 280,
 }: SidebarProps) {
-  const { isMobile } = useAppContext()
+  const { isMobile } = useAppContext();
 
   if (setOpen && isMobile) {
     return (
@@ -31,7 +31,7 @@ function Sidebar({
           open={open}
           onClose={setOpen}
         >
-          <div className="absolute inset-0 overflow-hidden z-10">
+          <div className="absolute inset-0 z-10 overflow-hidden">
             <Transition.Child
               as={Fragment}
               enter="ease-in-out duration-500"
@@ -43,7 +43,7 @@ function Sidebar({
             >
               <Dialog.Overlay className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
             </Transition.Child>
-            <div className="fixed inset-y-0 right-0 pl-10 max-w-full flex md:shadow-md">
+            <div className="fixed inset-y-0 right-0 flex max-w-full pl-10 md:shadow-md">
               <Transition.Child
                 as={Fragment}
                 enter="transform transition ease-in-out duration-300"
@@ -54,17 +54,20 @@ function Sidebar({
                 leaveTo="translate-x-full"
               >
                 <div className="relative w-screen" style={{ width }}>
-                  <div className="h-full flex flex-col py-6 shadow-xl overflow-y-scroll bg-white dark:bg-slate-800">
-                    <div className="flex justify-between items-center mb-8 px-4 sm:px-6">
+                  <div className="flex h-full flex-col overflow-y-scroll rounded-l-2xl  bg-white py-6 shadow-xl dark:bg-slate-800">
+                    <div className="mb-8 flex items-center justify-between px-4 sm:px-6">
                       <Dialog.Title className="text-lg font-bold">
                         {title}
                       </Dialog.Title>
-                      <IconButton className="-mr-2" onClick={() => setOpen(false)}>
+                      <IconButton
+                        className="-mr-2"
+                        onClick={() => setOpen(false)}
+                      >
                         <span className="sr-only">Close panel</span>
                         <HiX size={24} aria-hidden="true" />
                       </IconButton>
                     </div>
-                    <div className="relative flex flex-col flex-1 mt-6 px-4 sm:px-6">
+                    <div className="relative mt-6 flex flex-1 flex-col px-4 sm:px-6">
                       {children}
                     </div>
                   </div>
@@ -78,15 +81,15 @@ function Sidebar({
   }
   return (
     <div
-      className="flex flex-col flex-shrink-0 min-h-screen bg-white dark:bg-slate-800"
+      className="flex min-h-screen flex-shrink-0 flex-col bg-white dark:bg-slate-800"
       style={{ width }}
     >
       {title && (
-        <div className="px-6 py-8 mb-8">
+        <div className="mb-8 px-6 pb-8 pt-12">
           <h2 className="font-bold">{title}</h2>
         </div>
       )}
-      <div className="flex flex-col flex-1 px-6">{children}</div>
+      <div className="flex flex-1 flex-col px-6">{children}</div>
     </div>
   );
 }

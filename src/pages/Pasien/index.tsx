@@ -15,7 +15,7 @@ const PasienPage = () => {
 
   return (
     <div>
-      <PageHeading title="Pasien" breadcrumbs={[{ text: "Pasien" }]} />
+      <PageHeading title="Data Pasien" breadcrumbs={[{ text: "Pasien" }]} />
       <div className="space-y-4">
         <PasienFilter />
         <PasienTable onPreview={() => setShowPreview(true)} />

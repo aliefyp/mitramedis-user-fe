@@ -62,18 +62,29 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
         <div className="col-span-4 md:col-span-3">
           <Card className="rounded-2xl border-none p-6 shadow-sm">
             <form className="grid gap-6" onSubmit={handleSubmit(onSubmit)}>
-              <div className="flex items-center justify-between">
+              <div className="mb-2 flex items-center justify-between">
                 <Typography as="h2" bold className=" text-xl">
                   {STEPS[activeIndex]}
                 </Typography>
-                <Button
-                  type="button"
-                  onClick={() =>
-                    setActiveIndex((activeIndex + 1) % STEPS.length)
-                  }
-                >
-                  Lanjut
-                </Button>
+                <div className="fixed bottom-0 left-0 right-0 flex justify-end space-x-2 bg-white p-2 md:static md:bg-transparent md:p-0">
+                  <Button
+                    type="button"
+                    color="ghost-primary"
+                    onClick={() =>
+                      setActiveIndex((activeIndex - 1) % STEPS.length)
+                    }
+                  >
+                    Kembali
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={() =>
+                      setActiveIndex((activeIndex + 1) % STEPS.length)
+                    }
+                  >
+                    {activeIndex === STEPS.length - 1 ? "Simpan" : "Lanjut"}
+                  </Button>
+                </div>
               </div>
               <TextArea
                 label="Keluhan Utama"

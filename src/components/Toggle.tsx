@@ -14,7 +14,7 @@ const Toggle = ({ children, value, onSwitch }: ToggleProps) => {
         checked={value}
         onChange={onSwitch}
         className={`${
-          value ? "bg-blue-600" : "bg-gray-200"
+          value ? "bg-mm-purple-600" : "bg-gray-200"
         } relative inline-flex h-6 w-11 shrink-0 items-center rounded-full`}
       >
         <span className="sr-only">Enable notifications</span>

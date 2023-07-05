@@ -8,7 +8,7 @@ const RekamMedis = () => {
   return (
     <div>
       <PageHeading
-        title="Rekam Medis"
+        title="Data Rekam Medis"
         breadcrumbs={[{ text: "Rekam Medis", url: "/rekam-medis" }]}
       />
       <Button onClick={() => navigate("/rekam-medis/new")}>

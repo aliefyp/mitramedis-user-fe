@@ -13,14 +13,18 @@ export default function NavLink({
   children,
   className,
   onClick,
-  to
+  to,
 }: NavLinkProps) {
   return (
     <RouterNavLink
-      className={({ isActive }) => clsx(
-        `flex items-center font-medium rounded-xl px-4 py-3 text-gray-500 ${isActive ? 'bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-100' : ''}`,
-        className
-      )}
+      className={({ isActive }) =>
+        clsx(
+          "flex items-center rounded-xl px-4 py-3 text-sm font-medium text-neutral-600",
+          !isActive && "hover:bg-gray-100",
+          isActive && "bg-mm-purple-800 text-white",
+          className
+        )
+      }
       onClick={onClick}
       to={to}
     >

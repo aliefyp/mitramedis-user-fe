@@ -32,7 +32,7 @@ const Home = () => {
   return (
     <div>
       <PageHeading title="" breadcrumbs={[{ text: "Dashboard" }]} />
-      <div className="flex flex-col gap-6 pt-4">
+      <div className="flex flex-col gap-6 pt-2">
         <section className="max-w-screen-md">
           <div className="flex flex-col justify-center space-y-1">
             <h2 className="text-3xl font-extrabold leading-none tracking-tight text-slate-800 dark:text-white sm:text-2xl md:text-3xl lg:text-4xl">
@@ -43,8 +43,9 @@ const Home = () => {
             </p>
             <div className="pt-2">
               <Button
+                size="large"
                 type="button"
-                color="primary"
+                color="secondary"
                 onClick={() => setShowPasienModal(true)}
               >
                 Kunjungan Baru

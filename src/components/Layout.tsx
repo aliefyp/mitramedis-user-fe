@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useIsAuthenticated } from "react-auth-kit";
-import { DarkThemeToggle, Flowbite } from "flowbite-react";
+import { Flowbite } from "flowbite-react";
 import type { CustomFlowbiteTheme } from "flowbite-react";
 import {
   TbReportMedical,
@@ -68,14 +68,14 @@ const Layout = () => {
         <Sidebar
           open={open}
           setOpen={setOpen}
-          title={<img src="/logo_mitramedis.png" alt="mitramedis" width={80} />}
+          title={<img src="/img_main_logo.png" alt="mitramedis" width={180} />}
         >
           {[MAIN_MENU, EXTRAS_MENU].map((menu, index) => (
-            <Nav key={index} orientation="vertical" className="mb-8">
+            <Nav key={index} orientation="vertical" className="mb-8 gap-1">
               <Typography
                 as="p"
                 smaller
-                className="mb-4 text-xs font-extrabold text-neutral-400"
+                className="mb-4 text-xs font-bold tracking-widest text-gray-500"
               >
                 {menu.title}
               </Typography>
@@ -97,7 +97,7 @@ const Layout = () => {
             <header className="sticky top-0 flex items-center justify-between bg-slate-100 px-4 pb-2 pt-4 dark:bg-slate-700">
               <div></div>
               <div className="flex items-center space-x-2">
-                <DarkThemeToggle />
+                {/* <DarkThemeToggle /> */}
                 <HiMenu
                   size={32}
                   className=" text-slate-800 dark:text-slate-50"
