@@ -1,47 +1,36 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import Card from "components/Card";
 import PageHeading from "components/PageHeading";
 import Stepper from "components/Stepper";
 import Typography from "components/Typography";
-import TextArea from "components/TextArea";
-import Toggle from "components/Toggle";
 import Button from "components/Button";
+import PatientSummary from "./components/PatientSummary";
+import FormAnamnesa from "./components/FormAnamnesa";
 
 const STEPS = [
   "Anamnesa",
   "Pemeriksaan Fisik",
   "Diagnosa",
-  "Terapi",
-  "Tindakan",
-  "KIE",
+  "KIE & Tindakan",
   "Resep Obat",
+  "Billing",
 ];
 
 interface RekamMedisFormProps {
   type: "new" | "edit";
 }
 
-interface RekamMedisFormType {
-  main_complaint: string;
-  medical_history_recent: string;
-  medical_history_past: string;
-  has_allergy_history: boolean;
-  note_allergy_history: string;
-  has_medical_treatment_history: boolean;
-  note_medical_treatment_history: string;
-}
-
 const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [showAllergyNote, setShowAllergyNote] = useState(false);
-  const [showMedicalTreatmentNote, setShowMedicalTreatmentNote] =
-    useState(false);
   const isEdit = type === "edit";
-  const { register, handleSubmit } = useForm<RekamMedisFormType>();
+  const isLastStep = activeIndex === STEPS.length - 1;
 
-  const onSubmit = (val: RekamMedisFormType) => {
-    console.log(val);
+  const handleBackClick = () => {
+    setActiveIndex((activeIndex - 1) % STEPS.length);
+  };
+
+  const handleNextClick = () => {
+    setActiveIndex((activeIndex + 1) % STEPS.length);
   };
 
   return (
@@ -49,95 +38,45 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
       <PageHeading
         title={isEdit ? "Update Data Rekam Medis" : "Rekam Medis Baru"}
         breadcrumbs={[
-          { text: "Rekam Medis", url: "/rekammedis" },
-          isEdit
-            ? { text: "Ubah Data Rekam Medis" }
-            : { text: "Rekam Medis Baru" },
+          { text: "Rekam Medis", url: "/rekam-medis" },
+          { text: isEdit ? "Ubah Data Rekam Medis" : "Rekam Medis Baru" },
         ]}
       />
-      <div className=" grid min-w-full max-w-screen-2xl grid-cols-4 gap-4">
-        <div className="col-span-4 md:col-span-1">
-          <Stepper activeIndex={activeIndex} steps={STEPS} />
+      <div className=" grid max-w-screen-2xl grid-cols-10 gap-4 md:min-w-[800px]">
+        <div className="col-span-10 md:col-span-4 lg:col-span-3">
+          <div className="flex flex-col gap-4 md:gap-8">
+            <div className="order-2 md:order-1">
+              <PatientSummary />
+            </div>
+            <div className="order-1 md:order-2">
+              <Stepper activeIndex={activeIndex} steps={STEPS} />
+            </div>
+          </div>
         </div>
-        <div className="col-span-4 md:col-span-3">
-          <Card className="rounded-2xl border-none p-6 shadow-sm">
-            <form className="grid gap-6" onSubmit={handleSubmit(onSubmit)}>
-              <div className="mb-2 flex items-center justify-between">
-                <Typography as="h2" bold className=" text-xl">
-                  {STEPS[activeIndex]}
-                </Typography>
-                <div className="fixed bottom-0 left-0 right-0 flex justify-end space-x-2 bg-white p-2 md:static md:bg-transparent md:p-0">
+        <div className="col-span-10 md:col-span-6 lg:col-span-7">
+          <Card className="rounded-2xl border-none shadow-sm">
+            <div className="flex items-center justify-between border-b p-6">
+              <Typography as="h2" className=" text-xl font-bold text-slate-800">
+                {STEPS[activeIndex]}
+              </Typography>
+              <div className="fixed bottom-0 left-0 right-0 z-10 flex justify-end space-x-2 bg-mm-purple-100 p-2 shadow-md md:static md:bg-transparent md:p-0 md:shadow-none">
+                {activeIndex > 0 && (
                   <Button
                     type="button"
                     color="ghost-primary"
-                    onClick={() =>
-                      setActiveIndex((activeIndex - 1) % STEPS.length)
-                    }
+                    onClick={handleBackClick}
                   >
                     Kembali
                   </Button>
-                  <Button
-                    type="button"
-                    onClick={() =>
-                      setActiveIndex((activeIndex + 1) % STEPS.length)
-                    }
-                  >
-                    {activeIndex === STEPS.length - 1 ? "Simpan" : "Lanjut"}
-                  </Button>
-                </div>
-              </div>
-              <TextArea
-                label="Keluhan Utama"
-                placeholder="Ceritakan keluhan utama pasien"
-                // className="col-span-2"
-                {...register("main_complaint")}
-              />
-
-              <TextArea
-                label="Riwayat Penyakit Sekarang"
-                placeholder="Penyakit yang baru dialami oleh pasien"
-                // className="col-span-2"
-                {...register("medical_history_recent")}
-              />
-
-              <TextArea
-                label="Riwayat Penyakit Terdahulu"
-                placeholder="Penyakit yang pernah dialami oleh pasien"
-                // className="col-span-2"
-                {...register("medical_history_past")}
-              />
-
-              <div className="grid gap-2">
-                <Toggle value={showAllergyNote} onSwitch={setShowAllergyNote}>
-                  Ada Riwayat Alergi
-                </Toggle>
-                {showAllergyNote && (
-                  <TextArea
-                    autoFocus={showAllergyNote}
-                    placeholder="Ceritakan riwayat alergi pasien"
-                    // className="col-span-2"
-                    {...register("note_allergy_history")}
-                  />
                 )}
+                <Button type="button" onClick={handleNextClick}>
+                  {isLastStep ? "Simpan" : "Lanjut"}
+                </Button>
               </div>
-
-              <div className="grid gap-2">
-                <Toggle
-                  value={showMedicalTreatmentNote}
-                  onSwitch={setShowMedicalTreatmentNote}
-                >
-                  Ada Riwayat Pengobatan
-                </Toggle>
-                {showMedicalTreatmentNote && (
-                  <TextArea
-                    autoFocus={showMedicalTreatmentNote}
-                    placeholder="Ceritakan riwayat pengobatan pasien"
-                    // className="col-span-2"
-                    {...register("note_medical_treatment_history")}
-                  />
-                )}
-              </div>
-            </form>
+            </div>
+            <div className="p-6">
+              <FormAnamnesa />
+            </div>
           </Card>
         </div>
       </div>

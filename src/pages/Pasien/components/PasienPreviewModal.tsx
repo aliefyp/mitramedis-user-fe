@@ -34,7 +34,7 @@ interface PasienPreviewModalProps {
 
 const PasienPreviewModal = ({ open, onClose }: PasienPreviewModalProps) => {
   return (
-    <Modal open={open} closeModal={onClose}>
+    <Modal open={open} onClose={onClose}>
       <div className="px-8 py-8">
         <Typography as="h1" className="text-md font-semibold text-slate-500">
           Data Pasien

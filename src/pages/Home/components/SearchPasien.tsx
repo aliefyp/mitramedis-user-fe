@@ -36,7 +36,7 @@ const SearchPasien = ({ open, onClose }: SearchPasienProps) => {
   };
 
   return (
-    <Modal open={open} closeModal={onClose}>
+    <Modal open={open} onClose={onClose}>
       <div className="px-8 py-8">
         <Typography as="h1" className="mb-4 text-2xl font-bold">
           Cari Pasien
