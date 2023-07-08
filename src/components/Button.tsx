@@ -8,17 +8,14 @@ export type ButtonColor =
   | "success"
   | "warning"
   | "ghost-primary";
-
-type ButtonProps = {
+export interface ButtonProps
+  extends Omit<React.HTMLProps<HTMLButtonElement>, "size" | "onClick"> {
   children?: React.ReactNode;
-  className?: string;
   color?: ButtonColor;
-  disabled?: boolean;
   loading?: boolean;
-  onClick?: () => void;
-  type?: "button" | "submit";
+  onClick?: (...args: any[]) => void;
   size?: "normal" | "small" | "large";
-};
+}
 
 const colors: Record<string, string> = {
   error: "bg-rose-500 text-white hover:bg-rose-400",
@@ -47,6 +44,7 @@ export default React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
     onClick,
     type = "button",
     size = "normal",
+    ...rest
   },
   ref
 ) {
@@ -62,7 +60,7 @@ export default React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
       disabled={disabled}
       onClick={onClick}
       ref={ref}
-      type={type}
+      {...rest}
     >
       {children}
     </button>

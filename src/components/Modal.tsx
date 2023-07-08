@@ -1,13 +1,20 @@
 import { Dialog, Transition } from "@headlessui/react";
+import clsx from "clsx";
 import React, { Fragment } from "react";
 
 type ModalProps = {
   children?: React.ReactNode;
   onClose: () => void;
   open: boolean;
+  className?: string;
 };
 
-export default function Modal({ children, onClose, open }: ModalProps) {
+export default function Modal({
+  children,
+  className,
+  onClose,
+  open,
+}: ModalProps) {
   return (
     <Transition appear show={open} as={Fragment}>
       <Dialog
@@ -44,7 +51,12 @@ export default function Modal({ children, onClose, open }: ModalProps) {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-50"
           >
-            <div className="my-8 inline-block w-full max-w-lg transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all">
+            <div
+              className={clsx(
+                "my-8 inline-block w-full max-w-lg transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all",
+                className
+              )}
+            >
               {children}
             </div>
           </Transition.Child>

@@ -26,6 +26,7 @@ export default React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
       onBlur,
       onChange,
       placeholder,
+      ...rest
     },
     ref
   ) {
@@ -59,6 +60,7 @@ export default React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
           onChange={onChange}
           placeholder={placeholder}
           ref={textareaRef}
+          {...rest}
         />
         {helper && (
           <Typography

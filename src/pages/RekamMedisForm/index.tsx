@@ -5,13 +5,14 @@ import Stepper from "components/Stepper";
 import Typography from "components/Typography";
 import Button from "components/Button";
 import PatientSummary from "./components/PatientSummary";
-import FormAnamnesa from "./components/FormAnamnesa";
+import FormAnamnesis from "./components/FormAnamnesis";
+import FormPemeriksaanFisik from "./components/FormPemeriksaanFisik";
 import useAppContext from "context/AppContext";
 
 const STEPS = [
-  "Anamnesa",
+  "Anamnesis",
   "Pemeriksaan Fisik",
-  "Diagnosa",
+  "Diagnosis",
   "KIE & Tindakan",
   "Resep Obat",
   "Billing",
@@ -23,7 +24,7 @@ interface RekamMedisFormProps {
 
 const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
   const formRef = useRef(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(1);
   const isEdit = type === "edit";
   const isLastStep = activeIndex === STEPS.length - 1;
   const { isMobile } = useAppContext();
@@ -114,7 +115,8 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
               className="overflow-y-scroll p-6"
               style={{ height }}
             >
-              <FormAnamnesa />
+              {activeIndex === 0 && <FormAnamnesis />}
+              {activeIndex === 1 && <FormPemeriksaanFisik />}
             </div>
           </Card>
         </div>
