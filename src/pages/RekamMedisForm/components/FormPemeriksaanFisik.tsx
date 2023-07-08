@@ -3,7 +3,6 @@ import { useState } from "react";
 import Select from "components/Select";
 import Input from "components/Input";
 import Typography from "components/Typography";
-import Button from "components/Button";
 import ModalSelectOrgan from "./ModalSelectOrgan";
 import TextArea from "components/TextArea";
 import { FaPlus, FaTrashAlt } from "react-icons/fa";
@@ -73,7 +72,7 @@ const FormPemeriksaanFisik = () => {
           />
         </div>
         <Select
-          id="gender"
+          id="psychological_state"
           placeholder="Pilih status psikologi pasien"
           label="Status Psikologi"
           items={["Tidak ada kelainan", "Cemas", "Marah", "Sedih", "Lain-lain"]}

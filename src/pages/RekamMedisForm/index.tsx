@@ -7,6 +7,7 @@ import Button from "components/Button";
 import PatientSummary from "./components/PatientSummary";
 import FormAnamnesis from "./components/FormAnamnesis";
 import FormPemeriksaanFisik from "./components/FormPemeriksaanFisik";
+import FormDiagnosis from "./components/FormDiagnosis";
 import useAppContext from "context/AppContext";
 
 const STEPS = [
@@ -24,7 +25,7 @@ interface RekamMedisFormProps {
 
 const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
   const formRef = useRef(null);
-  const [activeIndex, setActiveIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(2);
   const isEdit = type === "edit";
   const isLastStep = activeIndex === STEPS.length - 1;
   const { isMobile } = useAppContext();
@@ -117,6 +118,7 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
             >
               {activeIndex === 0 && <FormAnamnesis />}
               {activeIndex === 1 && <FormPemeriksaanFisik />}
+              {activeIndex === 2 && <FormDiagnosis />}
             </div>
           </Card>
         </div>
