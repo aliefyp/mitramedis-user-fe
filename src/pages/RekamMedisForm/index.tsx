@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Card from "components/Card";
 import PageHeading from "components/PageHeading";
 import Stepper from "components/Stepper";
@@ -6,6 +6,7 @@ import Typography from "components/Typography";
 import Button from "components/Button";
 import PatientSummary from "./components/PatientSummary";
 import FormAnamnesa from "./components/FormAnamnesa";
+import useAppContext from "context/AppContext";
 
 const STEPS = [
   "Anamnesa",
@@ -21,9 +22,12 @@ interface RekamMedisFormProps {
 }
 
 const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
+  const formRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const isEdit = type === "edit";
   const isLastStep = activeIndex === STEPS.length - 1;
+  const { isMobile } = useAppContext();
+  const [height, setHeight] = useState("unset");
 
   const handleBackClick = () => {
     setActiveIndex((activeIndex - 1) % STEPS.length);
@@ -32,6 +36,23 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
   const handleNextClick = () => {
     setActiveIndex((activeIndex + 1) % STEPS.length);
   };
+
+  useEffect(() => {
+    if (formRef.current && height === "unset") {
+      try {
+        if (isMobile) {
+          setHeight("auto");
+        } else {
+          const windowHeight = window.innerHeight;
+          const toleranceHeight = 48;
+          const formOffset = (formRef.current as HTMLDivElement).offsetTop;
+          setHeight(`${windowHeight - toleranceHeight - formOffset}px`);
+        }
+      } catch (err) {
+        setHeight("auto");
+      }
+    }
+  }, [height, isMobile]);
 
   return (
     <div>
@@ -48,7 +69,7 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
             <div className="order-2 md:order-1">
               <PatientSummary />
             </div>
-            <div className="order-1 md:order-2">
+            <div className="order-1 hidden md:order-2 md:block">
               <Stepper activeIndex={activeIndex} steps={STEPS} />
             </div>
           </div>
@@ -56,30 +77,52 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
         <div className="col-span-10 md:col-span-6 lg:col-span-7">
           <Card className="rounded-2xl border-none shadow-sm">
             <div className="flex items-center justify-between border-b p-6">
-              <Typography as="h2" className=" text-xl font-bold text-slate-800">
-                {STEPS[activeIndex]}
-              </Typography>
-              <div className="fixed bottom-0 left-0 right-0 z-10 flex justify-end space-x-2 bg-mm-purple-100 p-2 shadow-md md:static md:bg-transparent md:p-0 md:shadow-none">
-                {activeIndex > 0 && (
-                  <Button
-                    type="button"
-                    color="ghost-primary"
-                    onClick={handleBackClick}
-                  >
-                    Kembali
+              <div>
+                <Typography
+                  as="h2"
+                  className=" text-xl font-bold text-slate-800"
+                >
+                  {STEPS[activeIndex]}
+                </Typography>
+                <Typography as="div" className=" text-sm text-gray-500">
+                  {`Langkah ${activeIndex + 1} dari ${STEPS.length}`}
+                </Typography>
+              </div>
+              <div className="fixed bottom-0 left-0 right-0 z-10 flex items-center justify-between space-x-2 border-t bg-white p-3 shadow-md md:static md:border-none md:bg-transparent md:p-0 md:shadow-none">
+                <div className="block shrink-0 md:hidden">
+                  <Stepper activeIndex={activeIndex} steps={STEPS} />
+                </div>
+                <div className="flex shrink-0 items-center gap-2">
+                  {activeIndex > 0 && (
+                    <Button
+                      type="button"
+                      color="ghost-primary"
+                      onClick={handleBackClick}
+                    >
+                      Kembali
+                    </Button>
+                  )}
+                  <Button type="button" onClick={handleNextClick}>
+                    {isLastStep ? "Simpan" : "Lanjut"}
                   </Button>
-                )}
-                <Button type="button" onClick={handleNextClick}>
-                  {isLastStep ? "Simpan" : "Lanjut"}
-                </Button>
+                </div>
               </div>
             </div>
-            <div className="p-6">
+            <div
+              ref={formRef}
+              id="form-content"
+              className="overflow-y-scroll p-6"
+              style={{ height }}
+            >
               <FormAnamnesa />
             </div>
           </Card>
         </div>
       </div>
+      <div
+        aria-label="bottom spacer"
+        className="block h-[80px] w-full md:hidden"
+      />
     </div>
   );
 };

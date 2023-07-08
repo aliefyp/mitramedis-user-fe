@@ -54,7 +54,7 @@ const Stepper = ({ activeIndex = 1, steps }: StepperProps) => {
   return (
     <>
       <div className="block w-full md:hidden">
-        <div className="flex w-full items-center gap-4">
+        <div className="flex w-full items-center gap-3">
           <div
             className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full `}
             style={{

@@ -14,6 +14,7 @@ interface FormAnamnesaType {
 }
 
 const FormAnamnesa = () => {
+  const [showPastMedicalHistory, setShowPastMedicalHistory] = useState(false);
   const [showAllergyNote, setShowAllergyNote] = useState(false);
   const [showMedicalTreatmentNote, setShowMedicalTreatmentNote] =
     useState(false);
@@ -27,24 +28,31 @@ const FormAnamnesa = () => {
     <form className="grid gap-6" onSubmit={handleSubmit(onSubmit)}>
       <TextArea
         label="Keluhan Utama"
-        placeholder="Ceritakan keluhan utama pasien"
-        // className="col-span-2"
+        placeholder="Tuliskan keluhan utama pasien"
         {...register("main_complaint")}
       />
 
       <TextArea
         label="Riwayat Penyakit Sekarang"
-        placeholder="Penyakit yang baru dialami oleh pasien"
-        // className="col-span-2"
+        placeholder="Tuliskan riwayat penyakit yang dialami pasien saat ini"
         {...register("medical_history_recent")}
       />
 
-      <TextArea
-        label="Riwayat Penyakit Terdahulu"
-        placeholder="Penyakit yang pernah dialami oleh pasien"
-        // className="col-span-2"
-        {...register("medical_history_past")}
-      />
+      <div className="grid gap-2">
+        <Toggle
+          value={showPastMedicalHistory}
+          onSwitch={setShowPastMedicalHistory}
+        >
+          Ada Riwayat Penyakit Terdahulu
+        </Toggle>
+        {showPastMedicalHistory && (
+          <TextArea
+            autoFocus={showPastMedicalHistory}
+            placeholder="Riwayat penyakit yang pernah diderita oleh pasien"
+            {...register("medical_history_past")}
+          />
+        )}
+      </div>
 
       <div className="grid gap-2">
         <Toggle value={showAllergyNote} onSwitch={setShowAllergyNote}>
@@ -53,8 +61,7 @@ const FormAnamnesa = () => {
         {showAllergyNote && (
           <TextArea
             autoFocus={showAllergyNote}
-            placeholder="Ceritakan riwayat alergi pasien"
-            // className="col-span-2"
+            placeholder="Riwayat alergi yang pernah dialami oleh pasien"
             {...register("note_allergy_history")}
           />
         )}
@@ -70,8 +77,7 @@ const FormAnamnesa = () => {
         {showMedicalTreatmentNote && (
           <TextArea
             autoFocus={showMedicalTreatmentNote}
-            placeholder="Ceritakan riwayat pengobatan pasien"
-            // className="col-span-2"
+            placeholder="Riwayat obat-obatan yang pernah dikonsumsi oleh pasien"
             {...register("note_medical_treatment_history")}
           />
         )}

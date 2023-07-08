@@ -48,6 +48,7 @@ const SearchPasien = ({ open, onClose }: SearchPasienProps) => {
             type="text"
             placeholder="Ketik nama, nomor MR, atau NIK pasien"
             onChange={handleSearchChange}
+            autoComplete="off"
           />
           <div>
             {Boolean(query) &&

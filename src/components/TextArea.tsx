@@ -1,8 +1,9 @@
 import clsx from "clsx";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Typography from "./Typography";
 
 interface TextAreaProps extends React.HTMLProps<HTMLTextAreaElement> {
+  autoFocus?: boolean;
   className?: string;
   error?: boolean;
   helper?: string;
@@ -15,9 +16,27 @@ interface TextAreaProps extends React.HTMLProps<HTMLTextAreaElement> {
 
 export default React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
   function TextArea(
-    { className, error, helper, label, name, onBlur, onChange, placeholder },
+    {
+      autoFocus,
+      className,
+      error,
+      helper,
+      label,
+      name,
+      onBlur,
+      onChange,
+      placeholder,
+    },
     ref
   ) {
+    const textareaRef = useRef(null);
+
+    useEffect(() => {
+      if (autoFocus && textareaRef.current) {
+        (textareaRef.current as HTMLTextAreaElement).focus();
+      }
+    });
+
     return (
       <div className={clsx("mb-2", className)}>
         {label && (
@@ -39,7 +58,7 @@ export default React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
           onBlur={onBlur}
           onChange={onChange}
           placeholder={placeholder}
-          ref={ref}
+          ref={textareaRef}
         />
         {helper && (
           <Typography
