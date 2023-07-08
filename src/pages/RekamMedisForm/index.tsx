@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Card from "components/Card";
+import useAppContext from "context/AppContext";
 import PageHeading from "components/PageHeading";
 import Stepper from "components/Stepper";
 import Typography from "components/Typography";
@@ -8,7 +9,7 @@ import PatientSummary from "./components/PatientSummary";
 import FormAnamnesis from "./components/FormAnamnesis";
 import FormPemeriksaanFisik from "./components/FormPemeriksaanFisik";
 import FormDiagnosis from "./components/FormDiagnosis";
-import useAppContext from "context/AppContext";
+import FormTindakan from "./components/FormTindakan";
 
 const STEPS = [
   "Anamnesis",
@@ -119,6 +120,7 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
               {activeIndex === 0 && <FormAnamnesis />}
               {activeIndex === 1 && <FormPemeriksaanFisik />}
               {activeIndex === 2 && <FormDiagnosis />}
+              {activeIndex === 3 && <FormTindakan />}
             </div>
           </Card>
         </div>

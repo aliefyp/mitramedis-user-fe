@@ -73,12 +73,12 @@ const FormDiagnosis = () => {
         </Card>
       ))}
       <div
-        className="col-span-2 col-start-1 flex h-[48px] cursor-pointer items-center justify-center gap-4 rounded-2xl border-2 border-dashed"
+        className="col-span-3 col-start-1 flex h-[48px] cursor-pointer items-center justify-center gap-4 rounded-2xl border-2 border-dashed 2xl:col-span-2"
         onClick={() => setDiagnoses([...diagnoses, DEFAULT_DIAGNOSE_ITEM])}
       >
         <FaPlus className="text-gray-700" />
         <Typography bold className="text-gray-700">
-          Tambah Diagnosa
+          Tambah Diagnosis
         </Typography>
       </div>
     </form>
