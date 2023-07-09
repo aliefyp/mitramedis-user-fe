@@ -20,10 +20,9 @@ export interface ButtonProps
 const colors: Record<string, string> = {
   error: "bg-rose-500 text-white hover:bg-rose-400",
   "ghost-primary":
-    "text-mm-purple-800 bg-transparent border-transparent hover:bg-mm-purple-100",
-  primary:
-    "text-white bg-mm-purple-800 border-transparent hover:bg-mm-purple-700",
-  secondary: "text-mm-purple-800 bg-mm-purple-100 hover:bg-mm-purple-200",
+    "text-mm-navy-1000 bg-transparent border-transparent hover:bg-mm-navy-100",
+  primary: "text-white bg-mm-navy-1000 border-transparent hover:bg-mm-navy-900",
+  secondary: "text-mm-navy-1000 bg-mm-navy-100 hover:bg-mm-navy-200",
   success: "bg-emerald-500 text-white hover:bg-emerald-400",
   warning: "bg-amber-400 text-white hover:bg-amber-300",
 };

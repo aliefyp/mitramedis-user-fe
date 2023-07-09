@@ -87,8 +87,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
       )}
       <div className="flex w-full rounded-md border bg-slate-50">
         {Boolean(prefix) && (
-          <div className="flex shrink-0 items-center justify-center bg-mm-purple-100 px-4">
-            <Typography small className="font-semibold text-mm-purple-700">
+          <div className="flex shrink-0 items-center justify-center bg-mm-navy-100 px-4">
+            <Typography small className="font-semibold text-mm-navy-700">
               {prefix}
             </Typography>
           </div>
@@ -116,8 +116,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
           <div className="flex items-center justify-center px-4">{icon}</div>
         )}
         {Boolean(suffix) && (
-          <div className="flex items-center justify-center bg-mm-purple-100 px-4">
-            <Typography small className="font-semibold text-mm-purple-700">
+          <div className="flex items-center justify-center bg-mm-navy-100 px-4">
+            <Typography small className="text-mm-teal-300-700 font-semibold">
               {suffix}
             </Typography>
           </div>

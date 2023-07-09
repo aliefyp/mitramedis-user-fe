@@ -17,12 +17,12 @@ const Stepper = ({ activeIndex = 1, steps }: StepperProps) => {
         const bgClass = index < activeIndex ? "bg-green-200" : "transparent";
         const borderClass =
           index === activeIndex
-            ? "border-2 border-mm-purple-800"
+            ? "border-2 border-mm-navy-800"
             : index < activeIndex
             ? "border-none"
             : "border-2 border-gray-300";
         const textClass =
-          index === activeIndex ? "text-mm-purple-800" : "text-black";
+          index === activeIndex ? "text-mm-navy-800" : "text-black";
 
         return (
           <div className="relative flex items-center gap-2 pb-4">

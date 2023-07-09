@@ -6,6 +6,7 @@ type TypographyProps = {
   bold?: boolean;
   children?: React.ReactNode;
   className?: string;
+  link?: boolean;
   muted?: boolean;
   small?: boolean;
   smaller?: boolean;
@@ -16,7 +17,7 @@ const variants: Record<string, string> = {
   h1: "font-semibold text-xl",
   h2: "font-semibold",
   h3: "font-semibold",
-  h4: "font-semibold"
+  h4: "font-semibold",
 };
 
 export default function Typography({
@@ -24,10 +25,11 @@ export default function Typography({
   bold,
   children,
   className,
+  link,
   muted,
   small,
   smaller,
-  variant = "div"
+  variant = "div",
 }: TypographyProps) {
   const Component = as || variant;
   return (
@@ -38,6 +40,7 @@ export default function Typography({
         muted && "text-gray-600",
         small && "text-sm",
         smaller && "text-xs",
+        link && "text-mm-teal-200",
         className
       )}
     >

@@ -22,8 +22,8 @@ const PatientSummary = () => {
     <Card className="divide-y rounded-2xl">
       <div className="px-4 py-3">
         <div className="flex items-center justify-between">
-          <Typography className="mb-4 text-right text-xs font-bold text-gray-500">
-            RM: <span className=" text-mm-purple-700">23000001</span>
+          <Typography className="mb-4 text-right text-xs font-bold text-mm-teal-200">
+            RM: 23000001
           </Typography>
           <Typography className="mb-4 text-right text-xs italic text-gray-500">
             26 September 2022
@@ -54,12 +54,13 @@ const PatientSummary = () => {
         ))}
       </div>
       <div className="flex items-center justify-end ">
-        <div className="flex cursor-pointer items-center gap-2 px-4 py-2">
-          <Typography className="text-sm font-semibold text-mm-purple-700">
-            Lihat Detail
-          </Typography>
-          <FaChevronRight className="text-sm text-mm-purple-700" />
-        </div>
+        <Typography
+          link
+          className="flex cursor-pointer items-center gap-2 px-4 py-2 text-sm font-semibold"
+        >
+          Lihat Detail
+          <FaChevronRight className="text-sm" />
+        </Typography>
       </div>
     </Card>
   );

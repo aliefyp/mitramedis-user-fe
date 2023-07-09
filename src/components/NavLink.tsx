@@ -21,7 +21,7 @@ export default function NavLink({
         clsx(
           "flex items-center rounded-xl px-4 py-3 text-sm font-medium text-neutral-600",
           !isActive && "hover:bg-gray-100",
-          isActive && "bg-mm-purple-800 text-white",
+          isActive && "bg-mm-navy-1000 text-white",
           className
         )
       }

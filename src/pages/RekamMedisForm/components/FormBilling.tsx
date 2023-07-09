@@ -1,7 +1,3 @@
-import { useForm } from "react-hook-form";
-import TextArea from "components/TextArea";
-import Toggle from "components/Toggle";
-import { useState } from "react";
 import Table from "components/Table";
 import TableHead from "components/TableHead";
 import TableRow from "components/TableRow";

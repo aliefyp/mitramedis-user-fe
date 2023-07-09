@@ -82,9 +82,9 @@ const SearchPasien = ({
             const isSelected =
               selected.findIndex((i) => i.name === item.name) > -1;
             const selectedCardClass = isSelected
-              ? "border-2 border-mm-purple-700"
+              ? "border-2 border-mm-teal-200"
               : "border-2 border-transparent";
-            const selectedTextClass = isSelected ? "text-mm-purple-700" : "";
+            const selectedTextClass = isSelected ? "text-mm-teal-200" : "";
 
             return (
               <Card

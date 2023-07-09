@@ -48,9 +48,9 @@ const FormDiagnosis = () => {
           <Typography>
             Pasien telah diberikan penjelasan dan menyetujui Persetujuan
             Tindakan (<i>Informed Consent</i>).{" "}
-            <span className=" cursor-pointer text-mm-purple-800">
+            <Typography link as="span" className="cursor-pointer ">
               Klik disini untuk cetak Informed Consent.
-            </span>
+            </Typography>
           </Typography>
         </div>
 
