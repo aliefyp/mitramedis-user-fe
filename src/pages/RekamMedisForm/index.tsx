@@ -28,7 +28,7 @@ interface RekamMedisFormProps {
 
 const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
   const formRef = useRef(null);
-  const [activeIndex, setActiveIndex] = useState(2);
+  const [activeIndex, setActiveIndex] = useState(0);
   const isEdit = type === "edit";
   const isLastStep = activeIndex === STEPS.length - 1;
   const { isMobile } = useAppContext();
