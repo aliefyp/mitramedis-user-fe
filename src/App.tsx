@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { AuthProvider } from "react-auth-kit";
 import { AppProvider } from "context/AppContext";
@@ -15,6 +15,7 @@ import RekamMedis from "pages/RekamMedis/index";
 import RekamMedisForm from "pages/RekamMedisForm/index";
 import "./App.css";
 import "flowbite";
+import { useEffect } from "react";
 
 // Create a client
 const queryClient = new QueryClient({
@@ -28,6 +29,12 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   return (
     <ToasterProvider>
       <QueryClientProvider client={queryClient}>

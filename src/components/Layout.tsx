@@ -92,7 +92,7 @@ const Layout = () => {
             </Nav>
           ))}
         </Sidebar>
-        <div className="w-full overflow-y-auto ">
+        <div className="w-full">
           {isMobile && (
             <header className="sticky top-0 flex items-center justify-between bg-slate-100 px-4 pb-2 pt-4 dark:bg-slate-700">
               <div></div>
