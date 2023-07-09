@@ -35,6 +35,8 @@ const FormResepObat = () => {
   ]);
   const { register, handleSubmit } = useForm<FormResepObatType>();
 
+  console.log(register);
+
   const handleAddMedicine = (med) => {
     setShowMedicineModal(false);
     setMedicines([

@@ -1,15 +1,17 @@
 import { Switch } from "@headlessui/react";
+import clsx from "clsx";
 import { ReactNode } from "react";
 
 interface ToggleProps {
   children: ReactNode;
+  className?: string;
   value: boolean;
   onSwitch: (val: boolean) => void;
 }
 
-const Toggle = ({ children, value, onSwitch }: ToggleProps) => {
+const Toggle = ({ children, className, value, onSwitch }: ToggleProps) => {
   return (
-    <div className="flex items-center justify-start gap-4">
+    <div className={clsx("flex items-center justify-start gap-4", className)}>
       <Switch
         checked={value}
         onChange={onSwitch}

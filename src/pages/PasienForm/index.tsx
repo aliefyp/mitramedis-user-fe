@@ -37,7 +37,11 @@ const PasienForm = ({ type }: PasienFormProps) => {
           className="grid grid-cols-2 gap-6"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <Toggle value={isNewborn} onSwitch={setNewborn}>
+          <Toggle
+            value={isNewborn}
+            onSwitch={setNewborn}
+            className="col-span-2"
+          >
             Pasien adalah bayi baru lahir
           </Toggle>
           <Input
@@ -70,12 +74,12 @@ const PasienForm = ({ type }: PasienFormProps) => {
             label="Tanggal Lahir"
             type="date"
             placeholder="DD/MM/YYYY"
-            className={isNewborn ? "col-span-1" : "col-span-2"}
+            className="col-span-2"
             {...register("birth_date")}
           />
 
           {isNewborn && (
-            <div className="col-span-1">
+            <div className="col-span-2">
               <div className=" grid grid-cols-2 gap-6">
                 <Select
                   label="Jam"
@@ -107,7 +111,7 @@ const PasienForm = ({ type }: PasienFormProps) => {
                     "22",
                     "23",
                   ]}
-                  className="col-span-2 md:col-span-1"
+                  className="col-span-1"
                   {...register("birth_hour")}
                 />
                 <Select
@@ -177,7 +181,7 @@ const PasienForm = ({ type }: PasienFormProps) => {
                     "59",
                     "60",
                   ]}
-                  className="col-span-2 md:col-span-1"
+                  className="col-span-1"
                   {...register("birth_minute")}
                 />
               </div>
