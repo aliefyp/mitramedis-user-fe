@@ -37,6 +37,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
   {
     autoComplete,
     className,
+    disabled,
     error,
     helper,
     icon,
@@ -98,13 +99,15 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
           name={name}
           autoComplete={autoComplete}
           className={clsx(
-            "w-full rounded-md border-none bg-transparent px-2 py-2 focus:border-gray-500",
-            error ? "border-red-500" : "border-gray-300"
+            "w-full rounded-md border-none px-2 py-2 focus:border-gray-500",
+            error ? "border-red-500" : "border-gray-300",
+            disabled ? "bg-gray-200 text-gray-500" : "bg-transparent"
           )}
           onBlur={onBlur}
           onChange={onChange}
           ref={ref}
           type={type}
+          disabled={disabled}
           {...restProps}
         />
         {icon && iconPlacement === "right" && (

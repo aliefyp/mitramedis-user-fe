@@ -74,7 +74,7 @@ const FormDiagnosis = () => {
 
         <Input
           suffix="WIB"
-          label="Tanggal Pelaksanaan Tindakan"
+          label="Waktu Pelaksanaan Tindakan"
           type="text"
           className="col-span-2 md:col-span-1"
           placeholder="HH:mm"
