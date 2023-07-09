@@ -10,6 +10,8 @@ import FormAnamnesis from "./components/FormAnamnesis";
 import FormPemeriksaanFisik from "./components/FormPemeriksaanFisik";
 import FormDiagnosis from "./components/FormDiagnosis";
 import FormTindakan from "./components/FormTindakan";
+import FormResepObat from "./components/FormResepObat";
+import FormBilling from "./components/FormBilling";
 
 const STEPS = [
   "Anamnesis",
@@ -121,6 +123,8 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
               {activeIndex === 1 && <FormPemeriksaanFisik />}
               {activeIndex === 2 && <FormDiagnosis />}
               {activeIndex === 3 && <FormTindakan />}
+              {activeIndex === 4 && <FormResepObat />}
+              {activeIndex === 5 && <FormBilling />}
             </div>
           </Card>
         </div>

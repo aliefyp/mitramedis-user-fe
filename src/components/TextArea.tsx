@@ -53,7 +53,7 @@ export default React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
           name={name}
           rows={3}
           className={clsx(
-            "mt-1 block w-full rounded-md border focus:border-indigo-500",
+            "mt-1 block w-full rounded-md border",
             error ? "border-red-500" : "border-gray-300"
           )}
           onBlur={onBlur}
