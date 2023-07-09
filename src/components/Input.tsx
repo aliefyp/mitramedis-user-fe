@@ -103,7 +103,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
           className={clsx(
             "w-full rounded-md border-none px-2 py-2 focus:border-gray-500",
             error ? "border-red-500" : "border-gray-300",
-            disabled ? "bg-gray-200 text-gray-500" : "bg-transparent"
+            disabled
+              ? "cursor-not-allowed bg-gray-200 text-gray-500"
+              : "bg-transparent"
           )}
           onBlur={onBlur}
           onChange={onChange}

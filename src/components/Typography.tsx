@@ -14,10 +14,10 @@ type TypographyProps = {
 };
 
 const variants: Record<string, string> = {
-  h1: "font-semibold text-xl",
-  h2: "font-semibold",
-  h3: "font-semibold",
-  h4: "font-semibold",
+  h1: "font-semibold text-2xl",
+  h2: "font-semibold text-xl",
+  h3: "font-semibold text-lg",
+  h4: "font-semibold text-md",
 };
 
 export default function Typography({
