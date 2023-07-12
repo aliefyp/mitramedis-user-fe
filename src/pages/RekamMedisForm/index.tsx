@@ -69,15 +69,23 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
         ]}
       />
       <div className=" grid max-w-screen-2xl grid-cols-10 gap-4 md:min-w-[800px]">
+        <div className="sticky top-0 z-20 col-span-10">
+          <Stepper
+            activeIndex={activeIndex}
+            steps={STEPS}
+            onClick={(index) => setActiveIndex(index)}
+          />
+        </div>
         <div className="col-span-10 md:col-span-4 lg:col-span-3">
-          <div className="flex flex-col gap-4 md:gap-8">
+          <PatientSummary />
+          {/* <div className="flex flex-col gap-4 md:gap-8">
             <div className="order-2 md:order-1">
               <PatientSummary />
             </div>
             <div className="order-1 hidden md:order-2 md:block">
               <Stepper activeIndex={activeIndex} steps={STEPS} />
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="col-span-10 md:col-span-6 lg:col-span-7">
           <Card className="rounded-2xl border-none shadow-sm">
@@ -95,7 +103,11 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
               </div>
               <div className="fixed bottom-0 left-0 right-0 z-10 flex items-center justify-between space-x-2 border-t bg-white p-3 shadow-md md:static md:border-none md:bg-transparent md:p-0 md:shadow-none">
                 <div className="block shrink-0 md:hidden">
-                  <Stepper activeIndex={activeIndex} steps={STEPS} />
+                  <Stepper
+                    activeIndex={activeIndex}
+                    steps={STEPS}
+                    onClick={(index) => setActiveIndex(index)}
+                  />
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
                   {activeIndex > 0 && (
@@ -117,7 +129,7 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
               ref={formRef}
               id="form-content"
               className="overflow-y-scroll p-6"
-              style={{ height }}
+              // style={{ height }}
             >
               {activeIndex === 0 && <FormAnamnesis />}
               {activeIndex === 1 && <FormPemeriksaanFisik />}

@@ -19,7 +19,7 @@ export default function NavLink({
     <RouterNavLink
       className={({ isActive }) =>
         clsx(
-          "flex items-center rounded-xl px-4 py-3 text-sm font-medium text-neutral-600",
+          "flex items-center rounded-lg px-3 py-2 text-sm font-medium text-neutral-600",
           !isActive && "hover:bg-gray-100",
           isActive && "bg-mm-navy-1000 text-white",
           className

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Breadcrumb } from "flowbite-react";
+import Typography from "./Typography";
 
 interface Breadcrumbs {
   text: string;
@@ -14,7 +15,7 @@ interface PageHeadingProps {
 
 const PageHeading = ({ title, breadcrumbs }: PageHeadingProps) => {
   return (
-    <div className="mb-8 space-y-2">
+    <div className="mb-6 space-y-2">
       <Breadcrumb
         aria-label="Main breadcrumb"
         className="scale-80 origin-bottom-left transform md:scale-100"
@@ -29,9 +30,12 @@ const PageHeading = ({ title, breadcrumbs }: PageHeadingProps) => {
         ))}
       </Breadcrumb>
       <div className="min-w-0 flex-1">
-        <h2 className="text-2xl font-bold leading-7 text-slate-800 dark:text-slate-50 sm:truncate sm:text-4xl sm:tracking-tight">
+        <Typography
+          as="h2"
+          className="font-bold leading-5 text-slate-800 dark:text-slate-50 sm:truncate sm:text-4xl sm:tracking-tight"
+        >
           {title}
-        </h2>
+        </Typography>
       </div>
     </div>
   );

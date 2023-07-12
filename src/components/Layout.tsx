@@ -71,11 +71,11 @@ const Layout = () => {
           title={<img src="/img_main_logo.png" alt="mitramedis" width={180} />}
         >
           {[MAIN_MENU, EXTRAS_MENU].map((menu, index) => (
-            <Nav key={index} orientation="vertical" className="mb-8 gap-1">
+            <Nav key={index} orientation="vertical" className="mb-4 gap-1">
               <Typography
                 as="p"
                 smaller
-                className="mb-4 text-xs font-bold tracking-widest text-gray-500"
+                className="mb-2 text-xs font-bold tracking-widest text-gray-500"
               >
                 {menu.title}
               </Typography>
@@ -106,7 +106,7 @@ const Layout = () => {
               </div>
             </header>
           )}
-          <div className="min-h-screen grow bg-slate-100 px-4 py-6 dark:bg-slate-700 sm:px-6 sm:pt-12">
+          <div className="h-screen grow overflow-auto bg-slate-100 px-4 py-6 dark:bg-slate-700 sm:px-6">
             <div className="mx-auto max-w-screen-xl">
               <Outlet />
             </div>

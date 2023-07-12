@@ -6,9 +6,10 @@ import Bottomsheet from "./Bottomsheet";
 interface StepperProps {
   activeIndex: number;
   steps: string[];
+  onClick: (index: number) => void;
 }
 
-const Stepper = ({ activeIndex = 1, steps }: StepperProps) => {
+const Stepper = ({ activeIndex = 1, steps, onClick }: StepperProps) => {
   const [open, setOpen] = useState(false);
 
   const Content = () => (
@@ -89,8 +90,47 @@ const Stepper = ({ activeIndex = 1, steps }: StepperProps) => {
         </Bottomsheet>
       </div>
 
-      <div className="hidden w-full md:block">
-        <Content />
+      <div className="hidden w-full overflow-hidden rounded-lg shadow-md md:block">
+        <div className="flex justify-between align-bottom">
+          {steps.map((item, index) => {
+            const containerClass =
+              index === activeIndex ? "border-mm-teal-100" : "";
+            const bgClass =
+              index < activeIndex ? "bg-green-200" : "transparent";
+            const borderClass =
+              index === activeIndex
+                ? "border-2 border-mm-teal-100"
+                : index < activeIndex
+                ? "border-none"
+                : "border-2 border-gray-300";
+            const textClass =
+              index === activeIndex ? "text-mm-navy-800" : "text-black";
+
+            return (
+              <div
+                className={`flex shrink-0 grow cursor-pointer  items-center justify-center gap-4 border-b-4 bg-white p-4 hover:bg-gray-100 ${containerClass}`}
+                onClick={() => onClick(index)}
+              >
+                <div
+                  className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${bgClass} ${borderClass}`}
+                >
+                  {index >= activeIndex ? (
+                    <Typography
+                      className={`text-sm font-extrabold text-slate-800 ${textClass}`}
+                    >
+                      {index + 1}
+                    </Typography>
+                  ) : (
+                    <FaCheck className="text-green-500" />
+                  )}
+                </div>
+                <Typography bold small>
+                  {item}
+                </Typography>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </>
   );

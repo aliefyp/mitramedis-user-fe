@@ -89,7 +89,7 @@ function Sidebar({
           <h2 className="font-bold">{title}</h2>
         </div>
       )}
-      <div className="flex flex-1 flex-col px-6">{children}</div>
+      <div className="flex flex-1 flex-col px-4">{children}</div>
     </div>
   );
 }
