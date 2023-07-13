@@ -1,19 +1,13 @@
 import clsx from "clsx";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 import Typography from "./Typography";
 
 export interface InputProps extends React.HTMLProps<HTMLInputElement> {
-  className?: string;
   error?: boolean;
   helper?: string;
   icon?: ReactNode;
   iconPlacement?: "left" | "right";
-  id?: string;
-  label?: string;
-  name: string;
   suffix?: ReactNode;
-  onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 interface LabelProps extends React.HTMLProps<HTMLLabelElement> {
@@ -23,10 +17,7 @@ interface LabelProps extends React.HTMLProps<HTMLLabelElement> {
 
 const Label = ({ children, required, htmlFor }: LabelProps) => {
   return (
-    <label
-      htmlFor={htmlFor}
-      className="block text-sm font-medium text-gray-700"
-    >
+    <label htmlFor={htmlFor} className="text-sm font-bold text-gray-700">
       {children}
       {required && <span className="text-red-600">*</span>}
     </label>
@@ -35,7 +26,6 @@ const Label = ({ children, required, htmlFor }: LabelProps) => {
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
   {
-    autoComplete,
     className,
     disabled,
     error,
@@ -48,47 +38,45 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
     prefix,
     required,
     suffix,
-    type,
     onBlur,
+    onFocus,
     onChange,
     ...restProps
   },
   ref
 ) {
-  if (type === "radio") {
-    return (
-      <div className={clsx("my-2 flex items-center gap-2", className)}>
-        <input
-          type="radio"
-          id={id}
-          name={name}
-          onBlur={onBlur}
-          onChange={onChange}
-          ref={ref}
-          {...restProps}
-        />
-        <Label htmlFor={id} required={required}>
-          {label}
-        </Label>
-      </div>
-    );
-  }
+  const [isFocus, setFocus] = useState(false);
+
+  const handleBlur = (e) => {
+    e.stopPropagation();
+    setFocus(false);
+    if (onBlur) onBlur(e);
+  };
+
+  const handleFocus = (e) => {
+    e.stopPropagation();
+    setFocus(true);
+    if (onFocus) onFocus(e);
+  };
 
   return (
-    <div className={clsx("relative space-y-2", className)}>
+    <div>
       {label && (
-        <Label
-          required={required}
-          className="block text-sm font-medium text-gray-700"
-          htmlFor={name}
-        >
+        <Label required={required} htmlFor={name}>
           {label}
         </Label>
       )}
-      <div className="flex w-full rounded-md border bg-slate-50">
+      <div
+        className={clsx(
+          "mt-1 flex w-full overflow-hidden rounded-md border border-gray-300 bg-gray-100 shadow-sm",
+          isFocus && "border-blue-300 ring ring-blue-200 ring-opacity-50",
+          disabled && "cursor-not-allowed bg-gray-200 text-gray-500",
+          className
+        )}
+      >
         {Boolean(prefix) && (
           <div className="flex shrink-0 items-center justify-center bg-mm-navy-100 px-4">
-            <Typography small className="font-semibold text-mm-navy-700">
+            <Typography small className="font-semibold text-mm-navy-900">
               {prefix}
             </Typography>
           </div>
@@ -97,21 +85,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
           <div className="flex items-center justify-center px-4">{icon}</div>
         )}
         <input
-          id={id}
-          name={name}
-          autoComplete={autoComplete}
           className={clsx(
-            "w-full rounded-md border-none px-2 py-2 focus:border-gray-500",
-            error ? "border-red-500" : "border-gray-300",
-            disabled
-              ? "cursor-not-allowed bg-gray-200 text-gray-500"
-              : "bg-transparent"
+            "form-input block w-full border-none focus:border-none focus:ring-0",
+            "invalid:border-red-500"
           )}
-          onBlur={onBlur}
-          onChange={onChange}
+          onBlur={handleBlur}
+          onFocus={handleFocus}
           ref={ref}
-          type={type}
-          disabled={disabled}
           {...restProps}
         />
         {icon && iconPlacement === "right" && (
@@ -119,7 +99,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
         )}
         {Boolean(suffix) && (
           <div className="flex items-center justify-center bg-mm-navy-100 px-4">
-            <Typography small className="text-mm-teal-300-700 font-semibold">
+            <Typography small className="font-semibold text-mm-navy-900">
               {suffix}
             </Typography>
           </div>

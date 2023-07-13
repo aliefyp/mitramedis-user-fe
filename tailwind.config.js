@@ -54,7 +54,8 @@ module.exports = {
   },
   plugins: [
     require('flowbite/plugin'),
-    require('prettier-plugin-tailwindcss')
+    require('prettier-plugin-tailwindcss'),
+    require('@tailwindcss/forms')
   ],
 }
 
