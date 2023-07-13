@@ -22,9 +22,11 @@ const PatientSummary = () => {
     <Card className="divide-y">
       <div className="px-4 py-3">
         <div className="flex items-center justify-between">
-          <Typography className="mb-4 text-right text-xs font-bold text-mm-teal-200">
-            RM: 23000001
-          </Typography>
+          <div className="mb-4 rounded-sm bg-lime-500 px-2 py-0">
+            <Typography className="text-xs font-bold text-white">
+              RM: 23000001
+            </Typography>
+          </div>
           <Typography className="mb-4 text-right text-xs italic text-gray-500">
             26 September 2022
           </Typography>

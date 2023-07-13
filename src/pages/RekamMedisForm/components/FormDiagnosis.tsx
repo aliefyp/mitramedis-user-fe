@@ -1,9 +1,10 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import Select from "components/Select";
-import { FaPlus, FaTrashAlt } from "react-icons/fa";
+import { FaTrashAlt } from "react-icons/fa";
 import Typography from "components/Typography";
 import Card from "components/Card";
+import ButtonAddMore from "components/ButtonAddMore";
 
 interface FormDiagnosisType {
   icd_code: string;
@@ -72,14 +73,12 @@ const FormDiagnosis = () => {
           />
         </Card>
       ))}
-      <div
-        className="col-span-3 col-start-1 flex h-[48px] cursor-pointer items-center justify-center gap-4 rounded-2xl border-2 border-dashed 2xl:col-span-2"
-        onClick={() => setDiagnoses([...diagnoses, DEFAULT_DIAGNOSE_ITEM])}
-      >
-        <FaPlus className="text-gray-700" />
-        <Typography bold className="text-gray-700">
+      <div className="col-span-3 col-start-1">
+        <ButtonAddMore
+          onClick={() => setDiagnoses([...diagnoses, DEFAULT_DIAGNOSE_ITEM])}
+        >
           Tambah Diagnosis
-        </Typography>
+        </ButtonAddMore>
       </div>
     </form>
   );

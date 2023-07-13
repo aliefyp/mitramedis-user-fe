@@ -15,15 +15,25 @@ const Stepper = ({ activeIndex = 1, steps, onClick }: StepperProps) => {
   const Content = () => (
     <>
       {steps.map((step, index) => {
-        const bgClass = index < activeIndex ? "bg-green-200" : "transparent";
+        const bgClass =
+          index === activeIndex
+            ? "bg-sky-500"
+            : index < activeIndex
+            ? "bg-lime-500"
+            : "transparent";
         const borderClass =
           index === activeIndex
-            ? "border-2 border-mm-navy-800"
+            ? "border-2 border-sky-500"
             : index < activeIndex
             ? "border-none"
             : "border-2 border-gray-300";
-        const textClass =
-          index === activeIndex ? "text-mm-navy-800" : "text-black";
+        const textClass = index <= activeIndex ? "" : "text-gray-500";
+        const numberClass =
+          index === activeIndex
+            ? "text-white"
+            : index <= activeIndex
+            ? "text-black"
+            : "text-gray-500";
 
         return (
           <div className="relative flex items-center gap-2 pb-4">
@@ -35,15 +45,15 @@ const Stepper = ({ activeIndex = 1, steps, onClick }: StepperProps) => {
             >
               {index >= activeIndex ? (
                 <Typography
-                  className={`font-extrabold text-slate-800 ${textClass}`}
+                  className={`font-extrabold text-slate-800 ${numberClass}`}
                 >
                   {index + 1}
                 </Typography>
               ) : (
-                <FaCheck className="text-green-500" />
+                <FaCheck className="text-white" />
               )}
             </div>
-            <Typography className="font-semibold text-slate-800">
+            <Typography className={`font-semibold text-slate-800 ${textClass}`}>
               {step}
             </Typography>
           </div>
@@ -94,17 +104,26 @@ const Stepper = ({ activeIndex = 1, steps, onClick }: StepperProps) => {
         <div className="flex justify-between align-bottom">
           {steps.map((item, index) => {
             const containerClass =
-              index === activeIndex ? "border-mm-teal-100" : "";
+              index === activeIndex ? "border-sky-500" : "";
             const bgClass =
-              index < activeIndex ? "bg-green-200" : "transparent";
+              index === activeIndex
+                ? "bg-sky-500"
+                : index < activeIndex
+                ? "bg-lime-500"
+                : "transparent";
             const borderClass =
               index === activeIndex
-                ? "border-2 border-mm-teal-100"
+                ? "border-2 border-sky-500"
                 : index < activeIndex
                 ? "border-none"
                 : "border-2 border-gray-300";
-            const textClass =
-              index === activeIndex ? "text-mm-navy-800" : "text-black";
+            const textClass = index <= activeIndex ? "" : "text-gray-500";
+            const numberClass =
+              index === activeIndex
+                ? "text-white"
+                : index <= activeIndex
+                ? "text-black"
+                : "text-gray-500";
 
             return (
               <div
@@ -116,15 +135,15 @@ const Stepper = ({ activeIndex = 1, steps, onClick }: StepperProps) => {
                 >
                   {index >= activeIndex ? (
                     <Typography
-                      className={`text-sm font-extrabold text-slate-800 ${textClass}`}
+                      className={`text-sm font-extrabold ${numberClass}`}
                     >
                       {index + 1}
                     </Typography>
                   ) : (
-                    <FaCheck className="text-green-500" />
+                    <FaCheck className="text-white" />
                   )}
                 </div>
-                <Typography bold small>
+                <Typography bold small className={textClass}>
                   {item}
                 </Typography>
               </div>

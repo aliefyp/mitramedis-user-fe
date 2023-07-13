@@ -19,6 +19,7 @@ export default React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
     {
       autoFocus,
       className,
+      disabled,
       error,
       helper,
       label,
@@ -43,7 +44,7 @@ export default React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
         {label && (
           <label
             htmlFor={name}
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm font-medium text-gray-800"
           >
             {label}
           </label>
@@ -53,8 +54,10 @@ export default React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
           name={name}
           rows={3}
           className={clsx(
-            "mt-1 block w-full rounded-md border bg-slate-50",
-            error ? "border-red-500" : "border-gray-300"
+            "form-textarea mt-1 block w-full rounded-md border border-gray-300 shadow-sm",
+            "focus:border-sky-400 focus:ring focus:ring-sky-300 focus:ring-opacity-50",
+            disabled && "cursor-not-allowed bg-gray-200 text-gray-500",
+            error && "border-red-300"
           )}
           onBlur={onBlur}
           onChange={onChange}

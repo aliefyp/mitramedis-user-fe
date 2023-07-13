@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import TextArea from "components/TextArea";
 import Toggle from "components/Toggle";
 import { useState } from "react";
+import Typography from "components/Typography";
 
 interface FormAnamnesisType {
   main_complaint: string;
@@ -44,7 +45,9 @@ const FormAnamnesis = () => {
             value={showPastMedicalHistory}
             onSwitch={setShowPastMedicalHistory}
           >
-            Ada Riwayat Penyakit Terdahulu
+            <Typography small bold className="text-gray-700">
+              Ada Riwayat Penyakit Terdahulu
+            </Typography>
           </Toggle>
           {showPastMedicalHistory && (
             <TextArea
@@ -57,7 +60,9 @@ const FormAnamnesis = () => {
 
         <div className="grid gap-2">
           <Toggle value={showAllergyNote} onSwitch={setShowAllergyNote}>
-            Ada Riwayat Alergi
+            <Typography small bold className="text-gray-700">
+              Ada Riwayat Alergi
+            </Typography>
           </Toggle>
           {showAllergyNote && (
             <TextArea
@@ -73,7 +78,9 @@ const FormAnamnesis = () => {
             value={showMedicalTreatmentNote}
             onSwitch={setShowMedicalTreatmentNote}
           >
-            Ada Riwayat Pengobatan
+            <Typography small bold className="text-gray-700">
+              Ada Riwayat Pengobatan
+            </Typography>
           </Toggle>
           {showMedicalTreatmentNote && (
             <TextArea

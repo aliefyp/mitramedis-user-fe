@@ -69,14 +69,15 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
       <div
         className={clsx(
           "mt-1 flex w-full overflow-hidden rounded-md border border-gray-300 bg-gray-100 shadow-sm",
-          isFocus && "border-blue-300 ring ring-blue-200 ring-opacity-50",
+          isFocus && "border-sky-400 ring ring-sky-300 ring-opacity-50",
           disabled && "cursor-not-allowed bg-gray-200 text-gray-500",
+          error && "border-red-300",
           className
         )}
       >
         {Boolean(prefix) && (
-          <div className="flex shrink-0 items-center justify-center bg-mm-navy-100 px-4">
-            <Typography small className="font-semibold text-mm-navy-900">
+          <div className="flex min-w-[80px] shrink-0 items-center justify-center bg-gray-100 px-4">
+            <Typography small className="font-semibold text-gray-500">
               {prefix}
             </Typography>
           </div>
@@ -98,8 +99,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
           <div className="flex items-center justify-center px-4">{icon}</div>
         )}
         {Boolean(suffix) && (
-          <div className="flex items-center justify-center bg-mm-navy-100 px-4">
-            <Typography small className="font-semibold text-mm-navy-900">
+          <div className="flex min-w-[80px] items-center justify-center bg-gray-100 px-4">
+            <Typography small className="font-semibold text-gray-500">
               {suffix}
             </Typography>
           </div>

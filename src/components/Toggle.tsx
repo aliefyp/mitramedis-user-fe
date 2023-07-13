@@ -15,11 +15,13 @@ const Toggle = ({ children, className, value, onSwitch }: ToggleProps) => {
       <Switch
         checked={value}
         onChange={onSwitch}
-        className={`${
-          value ? "bg-mm-teal-200" : "bg-gray-200"
-        } relative inline-flex h-6 w-11 shrink-0 items-center rounded-full`}
+        className={clsx(
+          "relative inline-flex h-6 w-11 shrink-0 items-center rounded-full",
+          "focus:border-sky-400 focus:ring focus:ring-sky-300 focus:ring-opacity-30",
+          value ? "bg-sky-500" : "bg-gray-200"
+        )}
       >
-        <span className="sr-only">Enable notifications</span>
+        <span className="sr-only">{children}</span>
         <span
           className={`${
             value ? "translate-x-6" : "translate-x-1"

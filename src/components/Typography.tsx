@@ -40,7 +40,7 @@ export default function Typography({
         muted && "text-gray-600",
         small && "text-sm",
         smaller && "text-xs",
-        link && "text-mm-teal-200",
+        link && "text-sky-600 underline",
         className
       )}
     >

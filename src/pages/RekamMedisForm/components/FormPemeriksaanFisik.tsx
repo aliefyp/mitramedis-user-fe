@@ -5,8 +5,9 @@ import Input from "components/Input";
 import Typography from "components/Typography";
 import ModalSelectOrgan from "./ModalSelectOrgan";
 import TextArea from "components/TextArea";
-import { FaPlus, FaTrashAlt } from "react-icons/fa";
+import { FaTrashAlt } from "react-icons/fa";
 import ButtonGroup from "components/ButtonGroup";
+import ButtonAddMore from "components/ButtonAddMore";
 
 const SENSES_LEVEL = [
   "Sadar Baik / Alert",
@@ -167,15 +168,12 @@ const FormPemeriksaanFisik = () => {
             />
           </div>
         ))}
-        <div
-          className="col-span-2 col-start-1 flex h-[48px] cursor-pointer items-center justify-center gap-4 rounded-2xl border-2 border-dashed"
-          onClick={() => setShowOrganModal(true)}
-        >
-          <FaPlus className="text-gray-700" />
-          <Typography bold className="text-gray-700">
+        <div className="col-span-2 col-start-1">
+          <ButtonAddMore onClick={() => setShowOrganModal(true)}>
             Tambah Catatan
-          </Typography>
+          </ButtonAddMore>
         </div>
+
         <ModalSelectOrgan
           open={showOrganModal}
           defaultSelected={organNotes}
