@@ -94,7 +94,7 @@ const Layout = () => {
         </Sidebar>
         <div className="w-full">
           {isMobile && (
-            <header className="sticky top-0 flex items-center justify-between bg-slate-100 px-4 pb-2 pt-4 dark:bg-slate-700">
+            <header className="sticky top-0 flex items-center justify-between border-b bg-slate-100 px-4 pb-2 pt-4 dark:bg-slate-700">
               <div></div>
               <div className="flex items-center space-x-2">
                 {/* <DarkThemeToggle /> */}

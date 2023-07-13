@@ -90,7 +90,7 @@ const Stepper = ({ activeIndex = 1, steps, onClick }: StepperProps) => {
         </Bottomsheet>
       </div>
 
-      <div className="hidden w-full overflow-hidden rounded-lg shadow-md md:block">
+      <div className="hidden w-full overflow-hidden rounded-lg md:block">
         <div className="flex justify-between align-bottom">
           {steps.map((item, index) => {
             const containerClass =
@@ -108,7 +108,7 @@ const Stepper = ({ activeIndex = 1, steps, onClick }: StepperProps) => {
 
             return (
               <div
-                className={`flex shrink-0 grow cursor-pointer  items-center justify-center gap-4 border-b-4 bg-white p-4 hover:bg-gray-100 ${containerClass}`}
+                className={`flex shrink-0 grow cursor-pointer items-center justify-center gap-4 border-b-4 p-4 hover:bg-gray-100 ${containerClass}`}
                 onClick={() => onClick(index)}
               >
                 <div

@@ -49,9 +49,9 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
           setHeight("auto");
         } else {
           const windowHeight = window.innerHeight;
-          const toleranceHeight = 48;
+          // const toleranceHeight = 48;
           const formOffset = (formRef.current as HTMLDivElement).offsetTop;
-          setHeight(`${windowHeight - toleranceHeight - formOffset}px`);
+          setHeight(`${windowHeight - formOffset}px`);
         }
       } catch (err) {
         setHeight("auto");
@@ -68,15 +68,67 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
           { text: isEdit ? "Ubah Data Rekam Medis" : "Rekam Medis Baru" },
         ]}
       />
-      <div className=" grid max-w-screen-2xl grid-cols-10 gap-4 md:min-w-[800px]">
-        <div className="sticky top-0 z-20 col-span-10">
+      <div className=" grid max-w-screen-2xl grid-cols-8 gap-4 md:min-w-[800px]">
+        <div className="top-0 z-20 col-span-8">
           <Stepper
             activeIndex={activeIndex}
             steps={STEPS}
             onClick={(index) => setActiveIndex(index)}
           />
         </div>
-        <div className="col-span-10 md:col-span-4 lg:col-span-3">
+        <div
+          ref={formRef}
+          className="col-span-10 overflow-y-scroll pb-4 md:col-span-5 lg:col-span-6"
+        >
+          <Card>
+            <div className="border-b p-6">
+              <Typography as="h2" className=" text-xl font-bold text-slate-800">
+                {STEPS[activeIndex]}
+              </Typography>
+              <Typography as="div" className=" text-sm text-gray-500">
+                {`Langkah ${activeIndex + 1} dari ${STEPS.length}`}
+              </Typography>
+            </div>
+            <div className="p-6">
+              {activeIndex === 0 && <FormAnamnesis />}
+              {activeIndex === 1 && <FormPemeriksaanFisik />}
+              {activeIndex === 2 && <FormDiagnosis />}
+              {activeIndex === 3 && <FormTindakan />}
+              {activeIndex === 4 && <FormResepObat />}
+              {activeIndex === 5 && <FormBilling />}
+            </div>
+            <div className="fixed bottom-0 left-0 right-0 z-10 flex items-center justify-between space-x-2 border-t bg-white p-3 shadow-md md:static md:bg-transparent md:p-6 md:shadow-none">
+              <div className="shrink-0">
+                <div className="block md:hidden">
+                  <Stepper
+                    activeIndex={activeIndex}
+                    steps={STEPS}
+                    onClick={(index) => setActiveIndex(index)}
+                  />
+                </div>
+              </div>
+              <div className="flex shrink-0 items-center gap-2 ">
+                {activeIndex > 0 && (
+                  <Button
+                    type="button"
+                    color="ghost-primary"
+                    onClick={handleBackClick}
+                  >
+                    Kembali
+                  </Button>
+                )}
+                <Button
+                  type="button"
+                  onClick={handleNextClick}
+                  className="md:px-12"
+                >
+                  {isLastStep ? "Simpan" : "Lanjut"}
+                </Button>
+              </div>
+            </div>
+          </Card>
+        </div>
+        <div className="col-span-10 md:col-span-3 lg:col-span-2">
           <PatientSummary />
           {/* <div className="flex flex-col gap-4 md:gap-8">
             <div className="order-2 md:order-1">
@@ -86,59 +138,6 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
               <Stepper activeIndex={activeIndex} steps={STEPS} />
             </div>
           </div> */}
-        </div>
-        <div className="col-span-10 md:col-span-6 lg:col-span-7">
-          <Card className="rounded-2xl border-none shadow-sm">
-            <div className="flex items-center justify-between border-b p-6">
-              <div>
-                <Typography
-                  as="h2"
-                  className=" text-xl font-bold text-slate-800"
-                >
-                  {STEPS[activeIndex]}
-                </Typography>
-                <Typography as="div" className=" text-sm text-gray-500">
-                  {`Langkah ${activeIndex + 1} dari ${STEPS.length}`}
-                </Typography>
-              </div>
-              <div className="fixed bottom-0 left-0 right-0 z-10 flex items-center justify-between space-x-2 border-t bg-white p-3 shadow-md md:static md:border-none md:bg-transparent md:p-0 md:shadow-none">
-                <div className="block shrink-0 md:hidden">
-                  <Stepper
-                    activeIndex={activeIndex}
-                    steps={STEPS}
-                    onClick={(index) => setActiveIndex(index)}
-                  />
-                </div>
-                <div className="flex shrink-0 items-center gap-2">
-                  {activeIndex > 0 && (
-                    <Button
-                      type="button"
-                      color="ghost-primary"
-                      onClick={handleBackClick}
-                    >
-                      Kembali
-                    </Button>
-                  )}
-                  <Button type="button" onClick={handleNextClick}>
-                    {isLastStep ? "Simpan" : "Lanjut"}
-                  </Button>
-                </div>
-              </div>
-            </div>
-            <div
-              ref={formRef}
-              id="form-content"
-              className="overflow-y-scroll p-6"
-              // style={{ height }}
-            >
-              {activeIndex === 0 && <FormAnamnesis />}
-              {activeIndex === 1 && <FormPemeriksaanFisik />}
-              {activeIndex === 2 && <FormDiagnosis />}
-              {activeIndex === 3 && <FormTindakan />}
-              {activeIndex === 4 && <FormResepObat />}
-              {activeIndex === 5 && <FormBilling />}
-            </div>
-          </Card>
         </div>
       </div>
       <div

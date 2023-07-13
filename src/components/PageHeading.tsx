@@ -15,7 +15,7 @@ interface PageHeadingProps {
 
 const PageHeading = ({ title, breadcrumbs }: PageHeadingProps) => {
   return (
-    <div className="mb-6 space-y-2">
+    <div className="mb-4 space-y-2">
       <Breadcrumb
         aria-label="Main breadcrumb"
         className="scale-80 origin-bottom-left transform md:scale-100"
@@ -32,7 +32,7 @@ const PageHeading = ({ title, breadcrumbs }: PageHeadingProps) => {
       <div className="min-w-0 flex-1">
         <Typography
           as="h2"
-          className="font-bold leading-5 text-slate-800 dark:text-slate-50 sm:truncate sm:text-4xl sm:tracking-tight"
+          className="text-xl font-extrabold leading-5 text-slate-800 dark:text-slate-50 sm:text-3xl sm:tracking-tight"
         >
           {title}
         </Typography>

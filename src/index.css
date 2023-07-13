@@ -24,4 +24,8 @@ code {
   *:focus {
     @apply outline-gray-300
   }
+
+  a {
+    @apply underline
+  }
 }

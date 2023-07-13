@@ -8,7 +8,7 @@ const DUMMY_PREVIEW_DATA = [
     value: "123123123123123",
   },
   {
-    key: "Tanggal Lahir",
+    key: "Tgl Lahir",
     value: "21 Mei 2023",
   },
   {
@@ -19,7 +19,7 @@ const DUMMY_PREVIEW_DATA = [
 
 const PatientSummary = () => {
   return (
-    <Card className="divide-y rounded-2xl">
+    <Card className="divide-y">
       <div className="px-4 py-3">
         <div className="flex items-center justify-between">
           <Typography className="mb-4 text-right text-xs font-bold text-mm-teal-200">

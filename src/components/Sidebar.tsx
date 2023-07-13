@@ -17,7 +17,7 @@ function Sidebar({
   open,
   setOpen,
   title,
-  width = 280,
+  width = 240,
 }: SidebarProps) {
   const { isMobile } = useAppContext();
 
@@ -31,7 +31,7 @@ function Sidebar({
           open={open}
           onClose={setOpen}
         >
-          <div className="absolute inset-0 z-10 overflow-hidden">
+          <div className="absolute inset-0 z-50 overflow-hidden">
             <Transition.Child
               as={Fragment}
               enter="ease-in-out duration-500"
@@ -54,7 +54,7 @@ function Sidebar({
                 leaveTo="translate-x-full"
               >
                 <div className="relative w-screen" style={{ width }}>
-                  <div className="flex h-full flex-col overflow-y-scroll rounded-l-2xl  bg-white py-6 shadow-xl dark:bg-slate-800">
+                  <div className="flex h-full flex-col overflow-y-scroll  bg-white py-6 shadow-xl dark:bg-slate-800">
                     <div className="mb-8 flex items-center justify-between px-4 sm:px-6">
                       <Dialog.Title className="text-lg font-bold">
                         {title}
