@@ -33,6 +33,7 @@ const DATA_ORGAN = [
   { name: "Jari Kaki" },
   { name: "Kuku Kaki" },
   { name: "Persendian Kaki" },
+  { name: "Lainnya" },
 ];
 
 interface Organ {
@@ -63,8 +64,8 @@ const SearchPasien = ({
   };
 
   useEffect(() => {
-    setSelected(defaultSelected);
-  }, [defaultSelected]);
+    if (open) setSelected([]);
+  }, [open]);
 
   return (
     <Modal open={open} onClose={onClose} className="md:max-w-2xl">
@@ -79,27 +80,29 @@ const SearchPasien = ({
         </div>
         <div className="grid grid-cols-3 gap-4 md:grid-cols-6">
           {DATA_ORGAN.map((item) => {
+            const isDisabled =
+              defaultSelected.findIndex((i) => i.name === item.name) > -1;
             const isSelected =
               selected.findIndex((i) => i.name === item.name) > -1;
             const selectedCardClass = isSelected
-              ? "border-2 border-mm-teal-200"
-              : "border-2 border-transparent";
-            const selectedTextClass = isSelected ? "text-mm-teal-200" : "";
+              ? "border-sky-400"
+              : "border-gray-300";
+            const disabledCardClass = isDisabled && "!bg-gray-200 pointer-none";
+            const selectedTextClass = isSelected && "font-bold";
 
             return (
               <Card
-                className={`flex cursor-pointer flex-col items-center justify-center gap-1 p-2 shadow-xl ${selectedCardClass}`}
-                onClick={() => handleSelect(item)}
+                className={`flex min-h-[52px] cursor-pointer flex-col items-center justify-center gap-1 border-2 p-2 shadow-xl  ${selectedCardClass} ${disabledCardClass}`}
+                onClick={isDisabled ? null : () => handleSelect(item)}
               >
-                <img
+                {/* <img
                   src="http://placehold.it/32x32"
                   alt={item.name}
                   className="h-[32px] w-[32px]"
-                />
+                /> */}
                 <Typography
                   smaller
-                  bold
-                  className={`min-h-[32px] text-center ${selectedTextClass}`}
+                  className={`text-center ${selectedTextClass}`}
                 >
                   {item.name}
                 </Typography>
@@ -107,14 +110,21 @@ const SearchPasien = ({
             );
           })}
         </div>
-        <div>
+        <div className="grid grid-cols-2 gap-2">
           <Button
             className="w-full"
-            size="large"
             type="button"
             color="secondary"
+            onClick={onClose}
+          >
+            Batal
+          </Button>
+          <Button
+            className="w-full"
+            type="button"
+            color="primary"
             disabled={!selected.length}
-            onClick={() => onSubmit(selected)}
+            onClick={() => onSubmit([...defaultSelected, ...selected])}
           >
             Tambahkan
           </Button>

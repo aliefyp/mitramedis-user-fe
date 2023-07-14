@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import Select from "components/Select";
 import { FaTrashAlt } from "react-icons/fa";
 import Typography from "components/Typography";
 import Card from "components/Card";
 import ButtonAddMore from "components/ButtonAddMore";
+import Combobox from "components/FormInput/ComboBox";
 
 interface FormDiagnosisType {
   icd_code: string;
@@ -27,15 +27,9 @@ const FormDiagnosis = () => {
   };
 
   return (
-    <form
-      className="grid grid-cols-3 space-y-4"
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <form className="space-y-4 py-6" onSubmit={handleSubmit(onSubmit)}>
       {diagnoses.map((item, index) => (
-        <Card
-          key={index}
-          className="col-span-3 gap-6 space-y-4 border p-4 shadow-lg 2xl:col-span-2"
-        >
+        <Card key={index} className="gap-6 space-y-4 border p-4 shadow-lg">
           <div className="flex w-full items-center justify-between">
             <Typography bold as="h4">
               {`Diagnosis ${index + 1}`}
@@ -47,33 +41,29 @@ const FormDiagnosis = () => {
               }
             />
           </div>
-          <Select
-            id="icd_code"
+          <Combobox
             placeholder="Ketik nama atau pilih kode ICD-10"
             label="ICD-10"
-            items={[
-              "A00 - Cholera",
-              "A01 - Typhoid and paratyphoid fevers",
-              "A02 - Other salmonella infections",
+            options={[
+              { key: 1, label: "A00 - Cholera" },
+              { key: 2, label: "A01 - Typhoid and paratyphoid fevers" },
+              { key: 3, label: "A02 - Other salmonella infections" },
             ]}
-            className="col-span-2 md:col-span-2"
             {...register("icd_code")}
           />
-          <Select
-            id="note"
+          <Combobox
             placeholder="Pilih jenis Diagnosis"
             label="Diagnosis"
-            items={[
-              "Diagnosis Awal",
-              "Diagnosis Utama / Primer",
-              "Diagnosis Tambahan / Sekunder",
+            options={[
+              { key: 1, label: "Diagnosis Awal" },
+              { key: 2, label: "Diagnosis Utama / Primer" },
+              { key: 3, label: "Diagnosis Tambahan / Sekunder" },
             ]}
-            className="col-span-2 md:col-span-2"
             {...register("note")}
           />
         </Card>
       ))}
-      <div className="col-span-3 col-start-1">
+      <div>
         <ButtonAddMore
           onClick={() => setDiagnoses([...diagnoses, DEFAULT_DIAGNOSE_ITEM])}
         >

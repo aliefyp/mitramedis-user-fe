@@ -17,7 +17,7 @@ const DUMMY_PREVIEW_DATA = [
   },
 ];
 
-const PatientSummary = () => {
+const CardPatientSummary = () => {
   return (
     <Card className="divide-y">
       <div className="px-4 py-3">
@@ -68,4 +68,4 @@ const PatientSummary = () => {
   );
 };
 
-export default PatientSummary;
+export default CardPatientSummary;

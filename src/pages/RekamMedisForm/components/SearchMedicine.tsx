@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Button from "components/Button";
-import Input from "components/Input";
+import Input from "components/FormInput/Input";
 import Modal from "components/Modal";
 import Typography from "components/Typography";
 import { useNavigate } from "react-router-dom";

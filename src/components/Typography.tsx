@@ -35,6 +35,7 @@ export default function Typography({
   return (
     <Component
       className={clsx(
+        "text-gray-800",
         variants[variant],
         bold && "font-semibold",
         muted && "text-gray-600",

@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
-import TextArea from "components/TextArea";
+import TextArea from "components/FormInput/TextArea";
 import Toggle from "components/Toggle";
 import { useState } from "react";
 import Typography from "components/Typography";
+import Label from "components/FormInput/Label";
 
 interface FormAnamnesisType {
   main_complaint: string;
@@ -26,7 +27,7 @@ const FormAnamnesis = () => {
   };
 
   return (
-    <form className="grid grid-cols-3" onSubmit={handleSubmit(onSubmit)}>
+    <form className="grid grid-cols-3 py-6" onSubmit={handleSubmit(onSubmit)}>
       <div className="col-span-3 grid gap-6 2xl:col-span-2">
         <TextArea
           label="Keluhan Utama"
@@ -45,9 +46,7 @@ const FormAnamnesis = () => {
             value={showPastMedicalHistory}
             onSwitch={setShowPastMedicalHistory}
           >
-            <Typography small bold className="text-gray-700">
-              Ada Riwayat Penyakit Terdahulu
-            </Typography>
+            <Label>Ada Riwayat Penyakit Terdahulu</Label>
           </Toggle>
           {showPastMedicalHistory && (
             <TextArea
@@ -60,9 +59,7 @@ const FormAnamnesis = () => {
 
         <div className="grid gap-2">
           <Toggle value={showAllergyNote} onSwitch={setShowAllergyNote}>
-            <Typography small bold className="text-gray-700">
-              Ada Riwayat Alergi
-            </Typography>
+            <Label>Ada Riwayat Alergi</Label>
           </Toggle>
           {showAllergyNote && (
             <TextArea
@@ -78,9 +75,7 @@ const FormAnamnesis = () => {
             value={showMedicalTreatmentNote}
             onSwitch={setShowMedicalTreatmentNote}
           >
-            <Typography small bold className="text-gray-700">
-              Ada Riwayat Pengobatan
-            </Typography>
+            <Label>Ada Riwayat Pengobatan</Label>
           </Toggle>
           {showMedicalTreatmentNote && (
             <TextArea

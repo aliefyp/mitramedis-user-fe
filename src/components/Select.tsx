@@ -2,7 +2,7 @@ import { Menu, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import { Fragment, RefCallback, useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
-import Input, { InputProps } from "./Input";
+import Input, { InputProps } from "./FormInput/Input";
 
 interface SelectProps extends InputProps {
   ref: RefCallback<HTMLInputElement>;

@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import React, { useEffect, useRef } from "react";
-import Typography from "./Typography";
+import Typography from "../Typography";
+import Label from "./Label";
 
 interface TextAreaProps extends React.HTMLProps<HTMLTextAreaElement> {
   autoFocus?: boolean;
@@ -12,6 +13,7 @@ interface TextAreaProps extends React.HTMLProps<HTMLTextAreaElement> {
   onBlur?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   placeholder?: string;
+  required?: boolean;
 }
 
 export default React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
@@ -27,6 +29,7 @@ export default React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
       onBlur,
       onChange,
       placeholder,
+      required,
       ...rest
     },
     ref
@@ -42,12 +45,9 @@ export default React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
     return (
       <div className={clsx("mb-2", className)}>
         {label && (
-          <label
-            htmlFor={name}
-            className="block text-sm font-medium text-gray-800"
-          >
+          <Label required={required} htmlFor={name}>
             {label}
-          </label>
+          </Label>
         )}
         <textarea
           id={name}

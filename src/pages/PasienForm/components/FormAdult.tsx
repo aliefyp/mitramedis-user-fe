@@ -1,7 +1,7 @@
 import Button from "components/Button";
-import Input from "components/Input";
+import Input from "components/FormInput/Input";
 import Select from "components/Select";
-import TextArea from "components/TextArea";
+import TextArea from "components/FormInput/TextArea";
 import Toggle from "components/Toggle";
 import Typography from "components/Typography";
 import { useState } from "react";

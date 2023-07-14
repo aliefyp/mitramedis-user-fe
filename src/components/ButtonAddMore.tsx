@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { ReactNode } from "react";
 import { FaPlus } from "react-icons/fa";
 import Typography from "./Typography";
@@ -10,6 +11,7 @@ interface ButtonAddMoreProps extends React.HTMLProps<HTMLButtonElement> {
 
 const ButtonAddMore = ({
   children,
+  className,
   onClick,
   type = "button",
   ...rest
@@ -17,7 +19,11 @@ const ButtonAddMore = ({
   return (
     <button
       type={type}
-      className="flex h-[48px] w-full cursor-pointer items-center justify-center gap-4 rounded-2xl border-2 border-dashed"
+      className={clsx(
+        "flex h-[48px] w-full cursor-pointer items-center justify-center gap-4 rounded-2xl border-2 border-dashed",
+        "focus:border-sky-400 focus:outline-none focus:ring focus:ring-sky-300 focus:ring-opacity-50",
+        className
+      )}
       onClick={onClick}
       {...rest}
     >

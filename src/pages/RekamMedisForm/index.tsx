@@ -5,7 +5,7 @@ import PageHeading from "components/PageHeading";
 import Stepper from "components/Stepper";
 import Typography from "components/Typography";
 import Button from "components/Button";
-import PatientSummary from "./components/PatientSummary";
+import PatientSummary from "./components/CardPatientSummary";
 import FormAnamnesis from "./components/FormAnamnesis";
 import FormPemeriksaanFisik from "./components/FormPemeriksaanFisik";
 import FormDiagnosis from "./components/FormDiagnosis";
@@ -82,14 +82,14 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
         >
           <Card>
             <div className="border-b p-6">
-              <Typography as="h2" className=" text-xl font-bold text-slate-800">
+              <Typography as="h2" className=" text-xl font-extrabold">
                 {STEPS[activeIndex]}
               </Typography>
               <Typography as="div" className=" text-sm text-gray-500">
                 {`Langkah ${activeIndex + 1} dari ${STEPS.length}`}
               </Typography>
             </div>
-            <div className="p-6">
+            <div className="px-6">
               {activeIndex === 0 && <FormAnamnesis />}
               {activeIndex === 1 && <FormPemeriksaanFisik />}
               {activeIndex === 2 && <FormDiagnosis />}

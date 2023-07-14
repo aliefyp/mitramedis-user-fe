@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import React, { ReactNode, useState } from "react";
-import Typography from "./Typography";
+import Typography from "../Typography";
+import Label from "./Label";
 
 export interface InputProps extends React.HTMLProps<HTMLInputElement> {
   error?: boolean;
@@ -9,20 +10,6 @@ export interface InputProps extends React.HTMLProps<HTMLInputElement> {
   iconPlacement?: "left" | "right";
   suffix?: ReactNode;
 }
-
-interface LabelProps extends React.HTMLProps<HTMLLabelElement> {
-  children: ReactNode | string;
-  required?: boolean;
-}
-
-const Label = ({ children, required, htmlFor }: LabelProps) => {
-  return (
-    <label htmlFor={htmlFor} className="text-sm font-bold text-gray-700">
-      {children}
-      {required && <span className="text-red-600">*</span>}
-    </label>
-  );
-};
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
   {
@@ -60,7 +47,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
   };
 
   return (
-    <div>
+    <div className={className}>
       {label && (
         <Label required={required} htmlFor={name}>
           {label}
@@ -71,8 +58,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
           "mt-1 flex w-full overflow-hidden rounded-md border border-gray-300 bg-gray-100 shadow-sm",
           isFocus && "border-sky-400 ring ring-sky-300 ring-opacity-50",
           disabled && "cursor-not-allowed bg-gray-200 text-gray-500",
-          error && "border-red-300",
-          className
+          error && "border-red-300"
         )}
       >
         {Boolean(prefix) && (
@@ -118,4 +104,4 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
   );
 });
 
-export default Object.assign(Input, { Label });
+export default Input;
