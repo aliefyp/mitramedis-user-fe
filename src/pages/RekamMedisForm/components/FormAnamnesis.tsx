@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import TextArea from "components/FormInput/TextArea";
 import Toggle from "components/Toggle";
 import { useState } from "react";
-import Typography from "components/Typography";
 import Label from "components/FormInput/Label";
 
 interface FormAnamnesisType {
