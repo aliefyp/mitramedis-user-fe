@@ -1,21 +1,34 @@
-import Button from "components/Button";
+import { useState } from "react";
 import PageHeading from "components/PageHeading";
-import { useNavigate } from "react-router-dom";
+import MedicalRecordFilterFilter from "./components/MedicalRecordFilter";
+import MedicalRecordTable from "./components/MedicalRecordTable";
+import ModalMedicalRecordPreview from "./components/ModalMedicalRecordPreview";
 
-const RekamMedis = () => {
-  const navigate = useNavigate();
+const MedicalRecordPage = () => {
+  const [showPreview, setShowPreview] = useState(false);
+  // const [searchText, setSearchText] = useState("");
+  // const [value] = useDebounce(searchText, 500);
+
+  // const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setSearchText(event.target.value.trim());
+  // };
 
   return (
     <div>
       <PageHeading
         title="Data Rekam Medis"
-        breadcrumbs={[{ text: "Rekam Medis", url: "/rekam-medis" }]}
+        breadcrumbs={[{ text: "Rekam Medis" }]}
       />
-      <Button onClick={() => navigate("/rekam-medis/new")}>
-        Rekam Medis Baru
-      </Button>
+      <div className="space-y-4">
+        <MedicalRecordFilterFilter />
+        <MedicalRecordTable onPreview={() => setShowPreview(true)} />
+      </div>
+      <ModalMedicalRecordPreview
+        open={showPreview}
+        onClose={() => setShowPreview(false)}
+      />
     </div>
   );
 };
 
-export default RekamMedis;
+export default MedicalRecordPage;
