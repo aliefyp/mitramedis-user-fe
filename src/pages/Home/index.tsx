@@ -8,9 +8,6 @@ import SearchPasien from "./components/SearchPasien";
 import Card from "components/Card";
 import CardHeader from "components/CardHeader";
 import CardBody from "components/CardBody";
-import ComboBox from "components/FormInput/ComboBox";
-import { Dropdown } from "flowbite-react";
-import { Menu } from "@headlessui/react";
 import StatsTopDisease from "./components/StatsTopDisease";
 import ChartIncome from "./components/ChartIncome";
 
