@@ -29,10 +29,6 @@ const FormResepObat = () => {
     setMedicines([...medicines, med]);
   };
 
-  const onSubmit = (val: FormResepObatType) => {
-    console.log(val);
-  };
-
   return (
     <>
       <div className="py-6">
