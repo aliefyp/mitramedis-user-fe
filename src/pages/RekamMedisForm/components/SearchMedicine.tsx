@@ -3,7 +3,6 @@ import Button from "components/Button";
 import Input from "components/FormInput/Input";
 import Modal from "components/Modal";
 import Typography from "components/Typography";
-import { useNavigate } from "react-router-dom";
 import ComboBox from "components/FormInput/ComboBox";
 import CheckBox from "components/FormInput/CheckBox";
 import Label from "components/FormInput/Label";
@@ -29,8 +28,7 @@ interface SearchMedicineProps {
 }
 
 const SearchMedicine = ({ open, onClose, onSubmit }: SearchMedicineProps) => {
-  const navigate = useNavigate();
-  const { watch, register, handleSubmit } = useForm({
+  const { register, handleSubmit } = useForm({
     defaultValues: {
       medicine_name: "",
       type: "",
