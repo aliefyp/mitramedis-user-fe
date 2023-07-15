@@ -21,7 +21,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
     helper,
     icon,
     iconPlacement,
-    id,
     label,
     name,
     prefix,
@@ -81,9 +80,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
         )}
         <input
           className={clsx(
-            "form-input block w-full border-none focus:border-none focus:ring-0",
+            "block w-full border-none focus:border-none focus:ring-0",
             "invalid:border-red-500"
           )}
+          disabled={disabled}
+          name={name}
           onBlur={handleBlur}
           onFocus={handleFocus}
           ref={ref}
