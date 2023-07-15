@@ -15,7 +15,7 @@ const DUMMY_ITEMS = [
 
 const FormBilling = () => {
   return (
-    <>
+    <div className="py-6">
       <div className="mb-8 grid grid-cols-3 gap-4">
         <div className="col-span-3 md:col-span-1">
           <Typography className="text-sm text-gray-500">No. Invoice</Typography>
@@ -58,7 +58,7 @@ const FormBilling = () => {
           </TableBody>
         </Table>
       </div>
-    </>
+    </div>
   );
 };
 

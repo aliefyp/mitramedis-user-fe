@@ -5,8 +5,9 @@ import ModalSelectOrgan from "./ModalSelectOrgan";
 import TextArea from "components/FormInput/TextArea";
 import { FaTrashAlt } from "react-icons/fa";
 import ButtonAddMore from "components/ButtonAddMore";
-import Combobox from "components/FormInput/ComboBox";
-import Section from "./Section";
+import ComboBox from "components/FormInput/ComboBox";
+import FormSection from "components/FormSection";
+import Typography from "components/Typography";
 
 interface Organ {
   name: string;
@@ -49,7 +50,7 @@ const FormPemeriksaanFisik = () => {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Section title="Keadaan Umum">
+        <FormSection title="Keadaan Umum">
           <div className="grid grid-cols-2 gap-6">
             {/* <div className="col-span-2 space-y-2">
               <Input.Label>Tingkat Kesadaran</Input.Label>
@@ -61,7 +62,7 @@ const FormPemeriksaanFisik = () => {
                 }))}
               />
             </div> */}
-            <Combobox
+            <ComboBox
               label="Tingkat Kesadaran"
               placeholder="Pilih tingkat kesadaran pasien"
               className="col-span-2"
@@ -74,7 +75,7 @@ const FormPemeriksaanFisik = () => {
               ]}
               {...register("psychological_state")}
             />
-            <Combobox
+            <ComboBox
               label="Status Psikologi"
               placeholder="Pilih status psikologi pasien"
               className="col-span-2"
@@ -104,8 +105,8 @@ const FormPemeriksaanFisik = () => {
               {...register("weight")}
             />
           </div>
-        </Section>
-        <Section title="Vital Sign">
+        </FormSection>
+        <FormSection title="Vital Sign">
           <div className="grid grid-cols-2 gap-6">
             <Input
               suffix="mmHg"
@@ -148,8 +149,8 @@ const FormPemeriksaanFisik = () => {
               {...register("respiration_rate")}
             />
           </div>
-        </Section>
-        <Section title="Catatan Kondisi Tubuh">
+        </FormSection>
+        <FormSection title="Catatan Kondisi Tubuh">
           <div className="grid grid-cols-2 gap-6">
             {organNotes.map((item, index) => (
               <div
@@ -170,13 +171,20 @@ const FormPemeriksaanFisik = () => {
                 />
               </div>
             ))}
+            {organNotes.length === 0 && (
+              <div className="col-span-2">
+                <Typography small className="w-full text-center !text-gray-500">
+                  Belum ada catatan
+                </Typography>
+              </div>
+            )}
             <div className="col-span-2">
               <ButtonAddMore onClick={() => setShowOrganModal(true)}>
                 Tambah Catatan
               </ButtonAddMore>
             </div>
           </div>
-        </Section>
+        </FormSection>
       </form>
 
       <ModalSelectOrgan

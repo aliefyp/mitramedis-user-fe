@@ -4,7 +4,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import Typography from "components/Typography";
 import Card from "components/Card";
 import ButtonAddMore from "components/ButtonAddMore";
-import Combobox from "components/FormInput/ComboBox";
+import ComboBox from "components/FormInput/ComboBox";
 
 interface FormDiagnosisType {
   icd_code: string;
@@ -41,7 +41,7 @@ const FormDiagnosis = () => {
               }
             />
           </div>
-          <Combobox
+          <ComboBox
             placeholder="Ketik nama atau pilih kode ICD-10"
             label="ICD-10"
             options={[
@@ -51,7 +51,7 @@ const FormDiagnosis = () => {
             ]}
             {...register("icd_code")}
           />
-          <Combobox
+          <ComboBox
             placeholder="Pilih jenis Diagnosis"
             label="Diagnosis"
             options={[
@@ -63,6 +63,11 @@ const FormDiagnosis = () => {
           />
         </Card>
       ))}
+      {diagnoses.length === 0 && (
+        <Typography small className="w-full text-center !text-gray-500">
+          Belum ada diagnosis
+        </Typography>
+      )}
       <div>
         <ButtonAddMore
           onClick={() => setDiagnoses([...diagnoses, DEFAULT_DIAGNOSE_ITEM])}

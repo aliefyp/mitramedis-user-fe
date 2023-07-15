@@ -1,8 +1,8 @@
 import React, { Fragment, useRef, useState } from "react";
 import { Combobox as ComboboxHeadless, Transition } from "@headlessui/react";
-import { FaCheck, FaChevronDown } from "react-icons/fa";
 import clsx from "clsx";
 import Label from "./Label";
+import { HiCheck, HiChevronDown } from "react-icons/hi";
 
 interface Option {
   key: number | string;
@@ -63,10 +63,10 @@ const ComboBox = ({
             />
             <ComboboxHeadless.Button
               ref={comboBtn}
-              className="absolute inset-y-0 right-0 flex items-center pr-2"
+              className="absolute inset-y-0 right-0 flex items-center pr-3"
             >
-              <FaChevronDown
-                className="h-5 w-5 text-gray-400"
+              <HiChevronDown
+                className="text-2xl text-gray-500"
                 aria-hidden="true"
               />
             </ComboboxHeadless.Button>
@@ -109,7 +109,7 @@ const ComboBox = ({
                               active ? "text-white" : "text-sky-600"
                             }`}
                           >
-                            <FaCheck aria-hidden="true" />
+                            <HiCheck aria-hidden="true" className="text-lg" />
                           </span>
                         ) : null}
                       </>

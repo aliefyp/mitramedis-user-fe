@@ -7,17 +7,32 @@ interface CheckboxProps extends React.HTMLProps<HTMLInputElement> {
   name: string;
   placeholder?: string;
   required?: boolean;
+  value?: string;
+  id?: string;
 }
 
 export default React.forwardRef<HTMLInputElement, CheckboxProps>(
   function CheckBox(
-    { className, disabled, error, label, name, required, children, ...rest },
+    {
+      className,
+      disabled,
+      error,
+      label,
+      name,
+      required,
+      children,
+      value,
+      id,
+      ...rest
+    },
     ref
   ) {
     return (
       <div className={clsx("flex items-center justify-start gap-4", className)}>
         <input
           ref={ref}
+          id={id}
+          value={value}
           type="checkbox"
           className={clsx(
             "form-checkbox h-5 w-5 grow-0 rounded-md border border-gray-300 shadow-sm",

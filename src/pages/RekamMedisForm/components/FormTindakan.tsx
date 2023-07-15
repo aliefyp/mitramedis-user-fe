@@ -4,7 +4,8 @@ import Typography from "components/Typography";
 import TextArea from "components/FormInput/TextArea";
 import Input from "components/FormInput/Input";
 import CheckBox from "components/FormInput/CheckBox";
-import Section from "./Section";
+import FormSection from "components/FormSection";
+
 import CardTindakan from "./CardTindakan";
 import CardBMHP from "./CardBMHP";
 
@@ -31,15 +32,15 @@ const FormTindakan = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Section title="KIE (Komunikasi, Informasi, dan Edukasi)">
+      <FormSection title="KIE (Komunikasi, Informasi, dan Edukasi)">
         <TextArea
           label="Komunikasi, Informasi, dan Edukasi"
           placeholder="Tuliskan KIE yang disarankan pada pasien"
           {...register("kie")}
         />
-      </Section>
+      </FormSection>
 
-      <Section title="Tidakan">
+      <FormSection title="Tidakan">
         <div className="grid grid-cols-2 gap-6">
           <Input
             readOnly
@@ -84,8 +85,8 @@ const FormTindakan = () => {
             onDelete={(index) => setBmhp(bmhp.filter((_, i) => i !== index))}
           />
         </div>
-      </Section>
-      <Section>
+      </FormSection>
+      <FormSection>
         <div className="col-span-2 flex items-start gap-6">
           <CheckBox {...register("consent")}>
             <Typography>
@@ -97,7 +98,7 @@ const FormTindakan = () => {
             </Typography>
           </CheckBox>
         </div>
-      </Section>
+      </FormSection>
     </form>
   );
 };

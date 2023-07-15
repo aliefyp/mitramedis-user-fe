@@ -1,6 +1,5 @@
 import Button from "components/Button";
 import Input from "components/FormInput/Input";
-import Select from "components/Select";
 import TextArea from "components/FormInput/TextArea";
 import Toggle from "components/Toggle";
 import Typography from "components/Typography";
@@ -13,6 +12,9 @@ import {
   OPTIONS_MARITAL_STATUS,
   OPTIONS_OCCUPATION,
 } from "../constants";
+import FormSection from "components/FormSection";
+import CheckBox from "components/FormInput/CheckBox";
+import ComboBox from "components/FormInput/ComboBox";
 
 const FormAdult = () => {
   const [sameAsAddress1, setSameAsAddress1] = useState(false);
@@ -31,26 +33,26 @@ const FormAdult = () => {
         {...register(`address_${index}`)}
       />
 
-      <Select
+      <ComboBox
         label="Provinsi"
         placeholder="Pilih provinsi"
-        items={[]}
+        options={[]}
         className="col-span-4"
         {...register(`address_${index}_province`)}
       />
 
-      <Select
+      <ComboBox
         label="Kotamadya / Kabupaten"
         placeholder="Pilih kota atau kabupaten"
-        items={[]}
+        options={[]}
         className="col-span-4"
         {...register(`address_${index}_city`)}
       />
 
-      <Select
+      <ComboBox
         label="Kecamatan"
         placeholder="Pilih kecamatan"
-        items={[]}
+        options={[]}
         className="col-span-4 md:col-span-3"
         {...register(`address_${index}_district`)}
       />
@@ -63,10 +65,10 @@ const FormAdult = () => {
         {...register(`address_${index}_zip`)}
       />
 
-      <Select
+      <ComboBox
         label="Kelurahan / Desa"
         placeholder="Pilih kelurahan atau desa"
-        items={[]}
+        options={[]}
         className="col-span-4"
         {...register(`address_${index}_subdistrict`)}
       />
@@ -91,173 +93,177 @@ const FormAdult = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <section className="grid grid-cols-4 gap-6 border-b py-8">
-        <Typography as="h3" variant="h3" className="col-span-4">
-          Identitas
-        </Typography>
+      <FormSection title="Identitas">
+        <div className="grid grid-cols-4 gap-6">
+          {/* mr_number */}
+          <Input
+            readOnly
+            disabled
+            label="Nomor Rekam Medis"
+            type="text"
+            className="col-span-4"
+            value="002121"
+            {...register("mr_number")}
+          />
 
-        {/* mr_number */}
-        <Input
-          readOnly
-          disabled
-          label="Nomor Rekam Medis"
-          type="text"
-          className="col-span-4"
-          value="002121"
-          {...register("mr_number")}
-        />
+          {/* patient_name */}
+          <Input
+            required
+            label="Nama Lengkap"
+            type="text"
+            placeholder="Nama pasien sesuai KTP"
+            className="col-span-4"
+            {...register("patient_name")}
+          />
 
-        {/* patient_name */}
-        <Input
-          required
-          label="Nama Lengkap"
-          type="text"
-          placeholder="Nama pasien sesuai KTP"
-          className="col-span-4"
-          {...register("patient_name")}
-        />
+          {/* id_card_number */}
+          <Input
+            label="NIK"
+            type="text"
+            placeholder="Silahkan masukkan 16 digit nomor identitas sesuai KTP"
+            className="col-span-4"
+            {...register("id_card_number")}
+          />
 
-        {/* id_card_number */}
-        <Input
-          label="NIK"
-          type="text"
-          placeholder="Silahkan masukkan 16 digit nomor identitas sesuai KTP"
-          className="col-span-4"
-          {...register("id_card_number")}
-        />
+          {/* id_card_number_2 */}
+          <Input
+            label="Nomor Identitas Lain (Khusus Pasien WNA)"
+            type="text"
+            placeholder="Silahkan masukkan nomor PASPOR / KITAS"
+            className="col-span-4"
+            {...register("id_card_number_2")}
+          />
 
-        {/* id_card_number_2 */}
-        <Input
-          label="Nomor Identitas Lain (Khusus Pasien WNA)"
-          type="text"
-          placeholder="Silahkan masukkan nomor PASPOR / KITAS"
-          className="col-span-4"
-          {...register("id_card_number_2")}
-        />
+          {/* mother_name */}
+          <Input
+            required
+            label="Nama Ibu Kandung"
+            type="text"
+            placeholder="Nama ibu kandung sesuai KTP"
+            className="col-span-4"
+            {...register("mother_name")}
+          />
 
-        {/* mother_name */}
-        <Input
-          required
-          label="Nama Ibu Kandung"
-          type="text"
-          placeholder="Nama ibu kandung sesuai KTP"
-          className="col-span-4"
-          {...register("mother_name")}
-        />
+          {/* birth_place */}
+          <Input
+            label="Tempat Lahir"
+            type="text"
+            placeholder="Nama Kota/Kabupaten"
+            className="col-span-4"
+            {...register("birth_place")}
+          />
 
-        {/* birth_place */}
-        <Input
-          label="Tempat Lahir"
-          type="text"
-          placeholder="Nama Kota/Kabupaten"
-          className="col-span-4"
-          {...register("birth_place")}
-        />
+          {/* birth_date */}
+          <Input
+            label="Tanggal Lahir"
+            type="date"
+            placeholder="DD/MM/YYYY"
+            className="col-span-4"
+            {...register("birth_date")}
+          />
 
-        {/* birth_date */}
-        <Input
-          label="Tanggal Lahir"
-          type="date"
-          placeholder="DD/MM/YYYY"
-          className="col-span-4"
-          {...register("birth_date")}
-        />
-
-        {/* gender */}
-        <Select
-          id="gender"
-          placeholder="Pilih jenis kelamin"
-          label="Jenis Kelamin"
-          items={OPTIONS_GENDER}
-          className="col-span-4"
-          {...register("gender")}
-        />
-      </section>
-
-      <section className="grid grid-cols-4 gap-6 border-b py-8">
-        <Typography as="h3" variant="h3" className="col-span-4">
-          Alamat
-        </Typography>
-
-        {AddressForm(1)}
-        <div className="col-span-4">
-          <Toggle value={sameAsAddress1} onSwitch={setSameAsAddress1}>
-            Alamat domisili sama dengan alamat pada kartu identitas
-          </Toggle>
+          {/* gender */}
+          <ComboBox
+            id="gender"
+            placeholder="Pilih jenis kelamin"
+            label="Jenis Kelamin"
+            options={OPTIONS_GENDER.map((item, index) => ({
+              key: index + 1,
+              label: item,
+            }))}
+            className="col-span-4"
+            {...register("gender")}
+          />
         </div>
-        {!sameAsAddress1 && AddressForm(2)}
-      </section>
+      </FormSection>
 
-      <section className="grid grid-cols-4 gap-6 border-b py-8">
-        <Typography as="h3" variant="h3" className="col-span-4">
-          Kontak
-        </Typography>
+      <FormSection title="Alamat">
+        <div className="grid grid-cols-4 gap-6">
+          {AddressForm(1)}
+          <div className="col-span-4">
+            <Toggle value={sameAsAddress1} onSwitch={setSameAsAddress1}>
+              Alamat domisili sama dengan alamat pada kartu identitas
+            </Toggle>
+          </div>
+          {!sameAsAddress1 && AddressForm(2)}
+        </div>
+      </FormSection>
 
-        <Input
-          label="No. HP"
-          type="number"
-          placeholder="08123xxxxxxx"
-          className="col-span-4 md:col-span-2"
-          {...register("phone_2")}
-        />
-        <Input
-          label="No. Telepon Rumah"
-          type="number"
-          placeholder="08123xxxxxxx"
-          className="col-span-4 md:col-span-2"
-          {...register("phone_1")}
-        />
-      </section>
+      <FormSection title="Kontak">
+        <div className="grid grid-cols-4 gap-6">
+          <Input
+            label="No. HP"
+            type="number"
+            placeholder="08123xxxxxxx"
+            className="col-span-4 md:col-span-2"
+            {...register("phone_2")}
+          />
+          <Input
+            label="No. Telepon Rumah"
+            type="number"
+            placeholder="08123xxxxxxx"
+            className="col-span-4 md:col-span-2"
+            {...register("phone_1")}
+          />
+        </div>
+      </FormSection>
 
-      <section className="grid grid-cols-4 gap-6 border-b py-8">
-        <Typography as="h3" variant="h3" className="col-span-4">
-          Lain-lain
-        </Typography>
+      <FormSection title="Lain-lain">
+        <div className="grid grid-cols-4 gap-6">
+          <ComboBox
+            id="education"
+            placeholder="Pilih pendidikan terakhir"
+            label="Pendidikan Terakhir"
+            options={OPTIONS_EDUCATION.map((item, index) => ({
+              key: index + 1,
+              label: item,
+            }))}
+            className="col-span-4"
+            {...register("education")}
+          />
 
-        <Select
-          id="education"
-          placeholder="Pilih pendidikan terakhir"
-          label="Pendidikan Terakhir"
-          items={OPTIONS_EDUCATION}
-          className="col-span-4"
-          {...register("education")}
-        />
+          <ComboBox
+            id="occupation"
+            placeholder="Pekerjaan saat ini"
+            label="Pekerjaan"
+            options={OPTIONS_OCCUPATION.map((item, index) => ({
+              key: index + 1,
+              label: item,
+            }))}
+            className="col-span-4"
+            {...register("occupation")}
+          />
 
-        <Select
-          id="occupation"
-          placeholder="Pekerjaan saat ini"
-          label="Pekerjaan"
-          items={OPTIONS_OCCUPATION}
-          className="col-span-4"
-          {...register("occupation")}
-        />
-
-        <Select
-          id="marital_status"
-          placeholder="Status pernikahan"
-          label="Status pernikahan"
-          items={OPTIONS_MARITAL_STATUS}
-          className="col-span-4"
-          {...register("marital_status")}
-        />
-        <Input
-          label="Metode Pembayaran"
-          type="number"
-          placeholder="Pilih metode pembayaran yang digunakan"
-          className="col-span-4 md:col-span-2"
-          {...register("payment_method")}
-        />
-        <Input
-          label="Asuransi Lainnya"
-          type="number"
-          placeholder="Tulis jenis asuransi"
-          className="col-span-4 md:col-span-2"
-          {...register("payment_method")}
-        />
-      </section>
+          <ComboBox
+            id="marital_status"
+            placeholder="Status pernikahan"
+            label="Status pernikahan"
+            options={OPTIONS_MARITAL_STATUS.map((item, index) => ({
+              key: index + 1,
+              label: item,
+            }))}
+            className="col-span-4"
+            {...register("marital_status")}
+          />
+          <Input
+            label="Metode Pembayaran"
+            type="number"
+            placeholder="Pilih metode pembayaran yang digunakan"
+            className="col-span-4 md:col-span-2"
+            {...register("payment_method")}
+          />
+          <Input
+            label="Asuransi Lainnya"
+            type="number"
+            placeholder="Tulis jenis asuransi"
+            className="col-span-4 md:col-span-2"
+            {...register("payment_method")}
+          />
+        </div>
+      </FormSection>
 
       <div className="col-span-2 flex items-start gap-2 py-4">
-        <Input type="checkbox" {...register("consent")} />
+        <CheckBox {...register("consent")} />
         <Typography>
           Pasien telah diberikan penjelasan mengenai <i>General Consent</i> atau
           Persetujuan Umum.
