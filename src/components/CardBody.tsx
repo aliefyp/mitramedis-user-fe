@@ -7,5 +7,5 @@ type CardBodyProps = {
 };
 
 export default function CardBody({ children, className }: CardBodyProps) {
-  return <div className={clsx("p-4", className)}>{children}</div>;
+  return <div className={clsx("p-6", className)}>{children}</div>;
 }

@@ -22,7 +22,7 @@ import Typography from "components/Typography";
 const customTheme: CustomFlowbiteTheme = {
   button: {
     color: {
-      // primary: 'bg-red-500 hover:bg-red-600',
+      primary: "bg-sky-700",
     },
   },
   textInput: {
@@ -40,6 +40,9 @@ const customTheme: CustomFlowbiteTheme = {
         base: "group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-3 py-2",
       },
     },
+  },
+  dropdown: {
+    content: "bg-sky-500",
   },
 };
 

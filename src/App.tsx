@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import moment from "moment";
+import "moment/locale/id";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { AuthProvider } from "react-auth-kit";
@@ -16,7 +19,6 @@ import RekamMedisForm from "pages/RekamMedisForm/index";
 import Stok from "pages/Stok/index";
 import "./App.css";
 import "flowbite";
-import { useEffect } from "react";
 
 // Create a client
 const queryClient = new QueryClient({
@@ -28,6 +30,8 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+moment.locale("id");
 
 function App() {
   const { pathname } = useLocation();

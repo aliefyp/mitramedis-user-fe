@@ -10,7 +10,7 @@ interface Option {
 }
 
 interface ComboboxProps extends React.HTMLProps<HTMLInputElement> {
-  label: string;
+  label?: string;
   options: Option[];
   required?: boolean;
 }
