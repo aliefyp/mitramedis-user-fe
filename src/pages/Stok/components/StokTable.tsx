@@ -3,45 +3,62 @@ import { useState } from "react";
 import { FaEye, FaFileMedical, FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import Card from "components/Card";
 import Button from "components/Button";
+import toIDR from "helpers/toIDR";
 
-const PATIENT_TABLE_ROW = [
-  "No. Rekam Medis",
-  "Nama",
-  "Umur",
-  "NIK",
-  "Alamat",
+const STOK_TABLE_ROW = [
+  "Kode",
+  "Nama Item",
+  "Stok",
+  "Satuan",
+  "Kategori",
+  "Harga Pokok",
+  "Harga Jual",
+  "Supplier",
+  "Exp",
   "",
 ];
 
-const PATIENT_DATA = [
+const STOK_DATA = [
   {
-    patient_id: "MR1",
-    name: "Adit toor",
-    age: "29 Tahun 1 Bulan 9 Hari",
-    ktp: "128474839",
-    address: "Saradan",
+    id: "92000384",
+    name: "Paracetamol 60 mg / 0,6 mL Drops",
+    stock: "10",
+    unit: "pcs",
+    category: "Obat",
+    base_price: 15000,
+    selling_price: 20000,
+    supplier: "Afi Farma",
+    expired_date: "Feb 2024",
   },
   {
-    patient_id: "MR5",
-    name: "ahmad suhadi	",
-    age: "28 Tahun 1 Bulan 21 Hari",
-    ktp: "3010071304950001",
-    address: "sidomekar, semboro, jember",
+    id: "92000384",
+    name: "Paracetamol 60 mg / 0,6 mL Drops",
+    stock: "10",
+    unit: "pcs",
+    category: "Obat",
+    base_price: 15000,
+    selling_price: 20000,
+    supplier: "Afi Farma",
+    expired_date: "Feb 2024",
   },
   {
-    patient_id: "MR6",
-    name: "ahmad barun",
-    age: "27 Tahun 10 Bulan 18 Hari",
-    ktp: "3113071707950001",
-    address: "semboro, semboro, jember",
+    id: "92000384",
+    name: "Paracetamol 60 mg / 0,6 mL Drops",
+    stock: "10",
+    unit: "pcs",
+    category: "Obat",
+    base_price: 15000,
+    selling_price: 20000,
+    supplier: "Afi Farma",
+    expired_date: "Feb 2024",
   },
 ];
 
-interface PasienTablePreviewProps {
+interface StokTablePreviewProps {
   onPreview: () => void;
 }
 
-const PasienTable = ({ onPreview }: PasienTablePreviewProps) => {
+const StokTable = ({ onPreview }: StokTablePreviewProps) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   return (
@@ -49,7 +66,7 @@ const PasienTable = ({ onPreview }: PasienTablePreviewProps) => {
       <div className=" min-w-2xl overflow-auto">
         <Table>
           <Table.Head>
-            {PATIENT_TABLE_ROW.map((item, index) => (
+            {STOK_TABLE_ROW.map((item, index) => (
               <Table.HeadCell
                 key={index}
                 className="text-md whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white"
@@ -59,18 +76,22 @@ const PasienTable = ({ onPreview }: PasienTablePreviewProps) => {
             ))}
           </Table.Head>
           <Table.Body className="divide-y">
-            {PATIENT_DATA.map((item, index) => (
+            {STOK_DATA.map((item, index) => (
               <Table.Row
                 key={index}
                 className="bg-white hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800"
               >
                 <Table.Cell className="whitespace-nowrap font-medium text-slate-800 dark:text-white">
-                  {item.patient_id}
+                  {item.id}
                 </Table.Cell>
                 <Table.Cell>{item.name}</Table.Cell>
-                <Table.Cell>{item.age}</Table.Cell>
-                <Table.Cell>{item.ktp}</Table.Cell>
-                <Table.Cell>{item.address}</Table.Cell>
+                <Table.Cell>{item.stock}</Table.Cell>
+                <Table.Cell>{item.unit}</Table.Cell>
+                <Table.Cell>{item.category}</Table.Cell>
+                <Table.Cell>{toIDR(item.base_price)}</Table.Cell>
+                <Table.Cell>{toIDR(item.selling_price)}</Table.Cell>
+                <Table.Cell>{item.supplier}</Table.Cell>
+                <Table.Cell>{item.expired_date}</Table.Cell>
                 <Table.Cell>
                   <div className="flex gap-1">
                     <Tooltip content="Lihat">
@@ -131,4 +152,4 @@ const PasienTable = ({ onPreview }: PasienTablePreviewProps) => {
   );
 };
 
-export default PasienTable;
+export default StokTable;

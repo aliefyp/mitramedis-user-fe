@@ -58,7 +58,7 @@ const PasienFilter = () => {
             >
               <div className="flex items-center gap-4">
                 <FaPlus />
-                <p className="text-xl font-bold">Pasien Baru</p>
+                Pasien Baru
               </div>
             </Button>
           </div>

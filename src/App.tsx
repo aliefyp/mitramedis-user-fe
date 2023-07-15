@@ -13,6 +13,7 @@ import Pasien from "pages/Pasien/index";
 import PasienForm from "pages/PasienForm/index";
 import RekamMedis from "pages/RekamMedis/index";
 import RekamMedisForm from "pages/RekamMedisForm/index";
+import Stok from "pages/Stok/index";
 import "./App.css";
 import "flowbite";
 import { useEffect } from "react";
@@ -59,6 +60,7 @@ function App() {
                   path="/rekam-medis/new"
                   element={<RekamMedisForm type="new" />}
                 />
+                <Route path="/stok" element={<Stok />} />
                 <Route path="/logout" element={<Logout />} />
                 <Route path="*" element={<Error />} />
               </Route>

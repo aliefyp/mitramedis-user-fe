@@ -34,6 +34,13 @@ const customTheme: CustomFlowbiteTheme = {
       },
     },
   },
+  table: {
+    body: {
+      cell: {
+        base: "group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-3 py-2",
+      },
+    },
+  },
 };
 
 export const MAIN_MENU = {
@@ -42,7 +49,7 @@ export const MAIN_MENU = {
     { text: "Dashboard", icon: TbLayoutDashboard, url: "/" },
     { text: "Pasien", icon: TbUsers, url: "/pasien" },
     { text: "Rekam Medis", icon: TbReportMedical, url: "/rekam-medis" },
-    { text: "Daftar Obat", icon: TbMedicineSyrup, url: "/daftar-obat" },
+    { text: "Stok", icon: TbMedicineSyrup, url: "/stok" },
   ],
 };
 
@@ -71,7 +78,7 @@ const Layout = () => {
           title={<img src="/img_main_logo.png" alt="mitramedis" width={180} />}
         >
           {[MAIN_MENU, EXTRAS_MENU].map((menu, index) => (
-            <Nav key={index} orientation="vertical" className="mb-4 gap-1">
+            <Nav key={index} orientation="vertical" className="mb-6 gap-1">
               <Typography
                 as="p"
                 smaller
