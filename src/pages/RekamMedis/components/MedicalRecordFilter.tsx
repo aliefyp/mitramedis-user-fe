@@ -6,9 +6,9 @@ import React, { useState } from "react";
 import { useDebounce } from "use-debounce";
 import { useNavigate } from "react-router-dom";
 
-interface MedicalRecordFilterParam {
-  // query: string;
-}
+// interface MedicalRecordFilterParam {
+// query: string;
+// }
 
 const MedicalRecordFilter = () => {
   const [searchText, setSearchText] = useState("");
