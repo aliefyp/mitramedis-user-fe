@@ -1,9 +1,8 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, { Fragment, useRef, useState } from "react";
 import { Combobox as ComboboxHeadless, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import Label from "./Label";
 import { HiCheck, HiChevronDown } from "react-icons/hi";
-import { useForm } from "react-hook-form";
 
 interface Option {
   key: number | string;
