@@ -4,7 +4,6 @@ import Toggle from "components/Toggle";
 import { useState } from "react";
 import FormNewborn from "./components/FormNewborn";
 import FormAdult from "./components/FormAdult";
-import Label from "components/FormInput/Label";
 import Typography from "components/Typography";
 
 interface PasienFormProps {
