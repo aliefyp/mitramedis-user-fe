@@ -54,6 +54,7 @@ export default React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
           name={name}
           rows={3}
           className={clsx(
+            "placeholder:text-gray-400",
             "form-textarea mt-1 block w-full rounded-md border border-gray-300 shadow-sm",
             "focus:border-sky-400 focus:ring focus:ring-sky-300 focus:ring-opacity-50",
             disabled && "cursor-not-allowed bg-gray-200 text-gray-500",

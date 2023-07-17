@@ -33,6 +33,6 @@ export interface PatientType {
   occupation: string;
   marital_status: string;
   payment_method: string;
-  insurance: string;
+  payment_method_other: string;
   consent: boolean;
 }

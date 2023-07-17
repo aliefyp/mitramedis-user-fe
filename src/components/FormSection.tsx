@@ -9,7 +9,7 @@ const FormSection = ({ title, className, children }: SectionProps) => {
   return (
     <section
       className={clsx(
-        "border-b pb-8 pt-4 last:border-b-0 md:pb-12 md:pt-8",
+        "border-b pb-6 pt-4 last:border-b-0 md:pb-8 md:pt-6",
         className
       )}
     >

@@ -7,7 +7,9 @@ import { PatientType } from "types/patient";
 import { OPTIONS_GENDER, OPTIONS_HOUR, OPTIONS_MINUTE } from "../constants";
 
 const FormNewborn = () => {
-  const { register, handleSubmit } = useForm<PatientType>();
+  const { formState, register, handleSubmit } = useForm<PatientType>();
+
+  console.log(formState.errors);
 
   const onSubmit = (val: PatientType) => {
     console.log(val);
@@ -17,44 +19,59 @@ const FormNewborn = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormSection title="Data Kelahiran">
         <div className="grid grid-cols-4 gap-6">
-          {/* mr_number */}
-          <Input
-            readOnly
-            disabled
-            label="Nomor Rekam Medis"
-            type="text"
-            className="col-span-4"
-            value="002121"
-            {...register("mr_number")}
-          />
-
           {/* patient_name */}
           <Input
-            prefix="Bayi Ny."
             required
+            prefix="Bayi Ny."
             label="Nama Bayi"
             type="text"
             placeholder="Nama ibu bayi"
             className="col-span-4"
-            {...register("patient_name")}
+            {...(register("patient_name"),
+            {
+              required: true,
+            })}
           />
 
           {/* id_card_number */}
           <Input
+            required
             label="NIK Ibu Kandung"
             type="text"
             placeholder="Silahkan masukkan 16 digit nomor identitas sesuai KTP"
             className="col-span-4"
-            {...register("id_card_number")}
+            {...register("id_card_number", {
+              required: true,
+              min: 16,
+            })}
+          />
+
+          {/* gender */}
+          <ComboBox
+            required
+            id="gender"
+            placeholder="Pilih jenis kelamin"
+            label="Jenis Kelamin"
+            options={OPTIONS_GENDER.map((item, index) => ({
+              key: index + 1,
+              label: item,
+            }))}
+            className="col-span-4"
+            {...register("gender", {
+              required: true,
+            })}
           />
 
           {/* birth_date */}
           <Input
+            required
             label="Tanggal Lahir"
             type="date"
             placeholder="DD/MM/YYYY"
-            className="col-span-4"
-            {...register("birth_date")}
+            className="col-span-4 md:col-span-2"
+            {...register("birth_date", {
+              required: true,
+            })}
           />
 
           {/* birth_hour */}
@@ -66,7 +83,7 @@ const FormNewborn = () => {
               key: index + 1,
               label: item,
             }))}
-            className="col-span-2"
+            className="col-span-4 md:col-span-1"
             {...register("birth_hour")}
           />
 
@@ -79,21 +96,8 @@ const FormNewborn = () => {
               key: index + 1,
               label: item,
             }))}
-            className="col-span-2"
+            className="col-span-4 md:col-span-1"
             {...register("birth_minute")}
-          />
-
-          {/* gender */}
-          <ComboBox
-            id="gender"
-            placeholder="Pilih jenis kelamin"
-            label="Jenis Kelamin"
-            options={OPTIONS_GENDER.map((item, index) => ({
-              key: index + 1,
-              label: item,
-            }))}
-            className="col-span-4"
-            {...register("gender")}
           />
         </div>
       </FormSection>

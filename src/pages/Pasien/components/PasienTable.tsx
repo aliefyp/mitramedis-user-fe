@@ -1,6 +1,6 @@
 import { Pagination, Table, Tooltip } from "flowbite-react";
 import { useState } from "react";
-import { FaEye, FaFileMedical, FaPencilAlt, FaTrashAlt } from "react-icons/fa";
+import { FaBookMedical, FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import Card from "components/Card";
 import Button from "components/Button";
 
@@ -73,16 +73,6 @@ const PasienTable = ({ onPreview }: PasienTablePreviewProps) => {
                 <Table.Cell>{item.address}</Table.Cell>
                 <Table.Cell>
                   <div className="flex gap-1">
-                    <Tooltip content="Lihat">
-                      <Button
-                        size="small"
-                        color="secondary"
-                        onClick={onPreview}
-                        className="py-2"
-                      >
-                        <FaEye />
-                      </Button>
-                    </Tooltip>
                     <Tooltip content="Ubah">
                       <Button
                         size="small"
@@ -103,14 +93,14 @@ const PasienTable = ({ onPreview }: PasienTablePreviewProps) => {
                         <FaTrashAlt />
                       </Button>
                     </Tooltip>
-                    <Tooltip content="Rekam Medis Baru">
+                    <Tooltip content="Riwayat">
                       <Button
                         size="small"
                         color="success"
                         onClick={onPreview}
                         className="py-2"
                       >
-                        <FaFileMedical />
+                        <FaBookMedical />
                       </Button>
                     </Tooltip>
                   </div>

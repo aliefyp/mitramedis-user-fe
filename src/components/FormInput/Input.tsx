@@ -80,6 +80,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
         )}
         <input
           className={clsx(
+            "placeholder:text-gray-400",
             "block w-full border-none focus:border-none focus:ring-0",
             "invalid:border-red-500"
           )}

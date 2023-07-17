@@ -1,8 +1,9 @@
-import React, { Fragment, useRef, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Combobox as ComboboxHeadless, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import Label from "./Label";
 import { HiCheck, HiChevronDown } from "react-icons/hi";
+import { useForm } from "react-hook-form";
 
 interface Option {
   key: number | string;
@@ -13,6 +14,7 @@ interface ComboboxProps extends React.HTMLProps<HTMLInputElement> {
   label?: string;
   options: Option[];
   required?: boolean;
+  onValueChange?: (val: Option) => void;
 }
 
 const ComboBox = ({
@@ -21,6 +23,7 @@ const ComboBox = ({
   label,
   options,
   required,
+  onValueChange,
   ...rest
 }: ComboboxProps) => {
   const comboBtn = useRef(null);
@@ -38,9 +41,13 @@ const ComboBox = ({
         );
 
   const handleInputFocus = () => comboBtn.current?.click();
+  const handleChange = (val: Option) => {
+    setSelected(val);
+    if (onValueChange) onValueChange(val);
+  };
 
   return (
-    <ComboboxHeadless value={selected} onChange={setSelected}>
+    <ComboboxHeadless value={selected} onChange={handleChange}>
       <div className={className}>
         {label && (
           <Label required={required} htmlFor={name}>
@@ -52,7 +59,9 @@ const ComboBox = ({
             {/* 
                 // @ts-ignore */}
             <ComboboxHeadless.Input
+              autoComplete="off"
               className={clsx(
+                "placeholder:text-gray-400",
                 "mt-1 flex w-full rounded-md border border-gray-300 shadow-sm",
                 "focus:border-sky-400 focus:ring focus:ring-sky-300 focus:ring-opacity-50"
               )}

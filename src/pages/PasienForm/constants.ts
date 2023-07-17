@@ -94,7 +94,6 @@ export const OPTIONS_GENDER = [
   "Laki-laki",
   "Perempuan",
   "Tidak dapat ditentukan",
-  "Tidak mengisi",
 ]
 
 export const OPTIONS_RELIGION = [
@@ -133,4 +132,10 @@ export const OPTIONS_MARITAL_STATUS = [
   "Kawin",
   "Cerai hidup",
   "Cerai mati"
+]
+
+export const OPTIONS_PAYMENT_METHOD = [
+  "Mandiri",
+  "BPJS",
+  "Asuransi Lainnya"
 ]
