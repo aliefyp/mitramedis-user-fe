@@ -19,7 +19,11 @@ const FormAnamnesis = () => {
   const [showAllergyNote, setShowAllergyNote] = useState(false);
   const [showMedicalTreatmentNote, setShowMedicalTreatmentNote] =
     useState(false);
-  const { register, handleSubmit } = useForm<FormAnamnesisType>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormAnamnesisType>();
 
   const onSubmit = (val: FormAnamnesisType) => {
     console.log(val);
@@ -29,13 +33,25 @@ const FormAnamnesis = () => {
     <form className="grid grid-cols-3 py-6" onSubmit={handleSubmit(onSubmit)}>
       <div className="col-span-3 grid gap-6 2xl:col-span-2">
         <TextArea
+          rows={1}
+          required
           label="Keluhan Utama"
+          error={Boolean(errors?.main_complaint)}
+          helper={errors?.main_complaint?.message}
           placeholder="Tuliskan keluhan utama pasien"
-          {...register("main_complaint")}
+          {...register("main_complaint", {
+            required: {
+              value: true,
+              message: "Wajib diisi",
+            },
+          })}
         />
 
         <TextArea
+          required
           label="Riwayat Penyakit Sekarang"
+          error={Boolean(errors?.medical_history_recent)}
+          helper={errors?.medical_history_recent?.message}
           placeholder="Tuliskan riwayat penyakit yang dialami pasien saat ini"
           {...register("medical_history_recent")}
         />

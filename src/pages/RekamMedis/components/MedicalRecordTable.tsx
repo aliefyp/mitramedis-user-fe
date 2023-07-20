@@ -94,16 +94,6 @@ const MedicalRecordTable = ({ onPreview }: MedicalRecordTableProps) => {
                 <Table.Cell>{item.expired_date}</Table.Cell>
                 <Table.Cell>
                   <div className="flex gap-1">
-                    <Tooltip content="Lihat">
-                      <Button
-                        size="small"
-                        color="secondary"
-                        onClick={onPreview}
-                        className="py-2"
-                      >
-                        <FaEye />
-                      </Button>
-                    </Tooltip>
                     <Tooltip content="Ubah">
                       <Button
                         size="small"

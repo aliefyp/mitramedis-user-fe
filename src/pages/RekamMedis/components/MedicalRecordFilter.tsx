@@ -1,52 +1,71 @@
-import { FaPlus, FaSearch } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 import Card from "components/Card";
 import Button from "components/Button";
 import Input from "components/FormInput/Input";
-import React, { useState } from "react";
-import { useDebounce } from "use-debounce";
+// import React, { useState } from "react";
+// import { useDebounce } from "use-debounce";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
-// interface MedicalRecordFilterParam {
-// query: string;
-// }
+interface MedicalRecordFilterParam {
+  id_card_number: string;
+  patient_name: string;
+  mr_number: string;
+}
 
 const MedicalRecordFilter = () => {
-  const [searchText, setSearchText] = useState("");
-  const [value] = useDebounce(searchText, 500);
-
+  const { register, handleSubmit } = useForm<MedicalRecordFilterParam>();
   const navigate = useNavigate();
 
-  console.log(value);
+  const onSubmit = (val: MedicalRecordFilterParam) => {
+    console.log(val);
+  };
+  // const [value] = useDebounce(searchText, 500);
+
+  // console.log(value);
 
   return (
     <Card className="rounded-2xl border-none p-6 shadow-sm">
-      <div className="grid grid-cols-2 items-center gap-4">
-        <div className="col-span-2 sm:col-span-1">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="grid grid-cols-4 items-center gap-4">
           <Input
-            label="Cari disini"
+            label="Nomor Medical Record"
             type="text"
             id="mr_number"
-            placeholder="Cari nama atau nomor rekam medis"
-            suffix={<FaSearch />}
-            value={searchText}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setSearchText(e.target.value)
-            }
-            onSuffixClick={() => {}}
+            placeholder="12345"
+            prefix="MR"
+            className="col-span-4 sm:col-span-1"
+            {...register("mr_number")}
           />
+          <Input
+            label="Nama Pasien"
+            type="text"
+            id="patient_name"
+            placeholder="Tulis nama pasien"
+            className="col-span-4 sm:col-span-1"
+            {...register("patient_name")}
+          />
+          <Input
+            label="NIK"
+            type="text"
+            id="id_card_number"
+            placeholder="35123xxxxxxxxxxx"
+            className="col-span-4 sm:col-span-1"
+            {...register("patient_name")}
+          />
+          <div className="col-span-2 flex h-full items-end justify-end sm:col-span-1">
+            <Button
+              className="w-full sm:w-auto"
+              onClick={() => navigate("/rekam-medis/new")}
+            >
+              <div className="flex items-center gap-4">
+                <FaPlus />
+                Rekam Medis Baru
+              </div>
+            </Button>
+          </div>
         </div>
-        <div className="col-span-2 flex h-full items-end justify-end sm:col-span-1">
-          <Button
-            className="w-full sm:w-auto"
-            onClick={() => navigate("/rekam-medis/new")}
-          >
-            <div className="flex items-center gap-4">
-              <FaPlus />
-              Rekam Medis Baru
-            </div>
-          </Button>
-        </div>
-      </div>
+      </form>
     </Card>
   );
 };

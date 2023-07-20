@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "components/FormInput/Input";
 import ModalSelectOrgan from "./ModalSelectOrgan";
 import TextArea from "components/FormInput/TextArea";
@@ -18,8 +18,10 @@ interface FormPemeriksaanFisikType {
   psychological_state: string;
   height: number;
   weight: number;
+  bmi: number;
   blood_pressure_sistole: number;
   blood_pressure_diastole: number;
+  spo2: number;
   temperature: number;
   pulse_rate: number;
   respiration_rate: number;
@@ -28,7 +30,19 @@ interface FormPemeriksaanFisikType {
 const FormPemeriksaanFisik = () => {
   const [showOrganModal, setShowOrganModal] = useState(false);
   const [organNotes, setOrganNotes] = useState<Organ[]>([]);
-  const { register, handleSubmit } = useForm<FormPemeriksaanFisikType>();
+  const { register, handleSubmit, watch, setValue } =
+    useForm<FormPemeriksaanFisikType>();
+
+  const watchHeight = watch("height");
+  const watchWeight = watch("weight");
+
+  useEffect(() => {
+    const weightKgNum = Number(watchWeight);
+    const heightMeterNum = Number(watchHeight) / 100;
+    const bmiVal = weightKgNum / Math.pow(heightMeterNum, 2) || (0 as any);
+    console.log(typeof bmiVal);
+    setValue("bmi", bmiVal.toFixed(2));
+  }, [setValue, watchHeight, watchWeight]);
 
   const handleAddOrganNote = (values: Organ[]) => {
     setShowOrganModal(false);
@@ -39,10 +53,6 @@ const FormPemeriksaanFisik = () => {
     setOrganNotes(organNotes.filter((item) => item.name !== name));
   };
 
-  // const handleSelectSensesLevel = (level: string) => {
-  //   setSensesLevel(level);
-  // };
-
   const onSubmit = (val: FormPemeriksaanFisikType) => {
     console.log(val);
   };
@@ -51,21 +61,11 @@ const FormPemeriksaanFisik = () => {
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormSection title="Keadaan Umum">
-          <div className="grid grid-cols-2 gap-6">
-            {/* <div className="col-span-2 space-y-2">
-              <Input.Label>Tingkat Kesadaran</Input.Label>
-              <ButtonGroup
-                items={SENSES_LEVEL.map((item) => ({
-                  text: item,
-                  color: sensesLevel === item ? "primary" : "secondary",
-                  onClick: () => handleSelectSensesLevel(item),
-                }))}
-              />
-            </div> */}
+          <div className="grid grid-cols-12 gap-6">
             <ComboBox
               label="Tingkat Kesadaran"
               placeholder="Pilih tingkat kesadaran pasien"
-              className="col-span-2"
+              className="col-span-12 md:col-span-6"
               options={[
                 { key: 1, label: "Sadar Baik / Alert" },
                 { key: 2, label: "Verbal" },
@@ -78,7 +78,7 @@ const FormPemeriksaanFisik = () => {
             <ComboBox
               label="Status Psikologi"
               placeholder="Pilih status psikologi pasien"
-              className="col-span-2"
+              className="col-span-12 md:col-span-6"
               options={[
                 { key: "Tidak ada kelainan", label: "Tidak ada kelainan" },
                 { key: "Cemas", label: "Cemas" },
@@ -91,62 +91,92 @@ const FormPemeriksaanFisik = () => {
             <Input
               suffix="cm"
               label="Tinggi badan"
-              type="text"
+              type="number"
               placeholder="0"
-              className="col-span-1"
-              {...register("height")}
+              className="col-span-6 md:col-span-4"
+              {...register("height", {
+                min: 0,
+              })}
             />
             <Input
               suffix="kg"
               label="Berat badan"
+              type="number"
+              placeholder="0"
+              className="col-span-6 md:col-span-4"
+              {...register("weight", {
+                min: 0,
+              })}
+            />
+            <Input
+              readOnly
+              label="BMI"
               type="text"
               placeholder="0"
-              className="col-span-1"
-              {...register("weight")}
+              className="col-span-6 md:col-span-4"
+              {...register("bmi")}
             />
           </div>
         </FormSection>
         <FormSection title="Vital Sign">
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-12 gap-6">
             <Input
               suffix="mmHg"
               label="Sistole"
-              type="text"
+              type="number"
               placeholder="0"
-              className="col-span-1"
+              className="col-span-12 md:col-span-4"
               {...register("blood_pressure_sistole")}
             />
             <Input
               suffix="mmHg"
               label="Diastole"
-              type="text"
+              type="number"
               placeholder="0"
-              className="col-span-1"
+              className="col-span-12 md:col-span-4"
               {...register("blood_pressure_diastole")}
+            />
+            <Input
+              suffix="%"
+              label="SpO2"
+              type="number"
+              placeholder="0"
+              className="col-span-12 md:col-span-4"
+              {...register("spo2", {
+                min: 0,
+                max: 100,
+              })}
             />
             <Input
               suffix="°C"
               label="Suhu Tubuh"
-              type="text"
+              type="number"
               placeholder="0"
-              className="col-span-1"
-              {...register("temperature")}
+              className="col-span-12 md:col-span-4"
+              {...register("temperature", {
+                min: 0,
+                max: 100,
+              })}
             />
             <Input
               suffix="/menit"
               label="Denyut Nadi"
-              type="text"
+              type="number"
               placeholder="0"
-              className="col-span-1"
-              {...register("pulse_rate")}
+              className="col-span-12 md:col-span-4"
+              {...register("pulse_rate", {
+                min: 0,
+              })}
             />
             <Input
               suffix="/menit"
               label="Pernafasan"
-              type="text"
+              type="number"
               placeholder="0"
-              className="col-span-1"
-              {...register("respiration_rate")}
+              className="col-span-12 md:col-span-4"
+              {...register("respiration_rate", {
+                min: 0,
+              })}
             />
           </div>
         </FormSection>

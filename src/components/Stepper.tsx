@@ -127,7 +127,7 @@ const Stepper = ({ activeIndex = 1, steps, onClick }: StepperProps) => {
 
             return (
               <div
-                className={`flex shrink-0 grow cursor-pointer items-center justify-center gap-4 border-b-4 p-4 hover:bg-gray-100 ${containerClass}`}
+                className={`flex shrink-0 grow cursor-pointer items-center justify-center gap-4 border-b-4 p-3 hover:bg-gray-100 ${containerClass}`}
                 onClick={() => onClick(index)}
               >
                 <div

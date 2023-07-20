@@ -14,7 +14,7 @@ const FormSection = ({ title, className, children }: SectionProps) => {
       )}
     >
       {title && (
-        <Typography as="h3" className="mb-8 font-bold">
+        <Typography as="h3" className="mb-6 font-bold">
           {title}
         </Typography>
       )}
