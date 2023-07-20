@@ -1,6 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import React, { Fragment } from "react";
+import { HiX } from "react-icons/hi";
 
 type ModalProps = {
   children?: React.ReactNode;
@@ -53,10 +54,17 @@ export default function Modal({
           >
             <div
               className={clsx(
-                "my-8 inline-block w-full max-w-lg transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all",
+                "relative my-8 inline-block w-full max-w-lg transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all",
                 className
               )}
             >
+              <button
+                type="button"
+                className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-gray-100"
+                onClick={onClose}
+              >
+                <HiX className="text-xl" />
+              </button>
               {children}
             </div>
           </Transition.Child>

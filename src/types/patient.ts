@@ -10,7 +10,7 @@ export interface PatientType {
   birth_date: Date | string | null;
   birth_hour?: string;
   birth_minute?: string;
-  gender: number | null;
+  gender: string | null;
   address_1: string;
   address_1_province: string;
   address_1_city: string;

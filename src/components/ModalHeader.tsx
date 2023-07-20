@@ -9,7 +9,7 @@ export default function ModalHeader({ children }: ModalHeaderProps) {
   return (
     <Dialog.Title
       as="h3"
-      className="text-lg font-medium leading-6 text-gray-900 px-6 mt-4"
+      className="mt-6 px-6 pb-2 !text-lg font-bold leading-6"
     >
       {children}
     </Dialog.Title>

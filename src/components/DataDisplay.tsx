@@ -15,14 +15,11 @@ const DataDisplay = ({ items, className, ...rest }: DataDisplayProps) => {
   return (
     <dl className={clsx("divide-y divide-gray-100", className)} {...rest}>
       {items.map((item, index) => (
-        <div
-          key={index}
-          className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
-        >
-          <dt className="text-md font-medium leading-6 text-slate-800">
+        <div key={index} className="px-0 py-2 md:grid md:grid-cols-3 md:gap-4">
+          <dt className="text-sm font-medium leading-6 text-slate-800">
             {item.key}
           </dt>
-          <dd className="text-md mt-1 leading-6 text-slate-600 sm:col-span-2 sm:mt-0">
+          <dd className="mt-1 text-sm leading-6 text-slate-600 md:col-span-2 md:mt-0">
             {item.value}
           </dd>
         </div>

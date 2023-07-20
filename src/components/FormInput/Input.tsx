@@ -58,9 +58,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
       <div
         className={clsx(
           "mt-1 flex w-full overflow-hidden rounded-md border border-gray-300 bg-gray-100 shadow-sm",
-          isFocus && "border-sky-400 ring ring-sky-300 ring-opacity-50",
           disabled && "cursor-not-allowed bg-gray-200 text-gray-500",
-          error && "border-red-300"
+          error && "border-red-300",
+          isFocus &&
+            (error
+              ? "border-red-300 ring ring-red-200 ring-opacity-50"
+              : "border-sky-400 ring ring-sky-300 ring-opacity-50")
         )}
       >
         {Boolean(prefix) && (

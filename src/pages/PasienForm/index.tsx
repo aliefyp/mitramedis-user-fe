@@ -1,7 +1,8 @@
+import { useState } from "react";
+import { FaBabyCarriage } from "react-icons/fa";
 import PageHeading from "components/PageHeading";
 import Card from "components/Card";
 import Toggle from "components/Toggle";
-import { useState } from "react";
 import FormNewborn from "./components/FormNewborn";
 import FormAdult from "./components/FormAdult";
 import Typography from "components/Typography";
@@ -30,14 +31,13 @@ const PasienForm = ({ type }: PasienFormProps) => {
             onSwitch={setNewborn}
             className="order-2 md:order-1"
           >
+            <FaBabyCarriage className="text-gray-500" />
             Pasien adalah bayi baru lahir
           </Toggle>
 
-          <div className="order-1 inline-block rounded-md bg-lime-500 px-2 py-1 md:order-2">
-            <Typography bold className="text-lg text-white">
-              RM 002121123
-            </Typography>
-          </div>
+          <Typography bold className="order-1 text-lg text-lime-600 md:order-2">
+            RM 002121123
+          </Typography>
         </div>
         {isNewborn && <FormNewborn />}
         {!isNewborn && <FormAdult />}

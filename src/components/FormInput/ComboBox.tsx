@@ -3,6 +3,7 @@ import { Combobox as ComboboxHeadless, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import Label from "./Label";
 import { HiCheck, HiChevronDown } from "react-icons/hi";
+import Typography from "components/Typography";
 
 interface Option {
   key: number | string;
@@ -10,6 +11,8 @@ interface Option {
 }
 
 interface ComboboxProps extends React.HTMLProps<HTMLInputElement> {
+  error?: boolean;
+  helper?: string;
   label?: string;
   options: Option[];
   required?: boolean;
@@ -18,6 +21,8 @@ interface ComboboxProps extends React.HTMLProps<HTMLInputElement> {
 
 const ComboBox = ({
   className,
+  error,
+  helper,
   name,
   label,
   options,
@@ -62,7 +67,8 @@ const ComboBox = ({
               className={clsx(
                 "placeholder:text-gray-400",
                 "mt-1 flex w-full rounded-md border border-gray-300 shadow-sm",
-                "focus:border-sky-400 focus:ring focus:ring-sky-300 focus:ring-opacity-50"
+                "focus:border-sky-400 focus:ring focus:ring-sky-300 focus:ring-opacity-50",
+                error && "border-red-300"
               )}
               displayValue={(val: unknown) => (val as Option).label}
               onChange={(event) => setQuery(event.target.value)}
@@ -79,6 +85,14 @@ const ComboBox = ({
               />
             </ComboboxHeadless.Button>
           </div>
+          {helper && (
+            <Typography
+              className={clsx("mt-1", error ? "text-red-500" : "text-gray-600")}
+              smaller
+            >
+              {helper}
+            </Typography>
+          )}
           <Transition
             as={Fragment}
             leave="transition ease-in duration-100"
