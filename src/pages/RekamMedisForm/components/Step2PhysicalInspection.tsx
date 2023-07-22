@@ -7,7 +7,6 @@ import { FaTrashAlt } from "react-icons/fa";
 import ButtonAddMore from "components/ButtonAddMore";
 import ComboBox from "components/FormInput/ComboBox";
 import FormSection from "components/FormSection";
-import Typography from "components/Typography";
 import EmptyData from "components/EmptyData";
 
 interface Organ {

@@ -6,7 +6,7 @@ import Typography from "components/Typography";
 import ComboBox from "components/FormInput/ComboBox";
 import CheckBox from "components/FormInput/CheckBox";
 import Label from "components/FormInput/Label";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ButtonAddMore from "components/ButtonAddMore";
 import { Table } from "flowbite-react";
 import IconButton from "components/IconButton";
