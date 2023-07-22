@@ -13,7 +13,7 @@ const DUMMY_ITEMS = [
   { name: "Barang 4", price: 100000, qty: 1 },
 ];
 
-const FormBilling = () => {
+const Step7Billing = () => {
   return (
     <div className="py-6">
       <div className="mb-8 grid grid-cols-3 gap-4">
@@ -62,4 +62,4 @@ const FormBilling = () => {
   );
 };
 
-export default FormBilling;
+export default Step7Billing;

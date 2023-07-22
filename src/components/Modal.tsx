@@ -54,7 +54,7 @@ export default function Modal({
           >
             <div
               className={clsx(
-                "relative my-8 inline-block w-full max-w-lg transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all",
+                "relative my-8 inline-block w-full max-w-lg transform rounded-2xl bg-white text-left align-middle shadow-xl transition-all",
                 className
               )}
             >
