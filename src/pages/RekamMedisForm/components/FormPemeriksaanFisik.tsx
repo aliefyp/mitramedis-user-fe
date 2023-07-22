@@ -8,6 +8,7 @@ import ButtonAddMore from "components/ButtonAddMore";
 import ComboBox from "components/FormInput/ComboBox";
 import FormSection from "components/FormSection";
 import Typography from "components/Typography";
+import EmptyData from "components/EmptyData";
 
 interface Organ {
   name: string;
@@ -168,7 +169,7 @@ const FormPemeriksaanFisik = () => {
               label="Sistole"
               type="number"
               placeholder="0"
-              className="col-span-12 md:col-span-4"
+              className="col-span-6 md:col-span-4"
               error={Boolean(errors?.blood_pressure_sistole)}
               helper={errors?.blood_pressure_sistole?.message}
               {...register("blood_pressure_sistole", {
@@ -188,7 +189,7 @@ const FormPemeriksaanFisik = () => {
               label="Diastole"
               type="number"
               placeholder="0"
-              className="col-span-12 md:col-span-4"
+              className="col-span-6 md:col-span-4"
               error={Boolean(errors?.blood_pressure_diastole)}
               helper={errors?.blood_pressure_diastole?.message}
               {...register("blood_pressure_diastole", {
@@ -207,7 +208,7 @@ const FormPemeriksaanFisik = () => {
               label="SpO2"
               type="number"
               placeholder="0"
-              className="col-span-12 md:col-span-4"
+              className="col-span-6 md:col-span-4"
               {...register("spo2", {
                 min: 0,
                 max: 100,
@@ -219,7 +220,7 @@ const FormPemeriksaanFisik = () => {
               label="Suhu Tubuh"
               type="number"
               placeholder="0"
-              className="col-span-12 md:col-span-4"
+              className="col-span-6 md:col-span-4"
               error={Boolean(errors?.temperature)}
               helper={errors?.temperature?.message}
               {...register("temperature", {
@@ -243,7 +244,7 @@ const FormPemeriksaanFisik = () => {
               label="Denyut Nadi"
               type="number"
               placeholder="0"
-              className="col-span-12 md:col-span-4"
+              className="col-span-6 md:col-span-4"
               error={Boolean(errors?.pulse_rate)}
               helper={errors?.pulse_rate?.message}
               {...register("pulse_rate", {
@@ -259,7 +260,7 @@ const FormPemeriksaanFisik = () => {
               label="Pernafasan"
               type="number"
               placeholder="0"
-              className="col-span-12 md:col-span-4"
+              className="col-span-6 md:col-span-4"
               error={Boolean(errors?.respiration_rate)}
               helper={errors?.respiration_rate?.message}
               {...register("respiration_rate", {
@@ -272,7 +273,7 @@ const FormPemeriksaanFisik = () => {
           </div>
         </FormSection>
         <FormSection title="Catatan Kondisi Tubuh">
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 gap-4">
             {organNotes.map((item, index) => (
               <div
                 key={index}
@@ -294,9 +295,7 @@ const FormPemeriksaanFisik = () => {
             ))}
             {organNotes.length === 0 && (
               <div className="col-span-2">
-                <Typography small className="w-full text-center !text-gray-500">
-                  Belum ada catatan
-                </Typography>
+                <EmptyData>Belum ada catatan</EmptyData>
               </div>
             )}
             <div className="col-span-2">

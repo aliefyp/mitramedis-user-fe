@@ -68,7 +68,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
       >
         {Boolean(prefix) && (
           <div
-            className={`flex min-w-[80px] shrink-0 items-center justify-center bg-gray-100 px-4 ${
+            className={`flex min-w-[64px] shrink-0 items-center justify-center bg-gray-100 px-4 md:min-w-[80px] ${
               onPrefixClick ? "cursor-pointer hover:bg-gray-200" : ""
             }`}
             onClick={onPrefixClick}
@@ -99,7 +99,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
         )}
         {Boolean(suffix) && (
           <div
-            className={`flex min-w-[80px] items-center justify-center bg-gray-100 px-4 ${
+            className={`flex min-w-[64px] items-center justify-center bg-gray-100 px-4 md:min-w-[80px] ${
               onSuffixClick ? "cursor-pointer hover:bg-gray-200" : ""
             }`}
             onClick={onSuffixClick}

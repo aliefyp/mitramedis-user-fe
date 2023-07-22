@@ -81,8 +81,8 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
           className="col-span-10 overflow-y-scroll pb-4 md:col-span-5 lg:col-span-6"
         >
           <Card>
-            <div className="border-b p-6">
-              <Typography as="h2" className=" text-xl font-extrabold">
+            <div className="border-b px-6 py-4">
+              <Typography as="h2" className=" text-xl font-bold tracking-tight">
                 {STEPS[activeIndex]}
               </Typography>
               <Typography as="div" className=" text-sm text-gray-500">
