@@ -1,6 +1,6 @@
 import { Pagination, Table, Tooltip } from "flowbite-react";
 import { useState } from "react";
-import { FaEye, FaFileMedical, FaPencilAlt, FaTrashAlt } from "react-icons/fa";
+import { FaFileMedical, FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import Card from "components/Card";
 import Button from "components/Button";
 import toIDR from "helpers/toIDR";
