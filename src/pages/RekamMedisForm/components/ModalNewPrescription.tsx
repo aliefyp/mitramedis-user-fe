@@ -6,11 +6,10 @@ import Typography from "components/Typography";
 import ComboBox from "components/FormInput/ComboBox";
 import CheckBox from "components/FormInput/CheckBox";
 import Label from "components/FormInput/Label";
+import { useEffect, useState } from "react";
 
 interface PrescriptionType {
   medicine_name: string;
-  type: string;
-  unit: string;
   qty: string;
   frequency_count: number;
   frequency_unit: string;
@@ -21,18 +20,22 @@ interface PrescriptionType {
   method: string;
 }
 
-interface SearchMedicineProps {
+interface ModalNewPrescriptionProps {
   open: boolean;
   onClose: () => void;
   onSubmit: (val: PrescriptionType) => void;
 }
 
-const SearchMedicine = ({ open, onClose, onSubmit }: SearchMedicineProps) => {
-  const { register, handleSubmit } = useForm({
+const ModalNewPrescription = ({
+  open,
+  onClose,
+  onSubmit,
+}: ModalNewPrescriptionProps) => {
+  const [showFreeTextTime, setShowFreeTextTime] = useState(false);
+  const [showFreeTextSpan, setShowFreeTextSpan] = useState(false);
+  const { register, handleSubmit, watch } = useForm({
     defaultValues: {
       medicine_name: "",
-      type: "",
-      unit: "",
       qty: "1",
       frequency_count: "3",
       frequency_unit: "sehari",
@@ -44,49 +47,54 @@ const SearchMedicine = ({ open, onClose, onSubmit }: SearchMedicineProps) => {
     },
   });
 
+  const watchTime = watch("time");
+  const watchSpan = watch("span");
+
+  useEffect(() => {
+    setShowFreeTextTime(watchTime.includes("lain"));
+  }, [watchTime]);
+
+  useEffect(() => {
+    setShowFreeTextSpan(watchSpan.includes("lain"));
+  }, [watchSpan]);
+
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal open={open} onClose={onClose} className="md:min-w-[700px]">
       <form className="px-8 py-8" onSubmit={handleSubmit(onSubmit)}>
         <Typography as="h1" className="mb-4 text-2xl font-bold">
           Resep Baru
         </Typography>
 
-        <div className="grid grid-cols-2 items-end gap-6">
+        <div className="mb-6 grid grid-cols-12 items-end gap-6">
           <ComboBox
             label="Nama Obat"
             placeholder="Cari nama obat"
-            className="col-span-2"
+            className="col-span-10"
             options={[]}
             {...register("medicine_name")}
           />
-          <ComboBox
-            label="Sediaan"
-            placeholder=""
-            className="col-span-1"
-            options={[]}
-            {...register("type")}
-          />
-          <ComboBox
-            label="Unit"
-            placeholder=""
-            className="col-span-1"
-            options={[]}
-            {...register("unit")}
+          <Input
+            type="number"
+            label="Jumlah"
+            className="col-span-2"
+            {...register("qty")}
           />
           <Input
-            label="Aturan Pakai"
             type="text"
-            className="col-span-1"
-            suffix="X"
+            label="Aturan Pakai"
+            className="col-span-6"
+            suffix="kali"
             {...register("frequency_count")}
           />
           <Input
-            label=""
             type="text"
-            className="col-span-1"
+            label=""
+            className="col-span-6"
             {...register("frequency_unit")}
           />
-          <div className="col-span-1 flex flex-col gap-2">
+        </div>
+        <div className="grid grid-cols-12 items-start gap-6">
+          <div className="col-span-12 flex flex-col gap-2 md:col-span-6">
             <Label>Waktu</Label>
             <CheckBox {...register("time")} value="pagi" id="pagi">
               Pagi
@@ -100,14 +108,17 @@ const SearchMedicine = ({ open, onClose, onSubmit }: SearchMedicineProps) => {
             <CheckBox {...register("time")} value="lain" id="lain">
               Lain-lain
             </CheckBox>
-            <Input
-              type="text"
-              placeholder="Lain-lain"
-              className="col-span-1"
-              {...register("time_note")}
-            />
+            {showFreeTextTime && (
+              <Input
+                autoFocus={showFreeTextTime}
+                type="text"
+                placeholder="Ex: Ketika nyeri datang"
+                className="col-span-1"
+                {...register("time_note")}
+              />
+            )}
           </div>
-          <div className="col-span-1 flex flex-col gap-2">
+          <div className="col-span-12 flex flex-col gap-2 md:col-span-6">
             <Label>Waktu Spesifik</Label>
             <CheckBox
               {...register("span")}
@@ -133,22 +144,25 @@ const SearchMedicine = ({ open, onClose, onSubmit }: SearchMedicineProps) => {
             <CheckBox {...register("span")} value="lain" id="lain">
               Lain-lain
             </CheckBox>
-            <Input
-              type="text"
-              placeholder="Lain-lain"
-              className="col-span-1"
-              {...register("time_note")}
-            />
+            {showFreeTextSpan && (
+              <Input
+                autoFocus={showFreeTextSpan}
+                type="text"
+                placeholder="Ex: Sebelum tidur"
+                className="col-span-1"
+                {...register("time_note")}
+              />
+            )}
           </div>
 
           <ComboBox
             label="Rute Pemberian"
             placeholder="Pilih rute pemberian obat"
-            className="col-span-2"
+            className="col-span-12"
             options={[]}
             {...register("method")}
           />
-          <div className="col-span-2 mt-4 flex flex-col gap-2">
+          <div className="col-span-12 mt-4 flex flex-col gap-2">
             <Button type="button" color="secondary" className="w-full">
               Batal
             </Button>
@@ -162,4 +176,4 @@ const SearchMedicine = ({ open, onClose, onSubmit }: SearchMedicineProps) => {
   );
 };
 
-export default SearchMedicine;
+export default ModalNewPrescription;

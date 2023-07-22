@@ -7,13 +7,13 @@ import IconButton from "components/IconButton";
 import { Table } from "flowbite-react";
 import { FaTrashAlt } from "react-icons/fa";
 
-const CardBMHP = ({ register, items, onDelete, onAdd }) => {
+const CardAction = ({ register, items, onDelete, onAdd }) => {
   return (
     <Card className="min-w-lg rounded-xl border">
       <Table className="w-full">
         <Table.Head className="divide-x">
           <Table.HeadCell className="text-md items-start whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white">
-            Nama BMHP
+            Nama Tindakan
           </Table.HeadCell>
           <Table.HeadCell className="text-md w-[240px] items-start whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white">
             Jumlah
@@ -24,7 +24,7 @@ const CardBMHP = ({ register, items, onDelete, onAdd }) => {
           {items.length === 0 && (
             <Table.Row>
               <Table.Cell colSpan={3}>
-                <EmptyData>Belum ada BMHP</EmptyData>
+                <EmptyData>Belum ada tindakan</EmptyData>
               </Table.Cell>
             </Table.Row>
           )}
@@ -65,10 +65,10 @@ const CardBMHP = ({ register, items, onDelete, onAdd }) => {
         </Table.Body>
       </Table>
       <div className="p-4 pt-2">
-        <ButtonAddMore onClick={onAdd}>Tambah BMHP</ButtonAddMore>
+        <ButtonAddMore onClick={onAdd}>Tambah Tindakan</ButtonAddMore>
       </div>
     </Card>
   );
 };
 
-export default CardBMHP;
+export default CardAction;

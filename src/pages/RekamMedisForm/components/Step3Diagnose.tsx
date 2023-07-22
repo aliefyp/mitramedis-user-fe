@@ -7,6 +7,7 @@ import { Table } from "flowbite-react";
 import { HiPlus } from "react-icons/hi";
 import EmptyData from "components/EmptyData";
 import Card from "components/Card";
+import IconButton from "components/IconButton";
 
 const icdOptions = [
   { key: 1, label: "A00 - Cholera" },
@@ -77,7 +78,7 @@ const FormDiagnosis = () => {
           </div>
         </Card>
       </form>
-      <Card className="min-w-lg overflow-hidden rounded-xl border">
+      <Card className="min-w-lg overflow-auto rounded-xl border">
         <Table className="w-full">
           <Table.Head className="divide-x">
             <Table.HeadCell className="text-md items-start whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white">
@@ -115,12 +116,14 @@ const FormDiagnosis = () => {
                   <Table.Cell>{item.icd_code}</Table.Cell>
                   <Table.Cell className="w-[240px]">{item.note}</Table.Cell>
                   <Table.Cell className="w-[64px]">
-                    <FaTrashAlt
-                      className="cursor-pointer text-gray-500"
-                      onClick={() =>
-                        setDiagnoses(diagnoses.filter((_, i) => i !== index))
-                      }
-                    />
+                    <IconButton>
+                      <FaTrashAlt
+                        className="cursor-pointer text-gray-500"
+                        onClick={() =>
+                          setDiagnoses(diagnoses.filter((_, i) => i !== index))
+                        }
+                      />
+                    </IconButton>
                   </Table.Cell>
                 </Table.Row>
               ))}
