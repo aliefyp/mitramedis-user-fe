@@ -42,8 +42,8 @@ const FormPrescription = () => {
   };
 
   const handleAddMoreClick = (isCustom: boolean) => {
-    setShowPrescriptionModal(true);
     setShowCustomPrescription(isCustom);
+    setShowPrescriptionModal(true);
   };
 
   return (
@@ -61,7 +61,7 @@ const FormPrescription = () => {
           <CardPrescription
             items={customMedicines}
             buttonWording="Tambah Obat Racikan"
-            onAdd={() => handleAddMoreClick(false)}
+            onAdd={() => handleAddMoreClick(true)}
             onDelete={(index) => handleDeleteMedicine(true, index)}
           />
         </FormSection>

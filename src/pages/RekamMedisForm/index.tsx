@@ -18,7 +18,7 @@ const STEPS = [
   "Pemeriksaan Fisik",
   "Diagnosis",
   "KIE & Tindakan",
-  "Resep",
+  "Resep Obat",
   "Status",
   "Billing",
 ];

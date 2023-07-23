@@ -85,7 +85,10 @@ const FormTindakan = () => {
               </Typography>
             </div>
 
-            <div className="col-span-4">
+            <div className="col-span-4 my-4">
+              <Typography bold as="h5" className="mb-4">
+                Tindakan
+              </Typography>
               <CardAction
                 items={actions}
                 register={register}
@@ -95,7 +98,10 @@ const FormTindakan = () => {
                 }
               />
             </div>
-            <div className="col-span-4">
+            <div className="col-span-4 my-4">
+              <Typography bold as="h5" className="mb-4">
+                Bahan Medis Habis Pakai (BMHP)
+              </Typography>
               <CardBMHP
                 items={bmhp}
                 register={register}
