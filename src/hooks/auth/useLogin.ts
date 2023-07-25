@@ -4,7 +4,13 @@ import { headers } from "constants/api";
 import { LoginParam, LoginResponse } from "types/login";
 
 const login = async (param: LoginParam): Promise<LoginResponse> => {
-  const { data } = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/login`, param, { headers });
+  const { data } = await axios({
+    method: 'POST',
+    url: `${process.env.REACT_APP_API_ENDPOINT}/login`,
+    headers,
+    data: JSON.stringify(param)
+  });
+
   return data;
 };
 
