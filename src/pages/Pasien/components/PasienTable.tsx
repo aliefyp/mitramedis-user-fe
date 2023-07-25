@@ -1,8 +1,14 @@
 import { Pagination, Table, Tooltip } from "flowbite-react";
 import { useState } from "react";
-import { FaBookMedical, FaPencilAlt, FaTrashAlt } from "react-icons/fa";
+import {
+  FaBookMedical,
+  FaPencilAlt,
+  FaPrint,
+  FaTrashAlt,
+} from "react-icons/fa";
 import Card from "components/Card";
 import Button from "components/Button";
+import { useNavigate } from "react-router-dom";
 
 const PATIENT_TABLE_ROW = [
   "No. Rekam Medis",
@@ -43,6 +49,7 @@ interface PasienTablePreviewProps {
 
 const PasienTable = ({ onPreview }: PasienTablePreviewProps) => {
   const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
 
   return (
     <Card className="rounded-2xl border-none p-6 shadow-sm">
@@ -73,11 +80,21 @@ const PasienTable = ({ onPreview }: PasienTablePreviewProps) => {
                 <Table.Cell>{item.address}</Table.Cell>
                 <Table.Cell>
                   <div className="flex gap-1">
+                    <Tooltip content="Cetak">
+                      <Button
+                        size="small"
+                        color="secondary"
+                        onClick={() => {}}
+                        className="py-2"
+                      >
+                        <FaPrint />
+                      </Button>
+                    </Tooltip>
                     <Tooltip content="Ubah">
                       <Button
                         size="small"
                         color="primary"
-                        onClick={onPreview}
+                        onClick={() => navigate("/pasien/edit")}
                         className="py-2"
                       >
                         <FaPencilAlt />

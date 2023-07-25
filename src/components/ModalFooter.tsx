@@ -6,7 +6,7 @@ type ModalFooterProps = {
 
 export default function ModalFooter({ children }: ModalFooterProps) {
   return (
-    <div className="flex justify-end gap-2 bg-gray-50 px-6 py-4">
+    <div className="flex justify-end gap-2 rounded-b-2xl bg-gray-50 px-6 py-4">
       {children}
     </div>
   );

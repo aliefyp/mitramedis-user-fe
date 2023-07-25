@@ -1,16 +1,23 @@
-import Table from "components/Table";
-import TableHead from "components/TableHead";
-import TableRow from "components/TableRow";
-import TableCell from "components/TableCell";
-import TableBody from "components/TableBody";
+// import Table from "components/Table";
+// import TableHead from "components/TableHead";
+// import TableRow from "components/TableRow";
+// import TableCell from "components/TableCell";
+// import TableBody from "components/TableBody";
 import toIDR from "helpers/toIDR";
 import Typography from "components/Typography";
+import { Table } from "flowbite-react";
 
-const DUMMY_ITEMS = [
+const DUMMY_ITEMS_OBAT = [
+  { name: "Obat 1", price: 10000, qty: 1 },
+  { name: "Obat 2", price: 1000, qty: 4 },
+];
+const DUMMY_ITEMS_TINDAKAN = [
   { name: "Barang 1", price: 10000, qty: 1 },
   { name: "Barang 2", price: 1000, qty: 4 },
-  { name: "Barang 3", price: 5000, qty: 2 },
-  { name: "Barang 4", price: 100000, qty: 1 },
+];
+const DUMMY_ITEMS_LAYANAN = [
+  { name: "Barang 1", price: 10000, qty: 1 },
+  { name: "Barang 2", price: 1000, qty: 4 },
 ];
 
 const Step7Billing = () => {
@@ -38,24 +45,89 @@ const Step7Billing = () => {
       </div>
       <div className="min-w-xl overflow-x-auto">
         <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell head>Item</TableCell>
-              <TableCell head>Harga</TableCell>
-              <TableCell head>Status</TableCell>
-              <TableCell head>Amount</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {DUMMY_ITEMS.map((item) => (
-              <TableRow key={item.name}>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{toIDR(item.price)}</TableCell>
-                <TableCell>{item.qty}</TableCell>
-                <TableCell>{toIDR(item.price * item.qty)}</TableCell>
-              </TableRow>
+          <Table.Head>
+            <Table.HeadCell>Item</Table.HeadCell>
+            <Table.HeadCell>Harga</Table.HeadCell>
+            <Table.HeadCell>Qty</Table.HeadCell>
+            <Table.HeadCell>Amount</Table.HeadCell>
+          </Table.Head>
+          <Table.Body>
+            <Table.Row>
+              <Table.Cell colSpan={4}>
+                <Typography bold>I. Obat</Typography>
+              </Table.Cell>
+            </Table.Row>
+            {DUMMY_ITEMS_OBAT.map((item) => (
+              <Table.Row key={item.name}>
+                <Table.Cell>{item.name}</Table.Cell>
+                <Table.Cell>{toIDR(item.price)}</Table.Cell>
+                <Table.Cell>{item.qty}</Table.Cell>
+                <Table.Cell>{toIDR(item.price * item.qty)}</Table.Cell>
+              </Table.Row>
             ))}
-          </TableBody>
+            <Table.Row>
+              <Table.Cell colSpan={4}>
+                <Typography bold>II. Tindakan</Typography>
+              </Table.Cell>
+            </Table.Row>
+            {DUMMY_ITEMS_TINDAKAN.map((item) => (
+              <Table.Row key={item.name}>
+                <Table.Cell>{item.name}</Table.Cell>
+                <Table.Cell>{toIDR(item.price)}</Table.Cell>
+                <Table.Cell>{item.qty}</Table.Cell>
+                <Table.Cell>{toIDR(item.price * item.qty)}</Table.Cell>
+              </Table.Row>
+            ))}
+            <Table.Row>
+              <Table.Cell colSpan={4}>
+                <Typography bold>III. Layanan</Typography>
+              </Table.Cell>
+            </Table.Row>
+            {DUMMY_ITEMS_LAYANAN.map((item) => (
+              <Table.Row key={item.name}>
+                <Table.Cell>{item.name}</Table.Cell>
+                <Table.Cell>{toIDR(item.price)}</Table.Cell>
+                <Table.Cell>{item.qty}</Table.Cell>
+                <Table.Cell>{toIDR(item.price * item.qty)}</Table.Cell>
+              </Table.Row>
+            ))}
+            <Table.Row>
+              <Table.Cell colSpan={4}></Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell colSpan={2} />
+              <Table.Cell>
+                <Typography bold className="text-right">
+                  Subtotal
+                </Typography>
+              </Table.Cell>
+              <Table.Cell>
+                <Typography>{toIDR(10000)}</Typography>
+              </Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell colSpan={2} />
+              <Table.Cell>
+                <Typography bold className="text-right">
+                  Diskon
+                </Typography>
+              </Table.Cell>
+              <Table.Cell>
+                <Typography>{toIDR(1000)}</Typography>
+              </Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell colSpan={2} />
+              <Table.Cell className="border-t">
+                <Typography bold className="text-right">
+                  Total
+                </Typography>
+              </Table.Cell>
+              <Table.Cell className="border-t">
+                <Typography>{toIDR(10000)}</Typography>
+              </Table.Cell>
+            </Table.Row>
+          </Table.Body>
         </Table>
       </div>
     </div>

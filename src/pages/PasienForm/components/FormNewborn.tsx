@@ -173,10 +173,13 @@ const FormNewborn = () => {
             />
             {showOtherPaymentMethod && (
               <Input
+                required={showOtherPaymentMethod}
                 type="text"
                 label={ATTR.payment_method_other.label}
                 placeholder={ATTR.payment_method_other.placeholder}
                 className="col-span-4 md:col-span-2"
+                error={Boolean(errors?.payment_method_other)}
+                helper={errors?.payment_method_other?.message}
                 {...register("payment_method_other", {
                   required: {
                     value: showOtherPaymentMethod,

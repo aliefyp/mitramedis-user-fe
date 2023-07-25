@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { FaBabyCarriage } from "react-icons/fa";
 import PageHeading from "components/PageHeading";
 import Card from "components/Card";
 import Toggle from "components/Toggle";
@@ -18,7 +17,7 @@ const PasienForm = ({ type }: PasienFormProps) => {
   return (
     <div>
       <PageHeading
-        title={isEdit ? "Update Data Pasien" : "Pendaftaran Pasien Baru"}
+        title={isEdit ? "Ubah Data Pasien" : "Pendaftaran Pasien Baru"}
         breadcrumbs={[
           { text: "Pasien", url: "/pasien" },
           isEdit ? { text: "Ubah Data Pasien" } : { text: "Pasien Baru" },
@@ -31,7 +30,6 @@ const PasienForm = ({ type }: PasienFormProps) => {
             onSwitch={setNewborn}
             className="order-2 md:order-1"
           >
-            <FaBabyCarriage className="text-gray-500" />
             Pasien adalah bayi baru lahir
           </Toggle>
 

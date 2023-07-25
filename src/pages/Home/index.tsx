@@ -4,12 +4,12 @@ import { HiCalendar } from "react-icons/hi";
 import Button from "components/Button";
 import PageHeading from "components/PageHeading";
 import Typography from "components/Typography";
-import SearchPasien from "./components/SearchPasien";
 import Card from "components/Card";
 import CardHeader from "components/CardHeader";
 import CardBody from "components/CardBody";
 import StatsTopDisease from "./components/StatsTopDisease";
 import ChartIncome from "./components/ChartIncome";
+import SearchPasien from "../../components/SearchPasien";
 
 // const SUMMARY_CARD = [
 //   { text: "Pasien Terdaftar", number: 20, icon: FaUserEdit },
