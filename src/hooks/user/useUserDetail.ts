@@ -8,12 +8,12 @@ const getUserDetail = async ({ userId, clinicId, token}: UserParam): Promise<Use
     'Authorization': `Bearer ${token}`,
     'User-ID': userId,
     'Clinic-ID': clinicId,
-  }});
+  }})
   return data;
 };
 
 function useUserDetail({ userId, clinicId, token }: UserParam) {
-  return useQuery("user", () => getUserDetail({ userId, clinicId, token }));
+  return useQuery("user", () => getUserDetail({ userId, clinicId, token }).catch(err => console.error(err)));
 }
 
 export default useUserDetail;
