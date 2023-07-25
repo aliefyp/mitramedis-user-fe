@@ -4,7 +4,6 @@ import Button from "components/Button";
 import Input from "components/FormInput/Input";
 // import React, { useState } from "react";
 // import { useDebounce } from "use-debounce";
-import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import SearchPasien from "components/SearchPasien";
@@ -17,7 +16,6 @@ interface MedicalRecordFilterParam {
 
 const MedicalRecordFilter = () => {
   const { register, handleSubmit } = useForm<MedicalRecordFilterParam>();
-  const navigate = useNavigate();
   const [showPasienModal, setShowPasienModal] = useState(false);
 
   const onSubmit = (val: MedicalRecordFilterParam) => {

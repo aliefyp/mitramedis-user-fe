@@ -40,6 +40,11 @@ const customTheme: CustomFlowbiteTheme = {
         base: "group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-3 py-2",
       },
     },
+    head: {
+      cell: {
+        base: "group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg bg-gray-50 dark:bg-gray-700 px-3 py-3",
+      },
+    },
   },
   dropdown: {
     content: "bg-sky-500",
@@ -70,7 +75,7 @@ const Layout = () => {
   const { isMobile } = useAppContext();
   const isAuthenticated = useIsAuthenticated();
 
-  if (!isAuthenticated()) return <Navigate replace to="/login" />;
+  // if (!isAuthenticated()) return <Navigate replace to="/login" />;
 
   return (
     <Flowbite theme={{ theme: customTheme }}>
