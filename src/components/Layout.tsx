@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Navigate, Outlet } from "react-router-dom";
-import { useIsAuthenticated } from "react-auth-kit";
+import { Outlet } from "react-router-dom";
+// import { useIsAuthenticated } from "react-auth-kit";
 import { Flowbite } from "flowbite-react";
 import type { CustomFlowbiteTheme } from "flowbite-react";
 import {
@@ -73,7 +73,7 @@ export const EXTRAS_MENU = {
 const Layout = () => {
   const [open, setOpen] = useState(false);
   const { isMobile } = useAppContext();
-  const isAuthenticated = useIsAuthenticated();
+  // const isAuthenticated = useIsAuthenticated();
 
   // if (!isAuthenticated()) return <Navigate replace to="/login" />;
 
