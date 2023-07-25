@@ -1,5 +1,5 @@
-// import useUserDetail from "hooks/user/useUserDetail";
-// import { useAuthUser } from "react-auth-kit";
+import useUserDetail from "hooks/user/useUserDetail";
+import { useAuthUser } from "react-auth-kit";
 import {
   createContext,
   ReactNode,
@@ -22,20 +22,20 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     window.innerWidth <= MOBILE_BREAKPOINT
   );
 
-  // const auth = useAuthUser();
-  // const {
-  //   data: userDetail,
-  //   isLoading,
-  //   isError,
-  // } = useUserDetail({
-  //   userId: auth()?.userId,
-  //   clinicId: auth()?.clinicId,
-  //   token: auth()?.token,
-  // });
+  const auth = useAuthUser();
+  const {
+    data: userDetail,
+    isLoading,
+    isError,
+  } = useUserDetail({
+    userId: auth()?.userId,
+    clinicId: auth()?.clinicId,
+    token: auth()?.token,
+  });
 
-  // console.log(userDetail);
-  // console.log(isLoading);
-  // console.log(isError);
+  console.log(userDetail);
+  console.log(isLoading);
+  console.log(isError);
 
   const handleResize = () => {
     setIsMobile(window.innerWidth <= MOBILE_BREAKPOINT);
