@@ -3,35 +3,27 @@ import TextArea from "components/FormInput/TextArea";
 import Toggle from "components/Toggle";
 import { useState } from "react";
 import Label from "components/FormInput/Label";
+import type { FormAnamnesisType } from "../interface";
 
-interface FormAnamnesisType {
-  main_complaint: string;
-  medical_history_recent: string;
-  medical_history_past: string;
-  has_allergy_history: boolean;
-  note_allergy_history: string;
-  has_medical_treatment_history: boolean;
-  note_medical_treatment_history: string;
-}
-
-const FormAnamnesis = () => {
-  const [showPastMedicalHistory, setShowPastMedicalHistory] = useState(false);
-  const [showAllergyNote, setShowAllergyNote] = useState(false);
-  const [showMedicalTreatmentNote, setShowMedicalTreatmentNote] =
-    useState(false);
+const Step1Anamnesis = ({ show, defaultValues, navigation, onSubmit }) => {
+  const [showIllness, setShowIllness] = useState(false);
+  const [showAllergy, setShowAllergy] = useState(false);
+  const [showTreatment, setShowTreatment] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormAnamnesisType>();
+  } = useForm<FormAnamnesisType>({ defaultValues });
 
-  const onSubmit = (val: FormAnamnesisType) => {
-    console.log(val);
+  const submitForm = (val: FormAnamnesisType) => {
+    onSubmit(val);
   };
 
+  if (!show) return null;
+
   return (
-    <form className="grid grid-cols-3 py-6" onSubmit={handleSubmit(onSubmit)}>
-      <div className="col-span-3 grid gap-6 2xl:col-span-2">
+    <form onSubmit={handleSubmit(submitForm)}>
+      <div className="grid gap-6 p-6">
         <TextArea
           rows={1}
           required
@@ -53,56 +45,80 @@ const FormAnamnesis = () => {
           error={Boolean(errors?.medical_history_recent)}
           helper={errors?.medical_history_recent?.message}
           placeholder="Tuliskan riwayat penyakit yang dialami pasien saat ini"
-          {...register("medical_history_recent")}
+          {...register("medical_history_recent", {
+            required: {
+              value: true,
+              message: "Wajib diisi",
+            },
+          })}
         />
 
         <div className="grid gap-2">
-          <Toggle
-            value={showPastMedicalHistory}
-            onSwitch={setShowPastMedicalHistory}
-          >
+          <Toggle value={showIllness} onSwitch={setShowIllness}>
             <Label>Ada Riwayat Penyakit Terdahulu</Label>
           </Toggle>
-          {showPastMedicalHistory && (
+          {showIllness && (
             <TextArea
-              autoFocus={showPastMedicalHistory}
+              required={showIllness}
+              autoFocus={showIllness}
+              error={Boolean(errors?.medical_history_past)}
+              helper={errors?.medical_history_past?.message}
               placeholder="Riwayat penyakit yang pernah diderita oleh pasien"
-              {...register("medical_history_past")}
+              {...register("medical_history_past", {
+                required: {
+                  value: showIllness,
+                  message: "Wajib diisi",
+                },
+              })}
             />
           )}
         </div>
 
         <div className="grid gap-2">
-          <Toggle value={showAllergyNote} onSwitch={setShowAllergyNote}>
+          <Toggle value={showAllergy} onSwitch={setShowAllergy}>
             <Label>Ada Riwayat Alergi</Label>
           </Toggle>
-          {showAllergyNote && (
+          {showAllergy && (
             <TextArea
-              autoFocus={showAllergyNote}
+              required={showAllergy}
+              autoFocus={showAllergy}
+              error={Boolean(errors?.note_allergy_history)}
+              helper={errors?.note_allergy_history?.message}
               placeholder="Riwayat alergi yang pernah dialami oleh pasien"
-              {...register("note_allergy_history")}
+              {...register("note_allergy_history", {
+                required: {
+                  value: showAllergy,
+                  message: "Wajib diisi",
+                },
+              })}
             />
           )}
         </div>
 
         <div className="grid gap-2">
-          <Toggle
-            value={showMedicalTreatmentNote}
-            onSwitch={setShowMedicalTreatmentNote}
-          >
+          <Toggle value={showTreatment} onSwitch={setShowTreatment}>
             <Label>Ada Riwayat Pengobatan</Label>
           </Toggle>
-          {showMedicalTreatmentNote && (
+          {showTreatment && (
             <TextArea
-              autoFocus={showMedicalTreatmentNote}
+              required={showTreatment}
+              autoFocus={showTreatment}
+              error={Boolean(errors?.note_medical_treatment_history)}
+              helper={errors?.note_medical_treatment_history?.message}
               placeholder="Riwayat obat-obatan yang pernah dikonsumsi oleh pasien"
-              {...register("note_medical_treatment_history")}
+              {...register("note_medical_treatment_history", {
+                required: {
+                  value: showTreatment,
+                  message: "Wajib diisi",
+                },
+              })}
             />
           )}
         </div>
       </div>
+      {navigation}
     </form>
   );
 };
 
-export default FormAnamnesis;
+export default Step1Anamnesis;

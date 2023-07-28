@@ -67,8 +67,10 @@ const ComboBox = ({
               className={clsx(
                 "placeholder:text-gray-400",
                 "mt-1 flex w-full rounded-md border border-gray-300 shadow-sm",
-                "focus:border-sky-400 focus:ring focus:ring-sky-300 focus:ring-opacity-50",
-                error && "border-red-300"
+                error && "border-red-300",
+                error
+                  ? "focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50"
+                  : "focus:border-sky-400 focus:ring focus:ring-sky-300 focus:ring-opacity-50"
               )}
               displayValue={(val: unknown) => (val as Option).label}
               onChange={(event) => setQuery(event.target.value)}

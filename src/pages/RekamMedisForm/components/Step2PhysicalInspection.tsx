@@ -8,27 +8,19 @@ import ButtonAddMore from "components/ButtonAddMore";
 import ComboBox from "components/FormInput/ComboBox";
 import FormSection from "components/FormSection";
 import EmptyData from "components/EmptyData";
+import { FormPhysicalInspectionType, PhysicalOrgans } from "../interface";
 
 interface Organ {
-  name: string;
+  key: PhysicalOrgans;
+  label: string;
 }
 
-interface FormPemeriksaanFisikType {
-  senses_level: string;
-  psychological_state: string;
-  height: number;
-  weight: number;
-  bmi: number;
-  blood_pressure_sistole: number;
-  blood_pressure_diastole: number;
-  spo2: number;
-  temperature: number;
-  pulse_rate: number;
-  respiration_rate: number;
-  support_note: string;
-}
-
-const FormPemeriksaanFisik = () => {
+const Step2PhysicalInspection = ({
+  show,
+  defaultValues,
+  navigation,
+  onSubmit,
+}) => {
   const [showOrganModal, setShowOrganModal] = useState(false);
   const [organNotes, setOrganNotes] = useState<Organ[]>([]);
   const {
@@ -37,7 +29,7 @@ const FormPemeriksaanFisik = () => {
     watch,
     setValue,
     formState: { errors },
-  } = useForm<FormPemeriksaanFisikType>();
+  } = useForm<FormPhysicalInspectionType>({ defaultValues });
 
   const watchHeight = watch("height");
   const watchWeight = watch("weight");
@@ -55,268 +47,273 @@ const FormPemeriksaanFisik = () => {
     setOrganNotes(values);
   };
 
-  const handleDeleteNote = (name: string) => {
-    setOrganNotes(organNotes.filter((item) => item.name !== name));
+  const handleDeleteNote = (key: string) => {
+    setOrganNotes(organNotes.filter((item) => item.key !== key));
   };
 
-  const onSubmit = (val: FormPemeriksaanFisikType) => {
+  const submitForm = (val: FormPhysicalInspectionType) => {
     console.log(val);
+    onSubmit(val);
   };
+
+  if (!show) return null;
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <FormSection title="Keadaan Umum">
-          <div className="grid grid-cols-12 gap-6">
-            <ComboBox
-              required
-              label="Tingkat Kesadaran"
-              placeholder="Pilih tingkat kesadaran pasien"
-              className="col-span-12 md:col-span-6"
-              error={Boolean(errors?.senses_level)}
-              helper={errors?.senses_level?.message}
-              options={[
-                { key: 1, label: "Sadar Baik / Alert" },
-                { key: 2, label: "Verbal" },
-                { key: 3, label: "Pain" },
-                { key: 4, label: "Unresponsive" },
-                { key: 5, label: "Apatis" },
-              ]}
-              {...register("senses_level", {
-                required: {
-                  value: true,
-                  message: "Wajib diisi",
-                },
-              })}
-            />
-            <ComboBox
-              required
-              label="Status Psikologi"
-              placeholder="Pilih status psikologi pasien"
-              className="col-span-12 md:col-span-6"
-              error={Boolean(errors?.psychological_state)}
-              helper={errors?.psychological_state?.message}
-              options={[
-                { key: "Tidak ada kelainan", label: "Tidak ada kelainan" },
-                { key: "Cemas", label: "Cemas" },
-                { key: "Marah", label: "Marah" },
-                { key: "Sedih", label: "Sedih" },
-                { key: "Lain-lain", label: "Lain-lain" },
-              ]}
-              {...register("psychological_state", {
-                required: {
-                  value: true,
-                  message: "Wajib diisi",
-                },
-              })}
-            />
-            <Input
-              required
-              suffix="cm"
-              label="Tinggi badan"
-              type="number"
-              placeholder="0"
-              className="col-span-6 md:col-span-4"
-              error={Boolean(errors?.height)}
-              helper={errors?.height?.message}
-              {...register("height", {
-                required: {
-                  value: true,
-                  message: "Wajib diisi",
-                },
-                min: {
-                  value: 0,
-                  message: "Input tidak valid",
-                },
-              })}
-            />
-            <Input
-              required
-              suffix="kg"
-              label="Berat badan"
-              type="number"
-              placeholder="0"
-              className="col-span-6 md:col-span-4"
-              error={Boolean(errors?.weight)}
-              helper={errors?.weight?.message}
-              {...register("weight", {
-                required: {
-                  value: true,
-                  message: "Wajib diisi",
-                },
-                min: {
-                  value: 0,
-                  message: "Input tidak valid",
-                },
-              })}
-            />
-            <Input
-              readOnly
-              label="BMI (Otomatis)"
-              type="text"
-              placeholder="0"
-              className="col-span-6 md:col-span-4"
-              {...register("bmi")}
-            />
-          </div>
-        </FormSection>
-        <FormSection title="Vital Sign">
-          <div className="grid grid-cols-12 gap-6">
-            <Input
-              required
-              suffix="mmHg"
-              label="Sistole"
-              type="number"
-              placeholder="0"
-              className="col-span-6 md:col-span-4"
-              error={Boolean(errors?.blood_pressure_sistole)}
-              helper={errors?.blood_pressure_sistole?.message}
-              {...register("blood_pressure_sistole", {
-                required: {
-                  value: true,
-                  message: "Wajib diisi",
-                },
-                min: {
-                  value: 0,
-                  message: "Input tidak valid",
-                },
-              })}
-            />
-            <Input
-              required
-              suffix="mmHg"
-              label="Diastole"
-              type="number"
-              placeholder="0"
-              className="col-span-6 md:col-span-4"
-              error={Boolean(errors?.blood_pressure_diastole)}
-              helper={errors?.blood_pressure_diastole?.message}
-              {...register("blood_pressure_diastole", {
-                required: {
-                  value: true,
-                  message: "Wajib diisi",
-                },
-                min: {
-                  value: 0,
-                  message: "Input tidak valid",
-                },
-              })}
-            />
-            <Input
-              suffix="%"
-              label="SpO2"
-              type="number"
-              placeholder="0"
-              className="col-span-6 md:col-span-4"
-              {...register("spo2", {
-                min: 0,
-                max: 100,
-              })}
-            />
-            <Input
-              required
-              suffix="°C"
-              label="Suhu Tubuh"
-              type="number"
-              placeholder="0"
-              className="col-span-6 md:col-span-4"
-              error={Boolean(errors?.temperature)}
-              helper={errors?.temperature?.message}
-              {...register("temperature", {
-                required: {
-                  value: true,
-                  message: "Wajib diisi",
-                },
-                min: {
-                  value: 0,
-                  message: "Input tidak valid",
-                },
-                max: {
-                  value: 100,
-                  message: "Input tidak valid",
-                },
-              })}
-            />
-            <Input
-              required
-              suffix="/menit"
-              label="Denyut Nadi"
-              type="number"
-              placeholder="0"
-              className="col-span-6 md:col-span-4"
-              error={Boolean(errors?.pulse_rate)}
-              helper={errors?.pulse_rate?.message}
-              {...register("pulse_rate", {
-                required: {
-                  value: true,
-                  message: "Wajib diisi",
-                },
-              })}
-            />
-            <Input
-              required
-              suffix="/menit"
-              label="Pernafasan"
-              type="number"
-              placeholder="0"
-              className="col-span-6 md:col-span-4"
-              error={Boolean(errors?.respiration_rate)}
-              helper={errors?.respiration_rate?.message}
-              {...register("respiration_rate", {
-                required: {
-                  value: true,
-                  message: "Wajib diisi",
-                },
-              })}
-            />
-          </div>
-        </FormSection>
-        <FormSection title="Catatan Kondisi Tubuh">
-          <div className="grid grid-cols-2 gap-4">
-            {organNotes.map((item, index) => (
-              <div
-                key={index}
-                className="col-span-2 flex items-center justify-between gap-4"
-              >
-                <div className="grow">
-                  <TextArea
-                    label={`Catatan Kondisi ${item.name}`}
-                    name={`note-${item.name.toLowerCase().replace(" ", "")}`}
-                    placeholder={`Tuliskan kondisi ${item.name.toLowerCase()} pasien`}
-                    rows={2}
+      <form onSubmit={handleSubmit(submitForm)}>
+        <div className="px-6">
+          <FormSection title="Keadaan Umum">
+            <div className="grid grid-cols-12 gap-6">
+              <ComboBox
+                required
+                label="Tingkat Kesadaran"
+                placeholder="Pilih tingkat kesadaran pasien"
+                className="col-span-12 md:col-span-6"
+                error={Boolean(errors?.senses_level)}
+                helper={errors?.senses_level?.message}
+                onValueChange={(val) => setValue("senses_level", val.label)}
+                options={[
+                  { key: 1, label: "Sadar Baik / Alert" },
+                  { key: 2, label: "Verbal" },
+                  { key: 3, label: "Pain" },
+                  { key: 4, label: "Unresponsive" },
+                  { key: 5, label: "Apatis" },
+                ]}
+                {...register("senses_level", {
+                  required: {
+                    value: true,
+                    message: "Wajib diisi",
+                  },
+                })}
+              />
+              <ComboBox
+                required
+                label="Status Psikologi"
+                placeholder="Pilih status psikologi pasien"
+                className="col-span-12 md:col-span-6"
+                error={Boolean(errors?.psychological_state)}
+                helper={errors?.psychological_state?.message}
+                onValueChange={(val) =>
+                  setValue("psychological_state", val.label)
+                }
+                options={[
+                  { key: "Tidak ada kelainan", label: "Tidak ada kelainan" },
+                  { key: "Cemas", label: "Cemas" },
+                  { key: "Marah", label: "Marah" },
+                  { key: "Sedih", label: "Sedih" },
+                  { key: "Lain-lain", label: "Lain-lain" },
+                ]}
+                {...register("psychological_state", {
+                  required: {
+                    value: true,
+                    message: "Wajib diisi",
+                  },
+                })}
+              />
+              <Input
+                required
+                suffix="cm"
+                label="Tinggi badan"
+                type="number"
+                placeholder="0"
+                className="col-span-6 md:col-span-4"
+                error={Boolean(errors?.height)}
+                helper={errors?.height?.message}
+                {...register("height", {
+                  required: {
+                    value: true,
+                    message: "Wajib diisi",
+                  },
+                  min: {
+                    value: 0,
+                    message: "Input tidak valid",
+                  },
+                })}
+              />
+              <Input
+                required
+                suffix="kg"
+                label="Berat badan"
+                type="number"
+                placeholder="0"
+                className="col-span-6 md:col-span-4"
+                error={Boolean(errors?.weight)}
+                helper={errors?.weight?.message}
+                {...register("weight", {
+                  required: {
+                    value: true,
+                    message: "Wajib diisi",
+                  },
+                  min: {
+                    value: 0,
+                    message: "Input tidak valid",
+                  },
+                })}
+              />
+              <Input
+                readOnly
+                label="BMI (Otomatis)"
+                type="text"
+                placeholder="0"
+                className="col-span-6 md:col-span-4"
+                {...register("bmi")}
+              />
+            </div>
+          </FormSection>
+          <FormSection title="Vital Sign">
+            <div className="grid grid-cols-12 gap-6">
+              <Input
+                required
+                suffix="mmHg"
+                label="Sistole"
+                type="number"
+                placeholder="0"
+                className="col-span-6 md:col-span-4"
+                error={Boolean(errors?.blood_pressure_sistole)}
+                helper={errors?.blood_pressure_sistole?.message}
+                {...register("blood_pressure_sistole", {
+                  required: {
+                    value: true,
+                    message: "Wajib diisi",
+                  },
+                  min: {
+                    value: 0,
+                    message: "Input tidak valid",
+                  },
+                })}
+              />
+              <Input
+                required
+                suffix="mmHg"
+                label="Diastole"
+                type="number"
+                placeholder="0"
+                className="col-span-6 md:col-span-4"
+                error={Boolean(errors?.blood_pressure_diastole)}
+                helper={errors?.blood_pressure_diastole?.message}
+                {...register("blood_pressure_diastole", {
+                  required: {
+                    value: true,
+                    message: "Wajib diisi",
+                  },
+                  min: {
+                    value: 0,
+                    message: "Input tidak valid",
+                  },
+                })}
+              />
+              <Input
+                suffix="%"
+                label="SpO2"
+                type="number"
+                placeholder="0"
+                className="col-span-6 md:col-span-4"
+                {...register("spo2", {
+                  min: 0,
+                  max: 100,
+                })}
+              />
+              <Input
+                required
+                suffix="°C"
+                label="Suhu Tubuh"
+                type="number"
+                placeholder="0"
+                className="col-span-6 md:col-span-4"
+                error={Boolean(errors?.temperature)}
+                helper={errors?.temperature?.message}
+                {...register("temperature", {
+                  required: {
+                    value: true,
+                    message: "Wajib diisi",
+                  },
+                  min: {
+                    value: 0,
+                    message: "Input tidak valid",
+                  },
+                  max: {
+                    value: 100,
+                    message: "Input tidak valid",
+                  },
+                })}
+              />
+              <Input
+                required
+                suffix="/menit"
+                label="Denyut Nadi"
+                type="number"
+                placeholder="0"
+                className="col-span-6 md:col-span-4"
+                error={Boolean(errors?.pulse_rate)}
+                helper={errors?.pulse_rate?.message}
+                {...register("pulse_rate", {
+                  required: {
+                    value: true,
+                    message: "Wajib diisi",
+                  },
+                })}
+              />
+              <Input
+                required
+                suffix="/menit"
+                label="Pernafasan"
+                type="number"
+                placeholder="0"
+                className="col-span-6 md:col-span-4"
+                error={Boolean(errors?.respiration_rate)}
+                helper={errors?.respiration_rate?.message}
+                {...register("respiration_rate", {
+                  required: {
+                    value: true,
+                    message: "Wajib diisi",
+                  },
+                })}
+              />
+            </div>
+          </FormSection>
+          <FormSection title="Catatan Kondisi Tubuh">
+            <div className="grid grid-cols-2 gap-4">
+              {organNotes.map((item, index) => (
+                <div
+                  key={index}
+                  className="col-span-2 flex items-center justify-between gap-4"
+                >
+                  <div className="grow">
+                    <TextArea
+                      rows={2}
+                      label={`Catatan Kondisi ${item.label}`}
+                      placeholder={`Tuliskan kondisi ${item.label.toLowerCase()} pasien`}
+                      {...register(item.key)}
+                    />
+                  </div>
+                  <FaTrashAlt
+                    className="font-xl shrink-0 cursor-pointer text-gray-500 hover:text-gray-400"
+                    onClick={() => handleDeleteNote(item.key)}
                   />
                 </div>
-                <FaTrashAlt
-                  className="font-xl shrink-0 cursor-pointer text-gray-500 hover:text-gray-400"
-                  onClick={() => handleDeleteNote(item.name)}
-                />
-              </div>
-            ))}
-            {organNotes.length === 0 && (
+              ))}
+              {organNotes.length === 0 && (
+                <div className="col-span-2">
+                  <EmptyData>Belum ada catatan</EmptyData>
+                </div>
+              )}
               <div className="col-span-2">
-                <EmptyData>Belum ada catatan</EmptyData>
+                <ButtonAddMore onClick={() => setShowOrganModal(true)}>
+                  Tambah Catatan
+                </ButtonAddMore>
               </div>
-            )}
-            <div className="col-span-2">
-              <ButtonAddMore onClick={() => setShowOrganModal(true)}>
-                Tambah Catatan
-              </ButtonAddMore>
             </div>
-          </div>
-        </FormSection>
-        <FormSection title="Pemeriksaan Penunjang">
-          <TextArea
-            rows={2}
-            label="Catatan Penunjang"
-            placeholder="Tuliskan catatan untuk pemeriksaan penunjang"
-            {...register("support_note", {
-              required: {
-                value: true,
-                message: "Wajib diisi",
-              },
-            })}
-          />
-        </FormSection>
+          </FormSection>
+          <FormSection title="Pemeriksaan Penunjang">
+            <TextArea
+              rows={2}
+              label="Catatan Penunjang"
+              placeholder="Tuliskan catatan untuk pemeriksaan penunjang"
+              {...register("support_note")}
+            />
+          </FormSection>
+        </div>
+        {navigation}
       </form>
 
       <ModalSelectOrgan
@@ -329,4 +326,4 @@ const FormPemeriksaanFisik = () => {
   );
 };
 
-export default FormPemeriksaanFisik;
+export default Step2PhysicalInspection;

@@ -12,16 +12,14 @@ import Step4Action from "./components/Step4Action";
 import Step5Prescription from "./components/Step5Prescription";
 import Step6Status from "./components/Step6Status";
 import Step7Billing from "./components/Step7Billing";
-
-const STEPS = [
-  "Anamnesis",
-  "Pemeriksaan Fisik",
-  "Diagnosis",
-  "KIE & Tindakan",
-  "Resep Obat",
-  "Status",
-  "Billing",
-];
+import {
+  MEDICAL_FORM_STEPS as STEPS,
+  DEFAULT_STEP_1,
+  DEFAULT_STEP_2,
+  DEFAULT_STEP_4,
+  DEFAULT_STEP_5,
+  DEFAULT_STEP_6,
+} from "./constants";
 
 interface RekamMedisFormProps {
   type: "new" | "edit";
@@ -29,6 +27,17 @@ interface RekamMedisFormProps {
 
 const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [formValues, setFormValues] = useState({
+    1: DEFAULT_STEP_1,
+    2: DEFAULT_STEP_2,
+    3: [],
+    4: DEFAULT_STEP_4,
+    5: DEFAULT_STEP_5,
+    6: DEFAULT_STEP_6,
+  });
+
+  const activeStep = STEPS[activeIndex];
+  const formLength = STEPS.length;
   const isEdit = type === "edit";
   const isLastStep = activeIndex === STEPS.length - 1;
 
@@ -36,9 +45,36 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
     setActiveIndex((activeIndex - 1) % STEPS.length);
   };
 
-  const handleNextClick = () => {
+  const handleSubmitForm = (step, val) => {
+    setFormValues({ ...formValues, [step]: val });
     setActiveIndex((activeIndex + 1) % STEPS.length);
   };
+
+  console.log(formValues);
+
+  const Navigation = () => (
+    <div className="fixed bottom-0 left-0 right-0 z-10 flex items-center justify-between space-x-2 border-t bg-white p-3 shadow-md md:static md:bg-transparent md:p-6 md:shadow-none">
+      <div className="shrink-0">
+        <div className="block md:hidden">
+          <Stepper
+            activeIndex={activeIndex}
+            steps={STEPS}
+            onClick={(index) => setActiveIndex(index)}
+          />
+        </div>
+      </div>
+      <div className="flex shrink-0 items-center gap-2 ">
+        {activeIndex > 0 && (
+          <Button type="button" color="ghost-primary" onClick={handleBackClick}>
+            Kembali
+          </Button>
+        )}
+        <Button type="submit" className="md:px-12">
+          {isLastStep ? "Simpan" : "Lanjut"}
+        </Button>
+      </div>
+    </div>
+  );
 
   return (
     <div>
@@ -49,7 +85,7 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
           { text: isEdit ? "Ubah Data Rekam Medis" : "Rekam Medis Baru" },
         ]}
       />
-      <div className="top-0 z-20 mb-4">
+      <div className="z-20 mb-4">
         <Stepper
           activeIndex={activeIndex}
           steps={STEPS}
@@ -61,49 +97,30 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
           <Card>
             <div className="border-b px-6 py-4">
               <Typography as="h2" className=" text-xl font-bold tracking-tight">
-                {STEPS[activeIndex]}
+                {activeStep}
               </Typography>
               <Typography as="div" className=" text-sm text-gray-500">
-                {`Langkah ${activeIndex + 1} dari ${STEPS.length}`}
+                {`Langkah ${activeIndex + 1} dari ${formLength}`}
               </Typography>
             </div>
-            <div className="px-6">
-              {activeIndex === 0 && <Step1Anamnesis />}
-              {activeIndex === 1 && <Step2PhysicalInspection />}
+            <div>
+              <Step1Anamnesis
+                show={activeIndex === 0}
+                defaultValues={formValues[1]}
+                navigation={<Navigation />}
+                onSubmit={(val) => handleSubmitForm(1, val)}
+              />
+              <Step2PhysicalInspection
+                show={activeIndex === 1}
+                defaultValues={formValues[2]}
+                navigation={<Navigation />}
+                onSubmit={(val) => handleSubmitForm(2, val)}
+              />
               {activeIndex === 2 && <Step3Diagnose />}
               {activeIndex === 3 && <Step4Action />}
               {activeIndex === 4 && <Step5Prescription />}
               {activeIndex === 5 && <Step6Status />}
               {activeIndex === 6 && <Step7Billing />}
-            </div>
-            <div className="fixed bottom-0 left-0 right-0 z-10 flex items-center justify-between space-x-2 border-t bg-white p-3 shadow-md md:static md:bg-transparent md:p-6 md:shadow-none">
-              <div className="shrink-0">
-                <div className="block md:hidden">
-                  <Stepper
-                    activeIndex={activeIndex}
-                    steps={STEPS}
-                    onClick={(index) => setActiveIndex(index)}
-                  />
-                </div>
-              </div>
-              <div className="flex shrink-0 items-center gap-2 ">
-                {activeIndex > 0 && (
-                  <Button
-                    type="button"
-                    color="ghost-primary"
-                    onClick={handleBackClick}
-                  >
-                    Kembali
-                  </Button>
-                )}
-                <Button
-                  type="button"
-                  onClick={handleNextClick}
-                  className="md:px-12"
-                >
-                  {isLastStep ? "Simpan" : "Lanjut"}
-                </Button>
-              </div>
             </div>
           </Card>
         </div>

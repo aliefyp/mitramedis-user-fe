@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import Typography from "../Typography";
 import Label from "./Label";
 
@@ -34,11 +34,10 @@ export default React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
     },
     ref
   ) {
-    const textareaRef = useRef(null);
-
     useEffect(() => {
-      if (autoFocus && textareaRef.current) {
-        (textareaRef.current as HTMLTextAreaElement).focus();
+      const element = document.querySelector(`textarea[name=${name}`);
+      if (autoFocus && element) {
+        (element as HTMLTextAreaElement).focus();
       }
     });
 
@@ -50,20 +49,21 @@ export default React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
           </Label>
         )}
         <textarea
-          id={name}
           name={name}
           rows={3}
           className={clsx(
             "placeholder:text-gray-400",
             "form-textarea mt-1 block w-full rounded-md border border-gray-300 shadow-sm",
-            "focus:border-sky-400 focus:ring focus:ring-sky-300 focus:ring-opacity-50",
             disabled && "cursor-not-allowed bg-gray-200 text-gray-500",
-            error && "border-red-300"
+            error && "border-red-300",
+            error
+              ? "focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50"
+              : "focus:border-sky-400 focus:ring focus:ring-sky-300 focus:ring-opacity-50"
           )}
           onBlur={onBlur}
           onChange={onChange}
           placeholder={placeholder}
-          ref={textareaRef}
+          ref={ref}
           {...rest}
         />
         {helper && (

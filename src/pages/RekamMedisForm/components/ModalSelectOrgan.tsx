@@ -5,39 +5,40 @@ import { useEffect, useState } from "react";
 import Button from "components/Button";
 
 const DATA_ORGAN = [
-  { name: "Kulit" },
-  { name: "Kuku" },
-  { name: "Kepala" },
-  { name: "Wajah" },
-  { name: "Mata" },
-  { name: "Telinga" },
-  { name: "Hidung" },
-  { name: "Mulut" },
-  { name: "Gigi" },
-  { name: "Leher" },
-  { name: "Tenggorokan" },
-  { name: "Tonsil" },
-  { name: "Dada" },
-  { name: "Payudara" },
-  { name: "Punggung" },
-  { name: "Perut" },
-  { name: "Genital" },
-  { name: "Anus / Dubur" },
-  { name: "Lengan Atas" },
-  { name: "Lengan Bawah" },
-  { name: "Jari Tangan" },
-  { name: "Kuku Tangan" },
-  { name: "Persendian Tangan" },
-  { name: "Tungkai Atas" },
-  { name: "Tungkai Bawah" },
-  { name: "Jari Kaki" },
-  { name: "Kuku Kaki" },
-  { name: "Persendian Kaki" },
-  { name: "Lainnya" },
+  { key: "note_skin", label: "Kulit" },
+  { key: "note_nails", label: "Kuku" },
+  { key: "note_head", label: "Kepala" },
+  { key: "note_face", label: "Wajah" },
+  { key: "note_eyes", label: "Mata" },
+  { key: "note_ears", label: "Telinga" },
+  { key: "note_nose", label: "Hidung" },
+  { key: "note_mouth", label: "Mulut" },
+  { key: "note_tooth", label: "Gigi" },
+  { key: "note_neck", label: "Leher" },
+  { key: "note_throat", label: "Tenggorokan" },
+  { key: "note_tonsils", label: "Tonsil" },
+  { key: "note_chest", label: "Dada" },
+  { key: "note_breast", label: "Payudara" },
+  { key: "note_back", label: "Punggung" },
+  { key: "note_stomach", label: "Perut" },
+  { key: "note_genital", label: "Genital" },
+  { key: "note_anus", label: "Anus / Dubur" },
+  { key: "note_arms", label: "Lengan Atas" },
+  { key: "note_hands", label: "Lengan Bawah" },
+  { key: "note_fingers", label: "Jari Tangan" },
+  { key: "note_hand_nail", label: "Kuku Tangan" },
+  { key: "note_hand_joints", label: "Persendian Tangan" },
+  { key: "note_upper_limbs", label: "Tungkai Atas" },
+  { key: "note_lower_limbs", label: "Tungkai Bawah" },
+  { key: "note_toes", label: "Jari Kaki" },
+  { key: "note_toe_nails", label: "Kuku Kaki" },
+  { key: "note_leg_joints", label: "Persendian Kaki" },
+  { key: "note_other", label: "Lainnya" },
 ];
 
 interface Organ {
-  name: string;
+  key: string;
+  label: string;
 }
 
 interface SearchPasienProps {
@@ -56,8 +57,8 @@ const SearchPasien = ({
   const [selected, setSelected] = useState<Organ[]>([]);
 
   const handleSelect = (item: Organ) => {
-    if (selected.findIndex((i) => i.name === item.name) > -1) {
-      setSelected(selected.filter((i) => i.name !== item.name));
+    if (selected.findIndex((i) => i.label === item.label) > -1) {
+      setSelected(selected.filter((i) => i.label !== item.label));
     } else {
       setSelected([...selected, item]);
     }
@@ -81,9 +82,9 @@ const SearchPasien = ({
         <div className="grid grid-cols-3 gap-4 md:grid-cols-6">
           {DATA_ORGAN.map((item) => {
             const isDisabled =
-              defaultSelected.findIndex((i) => i.name === item.name) > -1;
+              defaultSelected.findIndex((i) => i.label === item.label) > -1;
             const isSelected =
-              selected.findIndex((i) => i.name === item.name) > -1;
+              selected.findIndex((i) => i.label === item.label) > -1;
             const selectedCardClass = isSelected
               ? "border-sky-400"
               : "border-gray-300";
@@ -97,14 +98,14 @@ const SearchPasien = ({
               >
                 {/* <img
                   src="http://placehold.it/32x32"
-                  alt={item.name}
+                  alt={item.label}
                   className="h-[32px] w-[32px]"
                 /> */}
                 <Typography
                   smaller
                   className={`text-center ${selectedTextClass}`}
                 >
-                  {item.name}
+                  {item.label}
                 </Typography>
               </Card>
             );
