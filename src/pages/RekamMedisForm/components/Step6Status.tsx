@@ -8,7 +8,7 @@ import {
   FaSkullCrossbones,
 } from "react-icons/fa";
 
-import { FormStatusType } from "../interface";
+// import { FormStatusType } from "../interface";
 
 const OPTIONS = [
   { key: 1, icon: FaHome, label: "Pulang" },
