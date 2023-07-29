@@ -2,24 +2,13 @@ import { useState } from "react";
 import FormSection from "components/FormSection";
 import ModalNewPrescription from "./ModalNewPrescription";
 import CardPrescription from "./CardPrescription";
+import { FormPrescriptionType } from "../interface";
 
-export interface PrescriptionType {
-  medicine_name: string[];
-  qty: string[];
-  frequency_count: number;
-  frequency_unit: string;
-  time: string[];
-  time_note: string;
-  span: string[];
-  span_note: string;
-  method: string;
-}
-
-const FormPrescription = () => {
+const Step5Prescription = ({ show, defaultValues, navigation, onSubmit }) => {
   const [showPrescriptionModal, setShowPrescriptionModal] = useState(false);
   const [showCustomPrescription, setShowCustomPrescription] = useState(false);
-  const [medicines, setMedicines] = useState<PrescriptionType[]>([]);
-  const [customMedicines, setCustomMedicines] = useState<PrescriptionType[]>(
+  const [medicines, setMedicines] = useState<FormPrescriptionType[]>([]);
+  const [custMedicines, setCustMedicines] = useState<FormPrescriptionType[]>(
     []
   );
 
@@ -27,7 +16,7 @@ const FormPrescription = () => {
     setShowPrescriptionModal(false);
 
     if (showCustomPrescription) {
-      setCustomMedicines([...customMedicines, med]);
+      setCustMedicines([...custMedicines, med]);
     } else {
       setMedicines([...medicines, med]);
     }
@@ -35,7 +24,7 @@ const FormPrescription = () => {
 
   const handleDeleteMedicine = (isCustom: boolean, index: number) => {
     if (isCustom) {
-      setCustomMedicines(customMedicines.filter((_, i) => i !== index));
+      setCustMedicines(custMedicines.filter((_, i) => i !== index));
     } else {
       setMedicines(medicines.filter((_, i) => i !== index));
     }
@@ -46,9 +35,16 @@ const FormPrescription = () => {
     setShowPrescriptionModal(true);
   };
 
+  const handleSubmit = () => {
+    console.log("medicines", medicines);
+    console.log("custMedicines", custMedicines);
+  };
+
+  if (!show) return null;
+
   return (
     <>
-      <div>
+      <div className="px-6">
         <FormSection title="Obat Non-Racikan" className="space-y-4">
           <CardPrescription
             items={medicines}
@@ -59,13 +55,14 @@ const FormPrescription = () => {
         </FormSection>
         <FormSection title="Obat Racikan" className="space-y-4">
           <CardPrescription
-            items={customMedicines}
+            items={custMedicines}
             buttonWording="Tambah Obat Racikan"
             onAdd={() => handleAddMoreClick(true)}
             onDelete={(index) => handleDeleteMedicine(true, index)}
           />
         </FormSection>
       </div>
+      <form onSubmit={handleSubmit}>{navigation}</form>
 
       <ModalNewPrescription
         isCustomPrescription={showCustomPrescription}
@@ -77,4 +74,4 @@ const FormPrescription = () => {
   );
 };
 
-export default FormPrescription;
+export default Step5Prescription;

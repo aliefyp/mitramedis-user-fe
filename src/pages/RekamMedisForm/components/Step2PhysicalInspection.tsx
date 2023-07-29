@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 import Input from "components/FormInput/Input";
 import ModalSelectOrgan from "./ModalSelectOrgan";
 import TextArea from "components/FormInput/TextArea";
-import { FaTrashAlt } from "react-icons/fa";
+import { FaInfoCircle, FaTrashAlt } from "react-icons/fa";
 import ButtonAddMore from "components/ButtonAddMore";
 import ComboBox from "components/FormInput/ComboBox";
 import FormSection from "components/FormSection";
 import EmptyData from "components/EmptyData";
 import { FormPhysicalInspectionType, PhysicalOrgans } from "../interface";
+import useBmi from "hooks/useBmi";
+import { Badge, Tooltip } from "flowbite-react";
 
 interface Organ {
   key: PhysicalOrgans;
@@ -34,13 +36,14 @@ const Step2PhysicalInspection = ({
   const watchHeight = watch("height");
   const watchWeight = watch("weight");
 
-  useEffect(() => {
-    const weightKgNum = Number(watchWeight);
-    const heightMeterNum = Number(watchHeight) / 100;
-    const bmiVal = weightKgNum / Math.pow(heightMeterNum, 2) || (0 as any);
+  const { score, status, color } = useBmi({
+    weight: watchWeight,
+    height: watchHeight,
+  });
 
-    setValue("bmi", bmiVal.toFixed(2));
-  }, [setValue, watchHeight, watchWeight]);
+  useEffect(() => {
+    setValue("bmi", Number(score));
+  }, [score, setValue]);
 
   const handleAddOrganNote = (values: Organ[]) => {
     setShowOrganModal(false);
@@ -150,14 +153,24 @@ const Step2PhysicalInspection = ({
                   },
                 })}
               />
-              <Input
-                readOnly
-                label="BMI (Otomatis)"
-                type="text"
-                placeholder="0"
-                className="col-span-6 md:col-span-4"
-                {...register("bmi")}
-              />
+              <div className="col-span-12 flex items-center gap-2 md:col-span-4">
+                <Input
+                  readOnly
+                  label="BMI (Otomatis)"
+                  type="text"
+                  placeholder="0"
+                  className="col-span-3 md:col-span-2"
+                  {...register("bmi")}
+                />
+                <Tooltip content=" < 18.5 = underweight | 18.5 - 24.9 = normal | 25.0 - 29.9 = overweight | > 30.0 = obesity">
+                  <Badge size="xs" color={color} className="mt-2">
+                    <div className="flex items-center gap-2">
+                      {status}
+                      <FaInfoCircle />
+                    </div>
+                  </Badge>
+                </Tooltip>
+              </div>
             </div>
           </FormSection>
           <FormSection title="Vital Sign">
@@ -218,6 +231,7 @@ const Step2PhysicalInspection = ({
                 suffix="°C"
                 label="Suhu Tubuh"
                 type="number"
+                step=".01"
                 placeholder="0"
                 className="col-span-6 md:col-span-4"
                 error={Boolean(errors?.temperature)}

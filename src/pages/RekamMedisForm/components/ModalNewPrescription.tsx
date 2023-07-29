@@ -46,7 +46,7 @@ const ModalNewPrescription = ({
       medicine_name: "",
       qty: "1",
       frequency_count: "3",
-      frequency_unit: "sehari",
+      frequency_unit: "",
       time: [],
       time_note: "",
       span: [],
@@ -167,6 +167,7 @@ const ModalNewPrescription = ({
           <Input
             type="text"
             label=""
+            placeholder="Sehari, 3 tetes, dll"
             className="col-span-6"
             {...register("frequency_unit")}
           />
@@ -244,10 +245,7 @@ const ModalNewPrescription = ({
               { key: 3, label: "Suppositoria" },
               { key: 4, label: "Topikal" },
               { key: 5, label: "Sublingual" },
-              { key: 6, label: "Bukal" },
-              { key: 7, label: "Otic" },
-              { key: 8, label: "Nasal" },
-              { key: 9, label: "Inhalasi" },
+              { key: 6, label: "Inhalasi" },
             ]}
             {...register("method")}
           />

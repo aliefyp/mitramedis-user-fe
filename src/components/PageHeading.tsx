@@ -20,8 +20,9 @@ const PageHeading = ({ title, breadcrumbs }: PageHeadingProps) => {
         aria-label="Main breadcrumb"
         className="scale-80 origin-bottom-left transform md:scale-100"
       >
-        {breadcrumbs?.map((item) => (
+        {breadcrumbs?.map((item, index) => (
           <Breadcrumb.Item
+            key={index}
             className="text-xs font-bold uppercase tracking-widest md:text-sm"
             href={item.url}
           >

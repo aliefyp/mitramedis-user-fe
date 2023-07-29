@@ -111,7 +111,7 @@ const SearchPasien = ({
             );
           })}
         </div>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="space-y-2">
           <Button
             className="w-full"
             type="button"
@@ -124,7 +124,6 @@ const SearchPasien = ({
             className="w-full"
             type="button"
             color="primary"
-            disabled={!selected.length}
             onClick={() => onSubmit([...defaultSelected, ...selected])}
           >
             Tambahkan

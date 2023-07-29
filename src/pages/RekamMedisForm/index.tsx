@@ -50,8 +50,6 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
     setActiveIndex((activeIndex + 1) % STEPS.length);
   };
 
-  console.log(formValues);
-
   const Navigation = () => (
     <div className="fixed bottom-0 left-0 right-0 z-10 flex items-center justify-between space-x-2 border-t bg-white p-3 shadow-md md:static md:bg-transparent md:p-6 md:shadow-none">
       <div className="shrink-0">
@@ -85,11 +83,11 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
           { text: isEdit ? "Ubah Data Rekam Medis" : "Rekam Medis Baru" },
         ]}
       />
-      <div className="z-20 mb-4">
+      <div className="z-20 mb-4 hidden md:block">
         <Stepper
           activeIndex={activeIndex}
           steps={STEPS}
-          onClick={(index) => setActiveIndex(index)}
+          // onClick={(index) => setActiveIndex(index)}
         />
       </div>
       <div className="flex max-w-screen-2xl flex-col gap-4 md:min-w-[800px] md:flex-row">
@@ -116,15 +114,39 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
                 navigation={<Navigation />}
                 onSubmit={(val) => handleSubmitForm(2, val)}
               />
-              {activeIndex === 2 && <Step3Diagnose />}
-              {activeIndex === 3 && <Step4Action />}
-              {activeIndex === 4 && <Step5Prescription />}
-              {activeIndex === 5 && <Step6Status />}
-              {activeIndex === 6 && <Step7Billing />}
+              <Step3Diagnose
+                show={activeIndex === 2}
+                defaultValues={formValues[3]}
+                navigation={<Navigation />}
+                onSubmit={(val) => handleSubmitForm(3, val)}
+              />
+              <Step4Action
+                show={activeIndex === 3}
+                defaultValues={formValues[4]}
+                navigation={<Navigation />}
+                onSubmit={(val) => handleSubmitForm(4, val)}
+              />
+              <Step5Prescription
+                show={activeIndex === 4}
+                defaultValues={formValues[5]}
+                navigation={<Navigation />}
+                onSubmit={(val) => handleSubmitForm(5, val)}
+              />
+              <Step6Status
+                show={activeIndex === 5}
+                defaultValues={formValues[6]}
+                navigation={<Navigation />}
+                onSubmit={(val) => handleSubmitForm(6, val)}
+              />
+              <Step7Billing
+                show={activeIndex === 6}
+                navigation={<Navigation />}
+                onSubmit={() => handleSubmitForm(7, {})}
+              />
             </div>
           </Card>
         </div>
-        <div className="sticky top-0 order-1 w-full shrink-0 md:order-2 md:w-[240px] xl:w-[320px]">
+        <div className="order-1 w-full shrink-0 md:order-2 md:w-[240px] xl:w-[320px]">
           <CardPatientSummary />
         </div>
       </div>

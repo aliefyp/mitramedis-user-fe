@@ -6,7 +6,7 @@ import Bottomsheet from "./Bottomsheet";
 interface StepperProps {
   activeIndex: number;
   steps: string[];
-  onClick: (index: number) => void;
+  onClick?: (index: number) => void;
 }
 
 const Stepper = ({ activeIndex = 1, steps, onClick }: StepperProps) => {
@@ -127,8 +127,10 @@ const Stepper = ({ activeIndex = 1, steps, onClick }: StepperProps) => {
 
             return (
               <div
-                className={`flex shrink-0 grow cursor-pointer items-center justify-center gap-4 border-b-4 p-3 hover:bg-gray-100 ${containerClass}`}
-                onClick={() => onClick(index)}
+                className={`flex shrink-0 grow  items-center justify-center gap-4 border-b-4 p-3 hover:bg-gray-100 ${containerClass} ${
+                  onClick && "cursor-pointer"
+                }`}
+                onClick={onClick ? () => onClick(index) : null}
               >
                 <div
                   className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${bgClass} ${borderClass}`}

@@ -59,7 +59,7 @@ export interface FormPhysicalInspectionType extends PhysicalConditionNotesType {
 
 export interface FormDiagnoseType {
   icd_code: string;
-  note: string;
+  type: string;
 }
 
 export interface FormActionType {

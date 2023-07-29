@@ -3,11 +3,10 @@ import ButtonAddMore from "components/ButtonAddMore";
 import Card from "components/Card";
 import EmptyData from "components/EmptyData";
 import { Table } from "flowbite-react";
-import { PrescriptionType } from "./Step5Prescription";
-
+import { FormPrescriptionType } from "../interface";
 interface CardPrescriptionProps {
   buttonWording: string;
-  items: PrescriptionType[];
+  items: FormPrescriptionType[];
   onAdd?: () => void;
   onDelete?: (index: number) => void;
   onEdit?: (index: number) => void;
