@@ -1,8 +1,6 @@
 import Card from "components/Card";
-import FormSection from "components/FormSection";
 import Typography from "components/Typography";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import {
   FaHome,
   FaClinicMedical,
@@ -31,18 +29,17 @@ const OPTIONS = [
   },
 ];
 
-const Step6Status = ({ show, defaultValues, navigation, onSubmit }) => {
-  const [selected, setSelected] = useState(OPTIONS[0].label);
-  const { register, handleSubmit } = useForm<FormStatusType>({ defaultValues });
+const Step6Status = ({ show, navigation, defaultValues, onSubmit }) => {
+  const [selected, setSelected] = useState(defaultValues || OPTIONS[0].label);
 
-  const submitForm = (val: FormStatusType) => {
-    onSubmit(val);
+  const submitForm = () => {
+    onSubmit(selected);
   };
 
   if (!show) return null;
 
   return (
-    <form onSubmit={handleSubmit(submitForm)}>
+    <>
       <div className="grid grid-cols-2 gap-4 p-6 md:grid-cols-4">
         {OPTIONS.map((item) => {
           const isSelected = item.label === selected;
@@ -63,27 +60,9 @@ const Step6Status = ({ show, defaultValues, navigation, onSubmit }) => {
             </Card>
           );
         })}
-        {/* <ComboBox
-              required
-              label="Status Pasien"
-              placeholder="Pilih Status Pasien"
-              options={[
-                { key: 1, label: "Pulang" },
-                { key: 2, label: "Rujuk Rawat Jalan" },
-                { key: 3, label: "Rujuk Rawat Inap" },
-                { key: 1, label: "Meninggal" },
-              ]}
-              className="col-span-4 md:col-span-2"
-              {...register("status", {
-                required: {
-                  value: true,
-                  message: "Wajib diisi",
-                },
-              })}
-            /> */}
       </div>
-      {navigation}
-    </form>
+      <form onSubmit={submitForm}>{navigation}</form>
+    </>
   );
 };
 
