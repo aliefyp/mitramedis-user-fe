@@ -7,7 +7,7 @@ import { Transition } from "@headlessui/react";
 import Button from "components/Button";
 import Input from "components/FormInput/Input";
 import LayoutPlain from "components/LayoutPlain";
-import useLogin from "hooks/auth/useLogin";
+import useLogin from "api/auth/useLogin";
 import useToaster from "context/ToasterContext";
 import { LoginParam } from "types/login";
 import Card from "components/Card";
@@ -22,6 +22,7 @@ const Login = () => {
   const source = new URLSearchParams(location.search).get("source");
 
   const [show, setShow] = useState(false);
+  const [hasToasted, setHasToasted] = useState(false);
 
   const onSubmit = async (val: LoginParam) => {
     try {
@@ -62,14 +63,15 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (source === "nologin") {
+    if (source === "nologin" && !hasToasted) {
       openToaster({
         title: "Sesi Anda Habis",
         message: "Silahkan login kembali",
         variant: "error",
       });
+      setHasToasted(true);
     }
-  }, [openToaster, source]);
+  }, [hasToasted, openToaster, source]);
 
   useEffect(() => {
     setTimeout(() => {

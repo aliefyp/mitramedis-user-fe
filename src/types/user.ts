@@ -1,7 +1,5 @@
 export interface UserParam {
   userId: string;
-  clinicId: string;
-  token: string;
 }
 
 export interface UserType {

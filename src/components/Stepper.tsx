@@ -36,7 +36,7 @@ const Stepper = ({ activeIndex = 1, steps, onClick }: StepperProps) => {
             : "text-gray-500";
 
         return (
-          <div className="relative flex items-center gap-2 pb-4">
+          <div className="relative flex items-center gap-2 pb-4" key={index}>
             {index !== steps.length - 1 && (
               <span className="absolute left-4 top-8 h-4 border border-gray-300" />
             )}
@@ -127,6 +127,7 @@ const Stepper = ({ activeIndex = 1, steps, onClick }: StepperProps) => {
 
             return (
               <div
+                key={index}
                 className={`flex shrink-0 grow  items-center justify-center gap-4 border-b-4 p-3 hover:bg-gray-100 ${containerClass} ${
                   onClick && "cursor-pointer"
                 }`}

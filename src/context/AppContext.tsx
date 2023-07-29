@@ -1,4 +1,4 @@
-import useUserDetail from "hooks/user/useUserDetail";
+import useUserDetail from "api/user/useUserDetail";
 import { useAuthUser } from "react-auth-kit";
 import {
   createContext,
@@ -27,11 +27,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     data: userDetail,
     isLoading,
     isError,
-  } = useUserDetail({
-    userId: auth()?.userId,
-    clinicId: auth()?.clinicId,
-    token: auth()?.token,
-  });
+  } = useUserDetail({ userId: auth()?.userId });
 
   console.log(userDetail);
   console.log(isLoading);

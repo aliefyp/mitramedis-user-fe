@@ -56,8 +56,9 @@ const SearchPasien = ({ open, onClose }: SearchPasienProps) => {
                 const pasienName = item.name.trim().toLocaleLowerCase();
                 const queryName = query.trim().toLocaleLowerCase();
                 return pasienName.includes(queryName);
-              }).map((item) => (
+              }).map((item, index) => (
                 <SearchPasienItemDisplay
+                  key={index}
                   item={item}
                   onClick={() => handlePasienClick(item)}
                 />

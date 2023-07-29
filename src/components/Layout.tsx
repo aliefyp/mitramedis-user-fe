@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
-// import { useIsAuthenticated } from "react-auth-kit";
+import { Navigate, Outlet } from "react-router-dom";
+import { useIsAuthenticated } from "react-auth-kit";
 import { Flowbite } from "flowbite-react";
 import type { CustomFlowbiteTheme } from "flowbite-react";
 import {
@@ -18,6 +18,8 @@ import Nav from "components/Nav";
 import NavLink from "components/NavLink";
 import Sidebar from "components/Sidebar";
 import Typography from "components/Typography";
+import { ErrorBoundary } from "react-error-boundary";
+import EmptyData from "./EmptyData";
 
 const customTheme: CustomFlowbiteTheme = {
   button: {
@@ -73,9 +75,9 @@ export const EXTRAS_MENU = {
 const Layout = () => {
   const [open, setOpen] = useState(false);
   const { isMobile } = useAppContext();
-  // const isAuthenticated = useIsAuthenticated();
+  const isAuthenticated = useIsAuthenticated();
 
-  // if (!isAuthenticated()) return <Navigate replace to="/login" />;
+  if (!isAuthenticated()) return <Navigate replace to="/login" />;
 
   return (
     <Flowbite theme={{ theme: customTheme }}>
@@ -126,7 +128,9 @@ const Layout = () => {
             className="h-screen grow overflow-auto bg-slate-100 px-4 py-6 dark:bg-slate-700 sm:px-6"
           >
             <div className="mx-auto max-w-screen-xl">
-              <Outlet />
+              <ErrorBoundary fallback={<EmptyData />}>
+                <Outlet />
+              </ErrorBoundary>
             </div>
           </div>
         </div>

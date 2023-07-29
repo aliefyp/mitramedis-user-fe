@@ -6,7 +6,7 @@ import { Transition } from "@headlessui/react";
 import Button from "components/Button";
 import Input from "components/FormInput/Input";
 import LayoutPlain from "components/LayoutPlain";
-import useRegister from "hooks/auth/useRegister";
+import useRegister from "api/auth/useRegister";
 import useToaster from "context/ToasterContext";
 import { RegisterParam } from "types/register";
 import Card from "components/Card";

@@ -1,9 +1,11 @@
 import React, { Fragment, useRef, useState } from "react";
 import { Combobox as ComboboxHeadless, Transition } from "@headlessui/react";
 import clsx from "clsx";
-import Label from "./Label";
 import { HiCheck, HiChevronDown } from "react-icons/hi";
+import { Waypoint } from "react-waypoint";
 import Typography from "components/Typography";
+import Label from "./Label";
+import { Spinner } from "flowbite-react";
 
 interface Option {
   key: number | string;
@@ -16,7 +18,11 @@ interface ComboboxProps extends React.HTMLProps<HTMLInputElement> {
   label?: string;
   options: Option[];
   required?: boolean;
+  loading?: boolean;
+  truncateOption?: boolean;
   onValueChange?: (val: Option) => void;
+  onSearch?: (text) => void;
+  onLoadMore?: () => void;
 }
 
 const ComboBox = ({
@@ -27,22 +33,16 @@ const ComboBox = ({
   label,
   options,
   required,
+  loading,
+  truncateOption,
   onValueChange,
+  onSearch,
+  onChange,
+  onLoadMore,
   ...rest
 }: ComboboxProps) => {
   const comboBtn = useRef(null);
   const [selected, setSelected] = useState({});
-  const [query, setQuery] = useState("");
-
-  const filteredOptions =
-    query === ""
-      ? options
-      : options.filter((val) =>
-          val.label
-            .toLowerCase()
-            .replace(/\s+/g, "")
-            .includes(query.toLowerCase().replace(/\s+/g, ""))
-        );
 
   const handleInputFocus = () => comboBtn.current?.click();
   const handleChange = (val: Option) => {
@@ -73,8 +73,10 @@ const ComboBox = ({
                   : "focus:border-sky-400 focus:ring focus:ring-sky-300 focus:ring-opacity-50"
               )}
               displayValue={(val: unknown) => (val as Option).label}
-              onChange={(event) => setQuery(event.target.value)}
               onClick={handleInputFocus}
+              onChange={
+                onSearch ? (event) => onSearch(event.target.value) : null
+              }
               {...rest}
             />
             <ComboboxHeadless.Button
@@ -100,15 +102,20 @@ const ComboBox = ({
             leave="transition ease-in duration-100"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
-            afterLeave={() => setQuery("")}
+            afterLeave={onSearch ? () => onSearch("") : null}
           >
             <ComboboxHeadless.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white p-2 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              {filteredOptions.length === 0 && query !== "" ? (
+              {loading && (
+                <div className="flex justify-center">
+                  <Spinner />
+                </div>
+              )}
+              {options.length === 0 ? (
                 <div className="relative cursor-default select-none px-4 py-2 text-gray-700">
                   Nothing found.
                 </div>
               ) : (
-                filteredOptions.map((val) => (
+                options.map((val, index) => (
                   <ComboboxHeadless.Option
                     key={val.key}
                     className={({ active }) =>
@@ -121,9 +128,11 @@ const ComboBox = ({
                     {({ selected, active }) => (
                       <>
                         <span
-                          className={`block truncate ${
+                          className={`block ${
                             selected ? "font-bold" : "font-normal"
-                          }, ${active && "font-bold"}`}
+                          }, ${active && "font-bold"} ${
+                            truncateOption && "truncate"
+                          }`}
                         >
                           {val.label}
                         </span>
@@ -136,6 +145,9 @@ const ComboBox = ({
                             <HiCheck aria-hidden="true" className="text-lg" />
                           </span>
                         ) : null}
+                        {index === options.length - 1 && (
+                          <Waypoint onEnter={onLoadMore} />
+                        )}
                       </>
                     )}
                   </ComboboxHeadless.Option>

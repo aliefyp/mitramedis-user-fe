@@ -12,26 +12,28 @@ interface ToasterAttributes {
 }
 
 interface ToasterContextInterface {
+  isOpen: boolean;
   close: () => void;
   open: (attr: ToasterAttributes) => void;
 }
 
 interface ToasterProviderProps {
   children: React.ReactNode;
-};
+}
 
 const DEFAULT_ATTRIBUTE = {
-  title: 'Info',
-  message: 'Info',
+  title: "Info",
+  message: "Info",
   autoClose: true,
   autoCloseDuration: 3000,
-}
+};
 
 export const ToasterContext = createContext({} as ToasterContextInterface);
 
 export const ToasterProvider = ({ children }: ToasterProviderProps) => {
   const [isOpen, setOpen] = useState(false);
-  const [attributes, setAttributes] = useState<ToasterAttributes>(DEFAULT_ATTRIBUTE)
+  const [attributes, setAttributes] =
+    useState<ToasterAttributes>(DEFAULT_ATTRIBUTE);
 
   const close = () => {
     setOpen(false);
@@ -42,7 +44,7 @@ export const ToasterProvider = ({ children }: ToasterProviderProps) => {
     setAttributes({
       ...DEFAULT_ATTRIBUTE,
       ...attr,
-    })
+    });
   };
 
   useEffect(() => {
@@ -51,17 +53,17 @@ export const ToasterProvider = ({ children }: ToasterProviderProps) => {
       const autoClose = setTimeout(() => close(), duration);
       return () => clearTimeout(autoClose);
     }
-  }, [attributes])
+  }, [attributes]);
 
   return (
-    <ToasterContext.Provider value={{ open, close }}>
+    <ToasterContext.Provider value={{ open, close, isOpen }}>
       {children}
       <Toaster
         open={isOpen}
         onClose={close}
         message={attributes.message}
         title={attributes.title}
-        variant={attributes.variant || 'info'}
+        variant={attributes.variant || "info"}
       />
     </ToasterContext.Provider>
   );

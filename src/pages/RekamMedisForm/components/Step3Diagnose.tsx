@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import ComboBox from "components/FormInput/ComboBox";
 import Button from "components/Button";
@@ -9,19 +9,19 @@ import EmptyData from "components/EmptyData";
 import Card from "components/Card";
 import IconButton from "components/IconButton";
 import { FormDiagnoseType } from "../interface";
+import useIcd10 from "api/medicalRecord/useIcd10";
+// import { useAuthUser } from "react-auth-kit";
+import { Icd10Response } from "types/icd10";
 
-const icdOptions = [
-  { key: 1, label: "A00 - Cholera" },
-  { key: 2, label: "A01 - Typhoid and paratyphoid fevers" },
-  { key: 3, label: "A02 - Other salmonella infections" },
-];
-
-const diagnoseOptions = [
+const DIAGNOSE_OPTION = [
   { key: 1, label: "Diagnosis Utama / Primer" },
   { key: 2, label: "Diagnosis Tambahan / Sekunder" },
 ];
 
 const FormDiagnosis = ({ show, defaultValues, navigation, onSubmit }) => {
+  // const auth = useAuthUser();
+  const [icdPage, setIcdPage] = useState(1);
+  const [icdSearch, setIcdSearch] = useState("");
   const [diagnoses, setDiagnoses] = useState<FormDiagnoseType[]>([]);
   const {
     register,
@@ -30,6 +30,8 @@ const FormDiagnosis = ({ show, defaultValues, navigation, onSubmit }) => {
     formState: { errors },
   } = useForm<FormDiagnoseType>({ defaultValues });
 
+  const { data, isLoading } = useIcd10();
+
   const submitDiagnose = (val: FormDiagnoseType) => {
     setDiagnoses([...diagnoses, val]);
   };
@@ -37,6 +39,55 @@ const FormDiagnosis = ({ show, defaultValues, navigation, onSubmit }) => {
   const submitForm = () => {
     onSubmit(diagnoses);
   };
+
+  const icdList = useMemo(() => {
+    if (!data) return [];
+
+    const flattenIcd10 = (data as Icd10Response)?.data?.icd10
+      ?.map((lv1) => {
+        const { child: child1, ...lv1data } = lv1;
+        return [
+          lv1data,
+          ...child1
+            .map((lv2) => {
+              const { child: child2, ...lv2data } = lv2;
+              return [
+                lv2data,
+                ...child2
+                  .map((lv3) => {
+                    const { child: child3, ...lv3data } = lv3;
+                    return [lv3data, ...child3];
+                  })
+                  .flat(),
+              ];
+            })
+            .flat(),
+        ];
+      })
+      .flat();
+
+    return flattenIcd10?.map((item) => ({
+      key: item.code,
+      label: item.label,
+    }));
+  }, [data]);
+
+  const displayedIcdList = useMemo(() => {
+    if (!icdList?.length) return [];
+
+    const copyIcd = [...icdList];
+    const filtered =
+      icdSearch === ""
+        ? copyIcd
+        : copyIcd.filter((val) =>
+            val.label
+              .toLowerCase()
+              .replace(/\s+/g, "")
+              .includes(icdSearch.toLowerCase().replace(/\s+/g, ""))
+          );
+
+    return filtered.splice(0, 10 * icdPage);
+  }, [icdList, icdPage, icdSearch]);
 
   if (!show) return null;
 
@@ -48,10 +99,13 @@ const FormDiagnosis = ({ show, defaultValues, navigation, onSubmit }) => {
             <ComboBox
               placeholder="Ketik nama atau pilih kode ICD-10"
               label="ICD-10"
-              options={icdOptions}
+              options={displayedIcdList}
               error={Boolean(errors?.icd_code)}
               helper={errors?.icd_code?.message}
+              loading={isLoading}
               onValueChange={(val) => setValue("icd_code", val.label)}
+              onSearch={(query) => setIcdSearch(query)}
+              onLoadMore={() => setIcdPage(icdPage + 1)}
               {...register("icd_code", {
                 required: {
                   value: true,
@@ -62,7 +116,7 @@ const FormDiagnosis = ({ show, defaultValues, navigation, onSubmit }) => {
             <ComboBox
               placeholder="Pilih jenis Diagnosis"
               label="Diagnosis"
-              options={diagnoseOptions}
+              options={DIAGNOSE_OPTION}
               error={Boolean(errors?.type)}
               helper={errors?.type?.message}
               onValueChange={(val) => setValue("type", val.label)}
@@ -88,7 +142,7 @@ const FormDiagnosis = ({ show, defaultValues, navigation, onSubmit }) => {
               <Table.HeadCell className="text-md items-start whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white">
                 ICD-10
               </Table.HeadCell>
-              <Table.HeadCell className="text-md w-[240px] items-start whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white">
+              <Table.HeadCell className="text-md w-[120px] items-start whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white md:w-[240px]">
                 Jenis Diagnosis
               </Table.HeadCell>
               <Table.HeadCell className="text-md w-[64px] items-start whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white" />
@@ -103,10 +157,10 @@ const FormDiagnosis = ({ show, defaultValues, navigation, onSubmit }) => {
               )}
               {diagnoses
                 .sort((a, b) => {
-                  const aNoteKey = diagnoseOptions.find(
+                  const aNoteKey = DIAGNOSE_OPTION.find(
                     (i) => i.label === a.type
                   )?.key;
-                  const bNoteKey = diagnoseOptions.find(
+                  const bNoteKey = DIAGNOSE_OPTION.find(
                     (i) => i.label === b.type
                   )?.key;
 
@@ -118,7 +172,9 @@ const FormDiagnosis = ({ show, defaultValues, navigation, onSubmit }) => {
                     className="bg-white hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800"
                   >
                     <Table.Cell>{item.icd_code}</Table.Cell>
-                    <Table.Cell className="w-[240px]">{item.type}</Table.Cell>
+                    <Table.Cell className=" w-[120px] md:w-[240px]">
+                      {item.type}
+                    </Table.Cell>
                     <Table.Cell className="w-[64px]">
                       <IconButton
                         onClick={() =>

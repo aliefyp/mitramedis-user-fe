@@ -87,7 +87,7 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
         <Stepper
           activeIndex={activeIndex}
           steps={STEPS}
-          // onClick={(index) => setActiveIndex(index)}
+          onClick={(index) => setActiveIndex(index)}
         />
       </div>
       <div className="flex max-w-screen-2xl flex-col gap-4 md:min-w-[800px] md:flex-row">
