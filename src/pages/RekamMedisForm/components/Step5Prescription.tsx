@@ -36,8 +36,7 @@ const Step5Prescription = ({ show, defaultValues, navigation, onSubmit }) => {
   };
 
   const handleSubmit = () => {
-    console.log("medicines", medicines);
-    console.log("custMedicines", custMedicines);
+    onSubmit([...medicines, ...custMedicines]);
   };
 
   if (!show) return null;

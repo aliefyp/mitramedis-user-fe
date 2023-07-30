@@ -75,8 +75,14 @@ export interface FormActionType {
   with_action: boolean;
 }
 
+export interface MedicineType {
+  name: string;
+  quantity: number;
+}
+
 export interface FormPrescriptionType {
-  medicine_name: string[];
+  type?: string;
+  medicines: MedicineType[];
   qty: string[];
   frequency_count: number;
   frequency_unit: string;

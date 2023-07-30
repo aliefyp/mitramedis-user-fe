@@ -7,7 +7,7 @@ import IconButton from "components/IconButton";
 import { Table } from "flowbite-react";
 import { FaTrashAlt } from "react-icons/fa";
 
-const CardBMHP = ({ register, items, onDelete, onAdd }) => {
+const CardBMHP = ({ items, onDelete, onAdd, onChange }) => {
   return (
     <Card className="min-w-lg rounded-xl border">
       <Table className="w-full">
@@ -41,7 +41,7 @@ const CardBMHP = ({ register, items, onDelete, onAdd }) => {
                     { key: 1, label: "test 1" },
                     { key: 2, label: "test 2" },
                   ]}
-                  {...register("action_name")}
+                  onValueChange={(val) => onChange(index, "name", val.label)}
                 />
               </Table.Cell>
               <Table.Cell className="w-[240px]">
@@ -49,15 +49,19 @@ const CardBMHP = ({ register, items, onDelete, onAdd }) => {
                   type="number"
                   placeholder="1"
                   defaultValue="1"
-                  {...register("action_count")}
+                  value={item.quantity}
+                  onChange={(event) =>
+                    onChange(
+                      index,
+                      "quantity",
+                      (event.target as HTMLInputElement).value
+                    )
+                  }
                 />
               </Table.Cell>
               <Table.Cell className="w-[64px]">
-                <IconButton>
-                  <FaTrashAlt
-                    className="cursor-pointer text-gray-500"
-                    onClick={() => onDelete(index)}
-                  />
+                <IconButton onClick={() => onDelete(index)}>
+                  <FaTrashAlt className="cursor-pointer text-gray-500" />
                 </IconButton>
               </Table.Cell>
             </Table.Row>

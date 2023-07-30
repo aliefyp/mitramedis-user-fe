@@ -15,6 +15,7 @@ export interface ButtonProps
   loading?: boolean;
   onClick?: (...args: any[]) => void;
   size?: "normal" | "small" | "large";
+  type?: "button" | "submit" | "reset";
 }
 
 const colors: Record<string, string> = {
@@ -59,6 +60,7 @@ export default React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
       disabled={disabled}
       onClick={onClick}
       ref={ref}
+      type={type}
       {...rest}
     >
       {children}

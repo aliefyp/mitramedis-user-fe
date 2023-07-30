@@ -19,9 +19,49 @@ const Step4Action = ({ show, defaultValues, navigation, onSubmit }) => {
   const [showAction, setShowAction] = useState(false);
   const { register, handleSubmit } = useForm<FormActionType>({ defaultValues });
 
+  const handleActionChange = (index, key, value) => {
+    setBmhp(
+      bmhp.map((item, i) => {
+        if (i !== index) return item;
+        return {
+          ...item,
+          [key]: value,
+        };
+      })
+    );
+  };
+
+  const handleBmhpChange = (index, key, value) => {
+    setBmhp(
+      bmhp.map((item, i) => {
+        if (i !== index) return item;
+        return {
+          ...item,
+          [key]: value,
+        };
+      })
+    );
+  };
+
+  const handleAddAction = () => {
+    setActions([...actions, { name: "", quantity: 1 }]);
+  };
+
+  const handleAddBmhp = () => {
+    setBmhp([...bmhp, { name: "", quantity: 1 }]);
+  };
+
+  const handleDeleteAction = (index) => {
+    setActions(actions.filter((_, i) => i !== index));
+  };
+
+  const handleDeleteBmhp = (index) => {
+    setBmhp(bmhp.filter((_, i) => i !== index));
+  };
+
   const submitForm = (val: FormActionType) => {
     console.log(val);
-    onSubmit(val);
+    onSubmit({ ...val, actions, bmhp });
   };
 
   if (!show) return null;
@@ -83,11 +123,9 @@ const Step4Action = ({ show, defaultValues, navigation, onSubmit }) => {
                 </Typography>
                 <CardAction
                   items={actions}
-                  register={register}
-                  onAdd={() => setActions([...actions, actions.length])}
-                  onDelete={(index) =>
-                    setActions(actions.filter((_, i) => i !== index))
-                  }
+                  onAdd={handleAddAction}
+                  onDelete={handleDeleteAction}
+                  onChange={handleActionChange}
                 />
               </div>
               <div className="col-span-4 my-4">
@@ -96,15 +134,21 @@ const Step4Action = ({ show, defaultValues, navigation, onSubmit }) => {
                 </Typography>
                 <CardBMHP
                   items={bmhp}
-                  register={register}
-                  onAdd={() => setBmhp([...bmhp, bmhp.length])}
-                  onDelete={(index) =>
-                    setBmhp(bmhp.filter((_, i) => i !== index))
-                  }
+                  onAdd={handleAddBmhp}
+                  onDelete={handleDeleteBmhp}
+                  onChange={handleBmhpChange}
                 />
               </div>
               <div className="col-span-4 flex items-start gap-6">
-                <CheckBox {...register("consent")}>
+                <CheckBox
+                  required
+                  {...register("consent", {
+                    required: {
+                      value: true,
+                      message: "Consent belum disetujui",
+                    },
+                  })}
+                >
                   <Typography>
                     Pasien telah diberikan penjelasan dan menyetujui Persetujuan
                     Tindakan (<i>Informed Consent</i>).{" "}

@@ -41,6 +41,8 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
   const isEdit = type === "edit";
   const isLastStep = activeIndex === STEPS.length - 1;
 
+  console.log(formValues);
+
   const handleBackClick = () => {
     setActiveIndex((activeIndex - 1) % STEPS.length);
   };

@@ -13,24 +13,20 @@ import IconButton from "components/IconButton";
 import { FaTrashAlt } from "react-icons/fa";
 import EmptyData from "components/EmptyData";
 import Card from "components/Card";
-interface PrescriptionType {
-  medicine_name: string;
-  qty: string;
-  frequency_count: number;
-  frequency_unit: string;
-  time: string;
-  time_note: string;
-  span: string;
-  span_note: string;
-  method: string;
-}
+import { FormPrescriptionType } from "../interface";
 
 interface ModalNewPrescriptionProps {
   isCustomPrescription: boolean;
   open: boolean;
   onClose: () => void;
-  onSubmit: (val: PrescriptionType) => void;
+  onSubmit: (val: FormPrescriptionType) => void;
 }
+
+const DUMMY_MEDICINES = [
+  { key: 1, label: "Paracetamol" },
+  { key: 2, label: "Sunmol" },
+  { key: 3, label: "OBH Combi" },
+];
 
 const ModalNewPrescription = ({
   isCustomPrescription,
@@ -38,13 +34,11 @@ const ModalNewPrescription = ({
   onClose,
   onSubmit,
 }: ModalNewPrescriptionProps) => {
-  const [names, setNames] = useState([1]);
+  const [medicines, setMedicines] = useState([{ name: "", quantity: 1 }]);
   const [showFreeTextTime, setShowFreeTextTime] = useState(false);
   const [showFreeTextSpan, setShowFreeTextSpan] = useState(false);
   const { register, handleSubmit, watch, setValue } = useForm({
     defaultValues: {
-      medicine_name: "",
-      qty: "1",
       frequency_count: "3",
       frequency_unit: "",
       time: [],
@@ -58,6 +52,41 @@ const ModalNewPrescription = ({
   const watchTime = watch("time");
   const watchSpan = watch("span");
 
+  const handleMedicineNameChange = (index, name) => {
+    console.log(index, name);
+    setMedicines(
+      medicines.map((item, i) => {
+        if (i !== index) return item;
+        return { ...item, name };
+      })
+    );
+  };
+
+  const handleMedicineQtyChange = (index, quantity) => {
+    setMedicines(
+      medicines.map((item, i) => {
+        if (i !== index) return item;
+        return { ...item, quantity };
+      })
+    );
+  };
+
+  const handleAddMedicine = () => {
+    setMedicines([...medicines, { name: "", quantity: 1 }]);
+  };
+
+  const handleDeleteMedicine = (index) => {
+    setMedicines(medicines.filter((_, i) => i !== index));
+  };
+
+  const submitForm = (val) => {
+    onSubmit({
+      ...val,
+      medicines,
+      type: isCustomPrescription ? "custom" : "normal",
+    });
+  };
+
   useEffect(() => {
     setShowFreeTextTime(watchTime.includes("lain"));
   }, [watchTime]);
@@ -68,7 +97,7 @@ const ModalNewPrescription = ({
 
   return (
     <Modal open={open} onClose={onClose} className="md:min-w-[700px]">
-      <form className="px-8 py-8" onSubmit={handleSubmit(onSubmit)}>
+      <form className="px-8 py-8" onSubmit={handleSubmit(submitForm)}>
         <Typography as="h1" className="mb-4 text-2xl font-bold">
           {isCustomPrescription ? "Racikan Baru" : "Resep Baru"}
         </Typography>
@@ -76,7 +105,7 @@ const ModalNewPrescription = ({
         <div className="mb-6 grid grid-cols-12 items-end gap-6">
           {isCustomPrescription && (
             <div className="col-span-12">
-              <Card className="overflow-hidden rounded-xl border shadow-none">
+              <Card className="rounded-xl border shadow-none">
                 <Table className="shadow-none">
                   <Table.Head className="divide-x">
                     <Table.HeadCell className="text-md items-start whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white">
@@ -88,14 +117,14 @@ const ModalNewPrescription = ({
                     <Table.HeadCell className="text-md w-[32px] items-start whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white" />
                   </Table.Head>
                   <Table.Body className="divide-y">
-                    {names.length === 0 && (
+                    {medicines.length === 0 && (
                       <Table.Row>
                         <Table.Cell colSpan={3}>
-                          <EmptyData>Belum ada tindakan</EmptyData>
+                          <EmptyData>Belum ada obat</EmptyData>
                         </Table.Cell>
                       </Table.Row>
                     )}
-                    {names.map((item, index) => (
+                    {medicines.map((item, index) => (
                       <Table.Row
                         key={index}
                         className="bg-white hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800"
@@ -103,19 +132,29 @@ const ModalNewPrescription = ({
                         <Table.Cell>
                           <ComboBox
                             placeholder="Cari nama obat"
-                            options={[]}
-                            {...register("medicine_name")}
+                            options={DUMMY_MEDICINES}
+                            onValueChange={(val) =>
+                              handleMedicineNameChange(index, val.label)
+                            }
                           />
                         </Table.Cell>
                         <Table.Cell className="w-[120px]">
-                          <Input type="number" {...register("qty")} />
+                          <Input
+                            type="number"
+                            value={item.quantity}
+                            defaultValue={1}
+                            onChange={(event) =>
+                              handleMedicineQtyChange(
+                                0,
+                                (event.target as HTMLInputElement).value
+                              )
+                            }
+                          />
                         </Table.Cell>
                         <Table.Cell className="w-[32px]">
-                          {names.length > 1 && (
+                          {medicines.length > 1 && (
                             <IconButton
-                              onClick={() =>
-                                setNames(names.filter((_, i) => i !== index))
-                              }
+                              onClick={() => handleDeleteMedicine(index)}
                             >
                               <FaTrashAlt className="cursor-pointer text-gray-500" />
                             </IconButton>
@@ -129,7 +168,7 @@ const ModalNewPrescription = ({
                   <div className="p-2">
                     <ButtonAddMore
                       className="col-span-12 h-8 text-sm"
-                      onClick={() => setNames([...names, names.length])}
+                      onClick={handleAddMedicine}
                     >
                       Tambah Obat Lain
                     </ButtonAddMore>
@@ -144,15 +183,21 @@ const ModalNewPrescription = ({
               <ComboBox
                 label="Nama Obat"
                 placeholder="Cari nama obat"
-                options={[]}
+                options={DUMMY_MEDICINES}
                 className="col-span-10"
-                {...register("medicine_name")}
+                onValueChange={(val) => handleMedicineNameChange(0, val.label)}
               />
               <Input
                 type="number"
                 label="jumlah"
                 className="col-span-2"
-                {...register("qty")}
+                value={medicines[0].quantity}
+                onChange={(event) =>
+                  handleMedicineQtyChange(
+                    0,
+                    (event.target as HTMLInputElement).value
+                  )
+                }
               />
             </>
           )}
@@ -250,7 +295,7 @@ const ModalNewPrescription = ({
             {...register("method")}
           />
           <div className="col-span-12 mt-4 flex flex-col gap-2">
-            <Button type="button" color="secondary" className="w-full">
+            <Button color="secondary" className="w-full" onClick={onClose}>
               Batal
             </Button>
             <Button type="submit" className="w-full">

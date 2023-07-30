@@ -50,7 +50,7 @@ export const DEFAULT_STEP_4 = {
 } as FormActionType;
 
 export const DEFAULT_STEP_5 = {
-  medicine_name: [],
+  medicines: [],
   qty: [],
   frequency_count: undefined,
   frequency_unit: '',

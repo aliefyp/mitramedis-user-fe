@@ -128,7 +128,11 @@ const FormDiagnosis = ({ show, defaultValues, navigation, onSubmit }) => {
               })}
             />
             <div className="flex justify-end">
-              <Button color="secondary" className="flex items-center gap-2">
+              <Button
+                type="submit"
+                color="secondary"
+                className="flex items-center gap-2"
+              >
                 <HiPlus />
                 Tambahkan
               </Button>

@@ -19,6 +19,7 @@ const CardPrescription = ({
   onDelete,
   onEdit,
 }: CardPrescriptionProps) => {
+  console.log("items", items);
   return (
     <Card className="min-w-lg rounded-xl border">
       <Table className="w-full rounded-xl">
@@ -47,7 +48,11 @@ const CardPrescription = ({
               key={index}
               className="bg-white hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800"
             >
-              <Table.Cell>{`${item.medicine_name} x ${item.qty}`}</Table.Cell>
+              <Table.Cell>
+                {item.medicines.map((item, index) => (
+                  <div key={index}>{`${item.name} x ${item.quantity}`}</div>
+                ))}
+              </Table.Cell>
               <Table.Cell>
                 <div
                   dangerouslySetInnerHTML={{
