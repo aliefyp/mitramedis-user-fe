@@ -19,7 +19,7 @@ const DataDisplay = ({ items, className, ...rest }: DataDisplayProps) => {
           <dt className="text-sm font-medium leading-6 text-slate-800">
             {item.key}
           </dt>
-          <dd className="mt-1 text-sm leading-6 text-slate-600 md:col-span-2 md:mt-0">
+          <dd className="mt-1 whitespace-pre-line text-sm leading-6 text-slate-600 md:col-span-2 md:mt-0">
             {item.value}
           </dd>
         </div>

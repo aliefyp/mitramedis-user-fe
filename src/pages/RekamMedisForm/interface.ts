@@ -96,3 +96,12 @@ export interface FormPrescriptionType {
 export interface FormStatusType {
   status: string;
 }
+
+export interface AllFormType {
+  1: FormAnamnesisType;
+  2: FormPhysicalInspectionType;
+  3: FormDiagnoseType[];
+  4: FormActionType;
+  5: FormPrescriptionType;
+  6: FormStatusType;
+}

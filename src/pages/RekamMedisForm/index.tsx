@@ -20,12 +20,14 @@ import {
   DEFAULT_STEP_5,
   DEFAULT_STEP_6,
 } from "./constants";
+import ConfirmationModal from "./components/ConfirmationModal";
 
 interface RekamMedisFormProps {
   type: "new" | "edit";
 }
 
 const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [formValues, setFormValues] = useState({
     1: DEFAULT_STEP_1,
@@ -41,13 +43,15 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
   const isEdit = type === "edit";
   const isLastStep = activeIndex === STEPS.length - 1;
 
-  console.log(formValues);
-
   const handleBackClick = () => {
     setActiveIndex((activeIndex - 1) % STEPS.length);
   };
 
   const handleSubmitForm = (step, val) => {
+    if (step === 7) {
+      setShowConfirmation(true);
+    }
+
     setFormValues({ ...formValues, [step]: val });
     setActiveIndex((activeIndex + 1) % STEPS.length);
   };
@@ -77,86 +81,97 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
   );
 
   return (
-    <div>
-      <PageHeading
-        title={isEdit ? "Update Data Rekam Medis" : "Rekam Medis Baru"}
-        breadcrumbs={[
-          { text: "Rekam Medis", url: "/rekam-medis" },
-          { text: isEdit ? "Ubah Data Rekam Medis" : "Rekam Medis Baru" },
-        ]}
-      />
-      <div className="z-20 mb-4 hidden md:block">
-        <Stepper
-          activeIndex={activeIndex}
-          steps={STEPS}
-          onClick={(index) => setActiveIndex(index)}
+    <>
+      <div>
+        <PageHeading
+          title={isEdit ? "Update Data Rekam Medis" : "Rekam Medis Baru"}
+          breadcrumbs={[
+            { text: "Rekam Medis", url: "/rekam-medis" },
+            { text: isEdit ? "Ubah Data Rekam Medis" : "Rekam Medis Baru" },
+          ]}
+        />
+        <div className="z-20 mb-4 hidden md:block">
+          <Stepper
+            activeIndex={activeIndex}
+            steps={STEPS}
+            onClick={(index) => setActiveIndex(index)}
+          />
+        </div>
+        <div className="flex max-w-screen-2xl flex-col gap-4 md:min-w-[800px] md:flex-row">
+          <div className="order-2 grow pb-4 md:order-1">
+            <Card>
+              <div className="border-b px-6 py-4">
+                <Typography
+                  as="h2"
+                  className=" text-xl font-bold tracking-tight"
+                >
+                  {activeStep}
+                </Typography>
+                <Typography as="div" className=" text-sm text-gray-500">
+                  {`Langkah ${activeIndex + 1} dari ${formLength}`}
+                </Typography>
+              </div>
+              <div>
+                <Step1Anamnesis
+                  show={activeIndex === 0}
+                  defaultValues={formValues[1]}
+                  navigation={<Navigation />}
+                  onSubmit={(val) => handleSubmitForm(1, val)}
+                />
+                <Step2PhysicalInspection
+                  show={activeIndex === 1}
+                  defaultValues={formValues[2]}
+                  navigation={<Navigation />}
+                  onSubmit={(val) => handleSubmitForm(2, val)}
+                />
+                <Step3Diagnose
+                  show={activeIndex === 2}
+                  defaultValues={formValues[3]}
+                  navigation={<Navigation />}
+                  onSubmit={(val) => handleSubmitForm(3, val)}
+                />
+                <Step4Action
+                  show={activeIndex === 3}
+                  defaultValues={formValues[4]}
+                  navigation={<Navigation />}
+                  onSubmit={(val) => handleSubmitForm(4, val)}
+                />
+                <Step5Prescription
+                  show={activeIndex === 4}
+                  defaultValues={formValues[5]}
+                  navigation={<Navigation />}
+                  onSubmit={(val) => handleSubmitForm(5, val)}
+                />
+                <Step6Status
+                  show={activeIndex === 5}
+                  defaultValues={formValues[6]}
+                  navigation={<Navigation />}
+                  onSubmit={(val) => handleSubmitForm(6, val)}
+                />
+                <Step7Billing
+                  show={activeIndex === 6}
+                  navigation={<Navigation />}
+                  onSubmit={() => handleSubmitForm(7, {})}
+                />
+              </div>
+            </Card>
+          </div>
+          <div className="order-1 w-full shrink-0 md:order-2 md:w-[240px] xl:w-[320px]">
+            <CardPatientSummary />
+          </div>
+        </div>
+        <div
+          aria-label="bottom spacer"
+          className="block h-[80px] w-full md:hidden"
         />
       </div>
-      <div className="flex max-w-screen-2xl flex-col gap-4 md:min-w-[800px] md:flex-row">
-        <div className="order-2 grow pb-4 md:order-1">
-          <Card>
-            <div className="border-b px-6 py-4">
-              <Typography as="h2" className=" text-xl font-bold tracking-tight">
-                {activeStep}
-              </Typography>
-              <Typography as="div" className=" text-sm text-gray-500">
-                {`Langkah ${activeIndex + 1} dari ${formLength}`}
-              </Typography>
-            </div>
-            <div>
-              <Step1Anamnesis
-                show={activeIndex === 0}
-                defaultValues={formValues[1]}
-                navigation={<Navigation />}
-                onSubmit={(val) => handleSubmitForm(1, val)}
-              />
-              <Step2PhysicalInspection
-                show={activeIndex === 1}
-                defaultValues={formValues[2]}
-                navigation={<Navigation />}
-                onSubmit={(val) => handleSubmitForm(2, val)}
-              />
-              <Step3Diagnose
-                show={activeIndex === 2}
-                defaultValues={formValues[3]}
-                navigation={<Navigation />}
-                onSubmit={(val) => handleSubmitForm(3, val)}
-              />
-              <Step4Action
-                show={activeIndex === 3}
-                defaultValues={formValues[4]}
-                navigation={<Navigation />}
-                onSubmit={(val) => handleSubmitForm(4, val)}
-              />
-              <Step5Prescription
-                show={activeIndex === 4}
-                defaultValues={formValues[5]}
-                navigation={<Navigation />}
-                onSubmit={(val) => handleSubmitForm(5, val)}
-              />
-              <Step6Status
-                show={activeIndex === 5}
-                defaultValues={formValues[6]}
-                navigation={<Navigation />}
-                onSubmit={(val) => handleSubmitForm(6, val)}
-              />
-              <Step7Billing
-                show={activeIndex === 6}
-                navigation={<Navigation />}
-                onSubmit={() => handleSubmitForm(7, {})}
-              />
-            </div>
-          </Card>
-        </div>
-        <div className="order-1 w-full shrink-0 md:order-2 md:w-[240px] xl:w-[320px]">
-          <CardPatientSummary />
-        </div>
-      </div>
-      <div
-        aria-label="bottom spacer"
-        className="block h-[80px] w-full md:hidden"
+      <ConfirmationModal
+        open={showConfirmation}
+        onClose={() => setShowConfirmation(false)}
+        onContinue={console.log}
+        data={formValues}
       />
-    </div>
+    </>
   );
 };
 

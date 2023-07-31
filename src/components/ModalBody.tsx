@@ -1,9 +1,11 @@
-import React from "react";
+import clsx from "clsx";
+import React, { ReactElement } from "react";
 
-type ModalBodyProps = {
+interface ModalBodyProps extends React.HTMLProps<HTMLDivElement> {
   children?: React.ReactNode;
-};
+  className?: string;
+}
 
-export default function ModalBody({ children }: ModalBodyProps) {
-  return <div className="px-6 mt-2">{children}</div>;
+export default function ModalBody({ children, className }: ModalBodyProps) {
+  return <div className={clsx("mt-2 px-6", className)}>{children}</div>;
 }
