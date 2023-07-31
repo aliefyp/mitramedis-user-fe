@@ -4,7 +4,12 @@ import { headers } from "constants/api";
 import { RegisterParam, RegisterResponse } from "types/register";
 
 const register = async (param: RegisterParam): Promise<RegisterResponse> => {
-  const { data } = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/signup`, param, { headers });
+  const { data } = await axios({
+    method: 'POST',
+    url: `${process.env.REACT_APP_API_ENDPOINT}/signup`,
+    headers,
+    data: JSON.stringify(param)
+  });
   return data;
 };
 
