@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React, { ReactElement } from "react";
+import React from "react";
 
 interface ModalBodyProps extends React.HTMLProps<HTMLDivElement> {
   children?: React.ReactNode;

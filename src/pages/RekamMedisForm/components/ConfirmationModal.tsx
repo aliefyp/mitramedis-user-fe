@@ -7,11 +7,6 @@ import ModalHeader from "components/ModalHeader";
 import Typography from "components/Typography";
 import { AllFormType } from "../interface";
 
-interface Item {
-  key: string;
-  value: string;
-}
-
 interface ConfirmationModalProps {
   data: AllFormType;
   open: boolean;
@@ -27,10 +22,10 @@ const ConfirmationModal = ({
 }: ConfirmationModalProps) => {
   const dataStep1 = data[1];
   const dataStep2 = data[2];
-  const dataStep3 = data[3];
-  const dataStep4 = data[4];
-  const dataStep5 = data[5];
-  const dataStep6 = data[6];
+  // const dataStep3 = data[3];
+  // const dataStep4 = data[4];
+  // const dataStep5 = data[5];
+  // const dataStep6 = data[6];
 
   const physicalNoteStep2 = Object.keys(dataStep2).filter((item) =>
     item.startsWith("note_")
