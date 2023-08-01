@@ -62,17 +62,24 @@ export interface FormDiagnoseType {
   type: string;
 }
 
+export interface Action {
+  name: string;
+  quantity: number;
+}
+export interface Bmhp {
+  name: string;
+  quantity: number;
+}
 export interface FormActionType {
   kie: string;
   consent: boolean;
   officer_name: string;
   created_date: string;
   created_time: string;
-  action_name: string;
-  action_count: string;
-  bmhp_name: string;
-  bmhp_count: string;
   with_action: boolean;
+  with_kie: boolean;
+  actions: Action[];
+  bmhp: Bmhp[];
 }
 
 export interface MedicineType {
@@ -102,6 +109,6 @@ export interface AllFormType {
   2: FormPhysicalInspectionType;
   3: FormDiagnoseType[];
   4: FormActionType;
-  5: FormPrescriptionType;
+  5: FormPrescriptionType[];
   6: FormStatusType;
 }

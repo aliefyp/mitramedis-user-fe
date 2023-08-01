@@ -17,7 +17,6 @@ import {
   DEFAULT_STEP_1,
   DEFAULT_STEP_2,
   DEFAULT_STEP_4,
-  DEFAULT_STEP_5,
   DEFAULT_STEP_6,
 } from "./constants";
 import ConfirmationModal from "./components/ConfirmationModal";
@@ -34,7 +33,7 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
     2: DEFAULT_STEP_2,
     3: [],
     4: DEFAULT_STEP_4,
-    5: DEFAULT_STEP_5,
+    5: [],
     6: DEFAULT_STEP_6,
   });
 

@@ -42,11 +42,9 @@ export const DEFAULT_STEP_4 = {
   officer_name: '',
   created_date: '',
   created_time: '',
-  action_name: '',
-  action_count: '',
-  bmhp_name: '',
-  bmhp_count: '',
   with_action: false,
+  actions: [],
+  bmhp: [],
 } as FormActionType;
 
 export const DEFAULT_STEP_5 = {

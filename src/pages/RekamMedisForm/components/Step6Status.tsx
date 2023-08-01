@@ -33,7 +33,7 @@ const Step6Status = ({ show, navigation, defaultValues, onSubmit }) => {
   const [selected, setSelected] = useState(defaultValues || OPTIONS[0].label);
 
   const submitForm = () => {
-    onSubmit(selected);
+    onSubmit({ status: selected });
   };
 
   if (!show) return null;

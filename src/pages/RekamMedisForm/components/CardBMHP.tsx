@@ -36,7 +36,7 @@ const CardBMHP = ({ items, onDelete, onAdd, onChange }) => {
               <Table.Cell>
                 <ComboBox
                   type="text"
-                  placeholder="Cari tindakan di sini"
+                  placeholder="Cari BMHP di sini"
                   options={[
                     { key: 1, label: "test 1" },
                     { key: 2, label: "test 2" },

@@ -20,8 +20,8 @@ const Step4Action = ({ show, defaultValues, navigation, onSubmit }) => {
   const { register, handleSubmit } = useForm<FormActionType>({ defaultValues });
 
   const handleActionChange = (index, key, value) => {
-    setBmhp(
-      bmhp.map((item, i) => {
+    setActions(
+      actions.map((item, i) => {
         if (i !== index) return item;
         return {
           ...item,
@@ -73,7 +73,7 @@ const Step4Action = ({ show, defaultValues, navigation, onSubmit }) => {
           <Toggle
             value={showKIE}
             onSwitch={setShowKIE}
-            {...register("with_action")}
+            {...register("with_kie")}
           >
             <Label>Ada KIE (Komunikasi, Informasi, Edukasi)</Label>
           </Toggle>

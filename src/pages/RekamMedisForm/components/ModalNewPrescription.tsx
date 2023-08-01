@@ -53,7 +53,6 @@ const ModalNewPrescription = ({
   const watchSpan = watch("span");
 
   const handleMedicineNameChange = (index, name) => {
-    console.log(index, name);
     setMedicines(
       medicines.map((item, i) => {
         if (i !== index) return item;
