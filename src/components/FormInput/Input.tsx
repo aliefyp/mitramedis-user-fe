@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import Typography from "../Typography";
 import Label from "./Label";
 
@@ -15,6 +15,7 @@ export interface InputProps extends React.HTMLProps<HTMLInputElement> {
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
   {
+    autoFocus,
     className,
     disabled,
     error,
@@ -47,6 +48,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
     setFocus(true);
     if (onFocus) onFocus(e);
   };
+
+  useEffect(() => {
+    const element = document.querySelector(`input[name=${name}`);
+    if (autoFocus && element) {
+      (element as HTMLTextAreaElement).focus();
+    }
+  });
 
   return (
     <div className={className}>

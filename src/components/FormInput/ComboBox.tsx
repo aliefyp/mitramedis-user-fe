@@ -37,7 +37,6 @@ const ComboBox = ({
   truncateOption,
   onValueChange,
   onSearch,
-  onChange,
   onLoadMore,
   ...rest
 }: ComboboxProps) => {
