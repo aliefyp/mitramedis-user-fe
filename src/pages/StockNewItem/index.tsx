@@ -197,18 +197,24 @@ const StockNewItem = () => {
                   },
                 })}
               />
-              <Tooltip content="Tambah Supplier Baru">
-                <Button
-                  type="button"
-                  color="secondary"
-                  className="h-[42px]"
-                  onClick={() => setShowModalNewSupplier(true)}
-                >
-                  <div className="flex h-full items-center justify-center gap-1">
-                    <FaPlusCircle />
-                  </div>
-                </Button>
-              </Tooltip>
+              <div
+                className={`flex h-full ${
+                  Boolean(errors?.supplier) ? "items-center" : "items-end"
+                } `}
+              >
+                <Tooltip content="Tambah Supplier Baru">
+                  <Button
+                    type="button"
+                    color="secondary"
+                    className="h-[42px]"
+                    onClick={() => setShowModalNewSupplier(true)}
+                  >
+                    <div className="flex h-full items-center justify-center gap-1">
+                      <FaPlusCircle />
+                    </div>
+                  </Button>
+                </Tooltip>
+              </div>
             </div>
             <div className="col-span-3 flex justify-end gap-2">
               <Button type="button" color="secondary">

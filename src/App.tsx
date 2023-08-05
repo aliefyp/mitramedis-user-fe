@@ -19,6 +19,7 @@ import RekamMedisForm from "pages/RekamMedisForm/index";
 import Stock from "pages/Stock/index";
 import StockNewItem from "pages/StockNewItem/index";
 import StockNewEntry from "pages/StockNewEntry/index";
+import StockCard from "pages/StockCard/index";
 import "./App.css";
 import "flowbite";
 
@@ -69,6 +70,7 @@ function App() {
                 <Route path="/stok" element={<Stock />} />
                 <Route path="/stok/new" element={<StockNewItem />} />
                 <Route path="/stok/in" element={<StockNewEntry />} />
+                <Route path="/stok/card" element={<StockCard />} />
                 <Route path="/logout" element={<Logout />} />
                 <Route path="*" element={<Error />} />
               </Route>

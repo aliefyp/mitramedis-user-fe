@@ -1,17 +1,22 @@
-import Button from "components/Button";
 import EmptyData from "components/EmptyData";
-import { Table, Tooltip } from "flowbite-react";
-import toIDR from "helpers/toIDR";
+import { Table } from "flowbite-react";
 import moment from "moment";
-import { FaTrashAlt } from "react-icons/fa";
-import { StockEntryType } from "types/stock";
 
-interface EntryTableProps {
-  items: StockEntryType[];
-  onDelete: (index: number) => void;
+interface Item {
+  invoice: string | number;
+  created_date: string;
+  remark: string;
+  item_in: number;
+  item_out: number;
+  item_balance: number;
+  respondent: string;
 }
 
-const EntryTable = ({ items, onDelete }: EntryTableProps) => {
+interface StockEntryTableProps {
+  items: Item[];
+}
+
+const StockEntryTable = ({ items }: StockEntryTableProps) => {
   return (
     <Table>
       <Table.Head>
@@ -19,37 +24,32 @@ const EntryTable = ({ items, onDelete }: EntryTableProps) => {
           No.
         </Table.HeadCell>
         <Table.HeadCell className="text-md whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white">
-          Kode
+          Nomor Transaksi/Invoice
         </Table.HeadCell>
         <Table.HeadCell className="text-md whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white">
-          Nama Item
+          Tanggal
         </Table.HeadCell>
         <Table.HeadCell className="text-md whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white">
-          Qty
+          Keterangan
         </Table.HeadCell>
         <Table.HeadCell className="text-md whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white">
-          Satuan
+          Barang Masuk
         </Table.HeadCell>
         <Table.HeadCell className="text-md whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white">
-          Harga Beli
+          Barang Keluar
         </Table.HeadCell>
         <Table.HeadCell className="text-md whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white">
-          Harga Jual
+          Saldo Barang
         </Table.HeadCell>
         <Table.HeadCell className="text-md whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white">
-          Kadaluarsa
+          Supplier / Nama Pasien
         </Table.HeadCell>
-        <Table.HeadCell className="text-md whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white">
-          Total
-        </Table.HeadCell>
-
-        <Table.HeadCell className="text-md whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white" />
       </Table.Head>
       <Table.Body className="divide-y">
         {items.length === 0 && (
           <Table.Row>
             <Table.Cell colSpan={10}>
-              <EmptyData>Belum ada entri</EmptyData>
+              <EmptyData>Belum ada data</EmptyData>
             </Table.Cell>
           </Table.Row>
         )}
@@ -59,31 +59,15 @@ const EntryTable = ({ items, onDelete }: EntryTableProps) => {
             className="bg-white hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800"
           >
             <Table.Cell>{index + 1}</Table.Cell>
-            <Table.Cell>{item.item_code}</Table.Cell>
-            <Table.Cell>{item.item_name}</Table.Cell>
-            <Table.Cell>{item.quantity}</Table.Cell>
-            <Table.Cell>{item.unit}</Table.Cell>
-            <Table.Cell>{toIDR(item.purchase_price)}</Table.Cell>
-            <Table.Cell>{toIDR(item.selling_price)}</Table.Cell>
+            <Table.Cell>{item.invoice}</Table.Cell>
             <Table.Cell>
-              {moment(item.expired_date).format("DD/MM/YY")}
+              {moment(item.created_date).format("DD/MM/YYYY")}
             </Table.Cell>
-            <Table.Cell>
-              {toIDR(item.quantity * item.purchase_price)}
-            </Table.Cell>
-
-            <Table.Cell>
-              <Tooltip content="Hapus">
-                <Button
-                  size="small"
-                  color="error"
-                  onClick={() => onDelete(index)}
-                  className="py-2"
-                >
-                  <FaTrashAlt />
-                </Button>
-              </Tooltip>
-            </Table.Cell>
+            <Table.Cell>{item.remark}</Table.Cell>
+            <Table.Cell>{item.item_in}</Table.Cell>
+            <Table.Cell>{item.item_out}</Table.Cell>
+            <Table.Cell>{item.item_balance}</Table.Cell>
+            <Table.Cell>{item.respondent}</Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>
@@ -91,4 +75,4 @@ const EntryTable = ({ items, onDelete }: EntryTableProps) => {
   );
 };
 
-export default EntryTable;
+export default StockEntryTable;

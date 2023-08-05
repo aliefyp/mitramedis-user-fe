@@ -8,7 +8,7 @@ import { OPTIONS_UNIT } from "./constants";
 import PageHeading from "components/PageHeading";
 import Card from "components/Card";
 import { FaArrowDown } from "react-icons/fa";
-import EntryTable from "./components/EntryTable";
+import StockEntryTable from "./components/StockEntryTable";
 import Typography from "components/Typography";
 
 const StockNewEntry = () => {
@@ -18,6 +18,7 @@ const StockNewEntry = () => {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<StockEntryType>();
 
@@ -27,6 +28,18 @@ const StockNewEntry = () => {
 
   const handleDeleteEntry = (index: number) => {
     setEntryData(entryData.filter((_, i) => i !== index));
+  };
+
+  const handleReset = () => {
+    reset({
+      item_name: null,
+      item_code: null,
+      quantity: null,
+      unit: null,
+      purchase_price: null,
+      selling_price: null,
+      expired_date: null,
+    });
   };
 
   return (
@@ -98,12 +111,12 @@ const StockNewEntry = () => {
             />
           </div>
 
-          <Card className="grid grid-cols-12 gap-4 !rounded-none !bg-slate-100 px-8 py-4 shadow-sm">
+          <div className="grid grid-cols-12 gap-4 !rounded-none !bg-slate-100 px-8 py-4 shadow-sm">
             {/* item_name */}
             <ComboBox
               required
               label="Nama Obat/BHP"
-              placeholder="Pcs"
+              placeholder="Paracetamol"
               options={[
                 { key: 1, label: "Obat 1" },
                 { key: 2, label: "Obat 2" },
@@ -141,7 +154,7 @@ const StockNewEntry = () => {
             <Input
               required
               type="number"
-              label="Jumlah Pesanan"
+              label="Jumlah"
               placeholder="1"
               className="col-span-6 md:col-span-2"
               error={Boolean(errors?.quantity)}
@@ -224,7 +237,10 @@ const StockNewEntry = () => {
               })}
             />
 
-            <div className="col-span-12 mt-2 flex h-full items-center md:col-span-3">
+            <div className="col-span-12 mt-2 flex h-full items-center gap-2 md:col-span-3">
+              <Button color="secondary" onClick={handleReset}>
+                Reset
+              </Button>
               <Button
                 type="submit"
                 color="primary"
@@ -234,13 +250,13 @@ const StockNewEntry = () => {
                 Tambahkan
               </Button>
             </div>
-          </Card>
+          </div>
         </form>
         <div className="space-y-4 px-6 py-2">
           <Typography as="h4" bold>
             Data Entri
           </Typography>
-          <EntryTable items={entryData} onDelete={handleDeleteEntry} />
+          <StockEntryTable items={entryData} onDelete={handleDeleteEntry} />
         </div>
         <div className="flex justify-end gap-2 p-6">
           <Button type="button" color="secondary">
