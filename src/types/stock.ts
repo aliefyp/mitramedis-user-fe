@@ -9,3 +9,11 @@ export interface StockType {
   minimum_stock: number;
   supplier: string;
 }
+
+export interface StockEntryType extends StockType {
+  invoice: string;
+  created_date: string;
+  supplier: string;
+  quantity: number;
+  expired_date: string;
+}

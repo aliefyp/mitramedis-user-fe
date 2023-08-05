@@ -17,7 +17,8 @@ import PasienForm from "pages/PasienForm/index";
 import RekamMedis from "pages/RekamMedis/index";
 import RekamMedisForm from "pages/RekamMedisForm/index";
 import Stock from "pages/Stock/index";
-import StockForm from "pages/StockNewItem/index";
+import StockNewItem from "pages/StockNewItem/index";
+import StockNewEntry from "pages/StockNewEntry/index";
 import "./App.css";
 import "flowbite";
 
@@ -66,7 +67,8 @@ function App() {
                   element={<RekamMedisForm type="new" />}
                 />
                 <Route path="/stok" element={<Stock />} />
-                <Route path="/stok/new" element={<StockForm />} />
+                <Route path="/stok/new" element={<StockNewItem />} />
+                <Route path="/stok/in" element={<StockNewEntry />} />
                 <Route path="/logout" element={<Logout />} />
                 <Route path="*" element={<Error />} />
               </Route>
