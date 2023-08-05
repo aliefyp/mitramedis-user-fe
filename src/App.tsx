@@ -20,6 +20,7 @@ import Stock from "pages/Stock/index";
 import StockNewItem from "pages/StockNewItem/index";
 import StockNewEntry from "pages/StockNewEntry/index";
 import StockCard from "pages/StockCard/index";
+import StockOpname from "pages/StockOpname/index";
 import "./App.css";
 import "flowbite";
 
@@ -71,6 +72,7 @@ function App() {
                 <Route path="/stok/new" element={<StockNewItem />} />
                 <Route path="/stok/in" element={<StockNewEntry />} />
                 <Route path="/stok/card" element={<StockCard />} />
+                <Route path="/stok/opname" element={<StockOpname />} />
                 <Route path="/logout" element={<Logout />} />
                 <Route path="*" element={<Error />} />
               </Route>
