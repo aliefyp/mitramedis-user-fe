@@ -42,7 +42,7 @@ const StockNewItem = () => {
         title="Tambah Item Baru"
         breadcrumbs={[{ text: "Stok", url: "/stok" }, { text: "Item Baru" }]}
       />
-      <Card className="mx-auto max-w-screen-md rounded-2xl border-none p-6 shadow-sm">
+      <Card className="max-w-screen-md rounded-2xl border-none p-6 shadow-sm">
         <form onSubmit={handleSubmit(submitForm)}>
           <div className="grid grid-cols-3 gap-6">
             {/* item_name */}

@@ -80,7 +80,6 @@ const StockOpnameTable = ({
               <ComboBox
                 required
                 type="text"
-                label="Petugas"
                 options={[
                   { key: 1, label: "Petugas 1" },
                   { key: 2, label: "Petugas 2" },
