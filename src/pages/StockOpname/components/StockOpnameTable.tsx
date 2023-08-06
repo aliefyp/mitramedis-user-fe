@@ -1,26 +1,29 @@
 import EmptyData from "components/EmptyData";
+import ComboBox from "components/FormInput/ComboBox";
 import Input from "components/FormInput/Input";
 import { Table } from "flowbite-react";
 import React from "react";
 import { StockType } from "types/stock";
 
-interface Item extends StockType {
+interface Item extends Partial<StockType> {
   quantity: number;
   real_quantity: number;
-  difference: number;
   officer_name: string;
 }
 
 interface StockOpnameTableProps {
   items: Item[];
   onQuantityChange: (index: number, qty: number) => void;
+  onOfficerChange: (index: number, name: string) => void;
 }
 
 const StockOpnameTable = ({
   items,
   onQuantityChange,
+  onOfficerChange,
 }: StockOpnameTableProps) => {
   return (
+    // <div className="w-full overflow-x-auto">
     <Table>
       <Table.Head>
         <Table.HeadCell className="text-md whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white">
@@ -37,9 +40,6 @@ const StockOpnameTable = ({
         </Table.HeadCell>
         <Table.HeadCell className="text-md whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white">
           Riil / Fisik
-        </Table.HeadCell>
-        <Table.HeadCell className="text-md whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white">
-          Saldo Barang
         </Table.HeadCell>
         <Table.HeadCell className="text-md whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white">
           Selisih
@@ -67,18 +67,37 @@ const StockOpnameTable = ({
             <Table.Cell>{item.unit}</Table.Cell>
             <Table.Cell>
               <Input
+                className="w-[80px]"
+                placeholder="0"
                 name={`real-qty-${item.item_code}`}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   onQuantityChange(index, Number(e.target.value))
                 }
               />
             </Table.Cell>
-            <Table.Cell>{item.difference}</Table.Cell>
-            <Table.Cell>{item.officer_name}</Table.Cell>
+            <Table.Cell>{item.quantity - item.real_quantity}</Table.Cell>
+            <Table.Cell>
+              <ComboBox
+                required
+                type="text"
+                label="Petugas"
+                options={[
+                  { key: 1, label: "Petugas 1" },
+                  { key: 2, label: "Petugas 2" },
+                  { key: 3, label: "Petugas 3" },
+                ]}
+                placeholder="Nama Petugas"
+                className="col-span-3 md:col-span-2"
+                // error={Boolean(errors?.item_name)}
+                // helper={errors?.item_name?.message}
+                onValueChange={(val) => onOfficerChange(index, val.label)}
+              />
+            </Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>
     </Table>
+    // </div>
   );
 };
 

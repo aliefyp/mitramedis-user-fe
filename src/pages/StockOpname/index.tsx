@@ -14,16 +14,25 @@ interface StockOpnameFilterType extends EntryType {
   date: string;
 }
 
-export interface Data extends StockType {
+const DUMMY_ITEMS = [
+  {
+    item_code: 9203920,
+    item_name: "Paracetamol",
+    quantity: 1000,
+    unit: "Pcs",
+    real_quantity: 0,
+    officer_name: "",
+  },
+];
+export interface Data extends Partial<StockType> {
   quantity: number;
   real_quantity: number;
-  difference: number;
   officer_name: string;
 }
 
 const StockOpname = () => {
   const [filter, setFilterData] = useState<StockOpnameFilterType>();
-  const [data, setData] = useState<Data[]>();
+  const [data, setData] = useState<Data[]>(DUMMY_ITEMS);
 
   console.log(filter);
 
@@ -45,6 +54,18 @@ const StockOpname = () => {
         return {
           ...item,
           real_quantity: val,
+        };
+      })
+    );
+  };
+
+  const handleOfficerChange = (index: number, val: string) => {
+    setData(
+      data.map((item, i) => {
+        if (index !== i) return item;
+        return {
+          ...item,
+          officer_name: val,
         };
       })
     );
@@ -131,9 +152,18 @@ const StockOpname = () => {
             Data Transaksi
           </Typography>
           <StockOpnameTable
-            items={[]}
+            items={data}
             onQuantityChange={handleQuantityChange}
+            onOfficerChange={handleOfficerChange}
           />
+        </div>
+        <div className="flex justify-end gap-2 p-6">
+          {/* <Button type="button" color="secondary">
+            Kembali
+          </Button> */}
+          <Button type="submit" color="primary">
+            Simpan
+          </Button>
         </div>
       </Card>
     </div>

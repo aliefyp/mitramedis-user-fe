@@ -259,9 +259,9 @@ const StockNewEntry = () => {
           <StockEntryTable items={entryData} onDelete={handleDeleteEntry} />
         </div>
         <div className="flex justify-end gap-2 p-6">
-          <Button type="button" color="secondary">
+          {/* <Button type="button" color="secondary">
             Kembali
-          </Button>
+          </Button> */}
           <Button type="submit" color="primary">
             Simpan
           </Button>
