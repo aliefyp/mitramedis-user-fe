@@ -23,7 +23,7 @@ const PasienForm = ({ type }: PasienFormProps) => {
           isEdit ? { text: "Ubah Data Pasien" } : { text: "Pasien Baru" },
         ]}
       />
-      <Card className="mx-auto max-w-screen-lg rounded-2xl border-none p-6 shadow-sm">
+      <Card className="max-w-screen-lg rounded-2xl border-none p-6 shadow-sm">
         <div className="col-span-2 flex flex-col items-start justify-between gap-4 border-b pb-4 md:flex-row md:items-center">
           <Toggle
             value={isNewborn}

@@ -16,7 +16,7 @@ export interface PatientType {
   address_1_city: string;
   address_1_district: string;
   address_1_zip: string;
-  address_1_subdistrict: string;
+  address_1_village: string;
   address_1_rt: string;
   address_1_rw: string;
   address_2: string;
@@ -24,7 +24,7 @@ export interface PatientType {
   address_2_city: string;
   address_2_district: string;
   address_2_zip: string;
-  address_2_subdistrict: string;
+  address_2_village: string;
   address_2_rt: string;
   address_2_rw: string;
   phone_1: number;

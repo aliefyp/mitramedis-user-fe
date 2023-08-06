@@ -83,8 +83,8 @@ export const MAIN_MENU = {
       text: "Obat dan BHP",
       icon: TbMedicineSyrup,
       child: [
-        { text: "Manajemen Stok", url: "/stok" },
-        { text: "Tambah Item Baru", url: "/stok/new" },
+        { text: "Data Stok", url: "/stok" },
+        { text: "Item Baru", url: "/stok/new" },
         { text: "Entri Baru", url: "/stok/in" },
         { text: "Kartu Stok", url: "/stok/card" },
         { text: "Stok Opname", url: "/stok/opname" },

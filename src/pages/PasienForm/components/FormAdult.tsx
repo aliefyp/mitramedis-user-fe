@@ -18,18 +18,125 @@ import FormSection from "components/FormSection";
 import CheckBox from "components/FormInput/CheckBox";
 import ComboBox from "components/FormInput/ComboBox";
 import ConfirmationModal from "./ConfirmationModal";
+import useTeritory from "api/address/useTeritory";
 
 const FormAdult = () => {
   const [sameAsAddress1, setSameAsAddress1] = useState(false);
-  const { register, handleSubmit } = useForm<PatientType>();
   const [showOtherPaymentMethod, setShowOtherPaymentMethod] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [formData, setFormData] = useState<PatientType | undefined>(undefined);
+  const [searchQuery, setSearchQuery] = useState({
+    province: "",
+    city: "",
+    district: "",
+    village: "",
+  });
+
+  const { register, setValue, watch, handleSubmit } = useForm<PatientType>();
+
+  const watchProvince = watch("address_1_province");
+  const watchCity = watch("address_1_city");
+  const watchDistrict = watch("address_1_district");
+
+  const { data } = useTeritory({
+    selectedProvince: watchProvince,
+    selectedCity: watchCity,
+    selectedDistrict: watchDistrict,
+  });
+
+  console.log("watchProvince", watchProvince);
 
   const onSubmit = (val: PatientType) => {
     setFormData(val);
     setShowConfirmation(true);
   };
+
+  const handleSearchQueryChange = (key: string, val: string) => {
+    setSearchQuery({
+      ...searchQuery,
+      [key]: val.trim(),
+    });
+  };
+
+  const provinceOptions = useMemo(() => {
+    const list = data.province.map((item) => ({
+      key: item.province_code,
+      label: item.province_name,
+    }));
+
+    const copyList = [...list];
+    const filtered =
+      searchQuery.province === ""
+        ? copyList
+        : copyList.filter((val) =>
+            val.label
+              .toLowerCase()
+              .replace(/\s+/g, "")
+              .includes(searchQuery.province.toLowerCase().replace(/\s+/g, ""))
+          );
+
+    return filtered;
+  }, [data.province, searchQuery.province]);
+
+  const cityOptions = useMemo(() => {
+    const list = data.city.map((item) => ({
+      key: item.city_code,
+      label: item.city_name,
+    }));
+
+    const copyList = [...list];
+    const filtered =
+      searchQuery.city === ""
+        ? copyList
+        : copyList.filter((val) =>
+            val.label
+              .toLowerCase()
+              .replace(/\s+/g, "")
+              .includes(searchQuery.city.toLowerCase().replace(/\s+/g, ""))
+          );
+
+    return filtered;
+  }, [data.city, searchQuery.city]);
+
+  const districtOptions = useMemo(() => {
+    const list = data.district.map((item) => ({
+      key: item.district_code,
+      label: item.district_name,
+    }));
+
+    const copyList = [...list];
+    const filtered =
+      searchQuery.district === ""
+        ? copyList
+        : copyList.filter((val) =>
+            val.label
+              .toLowerCase()
+              .replace(/\s+/g, "")
+              .includes(searchQuery.district.toLowerCase().replace(/\s+/g, ""))
+          );
+
+    return filtered;
+  }, [data.district, searchQuery.district]);
+
+  const villageOptions = useMemo(() => {
+    const list = data.village.map((item) => ({
+      key: item.village_code,
+      label: item.village_name,
+    }));
+
+    const copyList = [...list];
+    const filtered =
+      searchQuery.village === ""
+        ? copyList
+        : copyList.filter((val) =>
+            val.label
+              .toLowerCase()
+              .replace(/\s+/g, "")
+              .includes(searchQuery.village.toLowerCase().replace(/\s+/g, ""))
+          );
+
+    return filtered;
+  }, [data.village, searchQuery.village]);
 
   const summaryData = useMemo(() => {
     if (!formData) return [];
@@ -66,8 +173,13 @@ const FormAdult = () => {
           required={isMainAddress}
           label={ATTR[`address_${index}_province`].label}
           placeholder={ATTR[`address_${index}_province`].placeholder}
-          options={[]}
+          options={provinceOptions}
           className="col-span-4 md:col-span-2"
+          onValueChange={(val) => {
+            console.log(val);
+            setValue(`address_${index}_province`, val.key as string);
+          }}
+          onSearch={(val) => handleSearchQueryChange("province", val)}
           {...register(`address_${index}_province`, {
             required: {
               value: isMainAddress,
@@ -80,8 +192,10 @@ const FormAdult = () => {
           required={isMainAddress}
           label={ATTR[`address_${index}_city`].label}
           placeholder={ATTR[`address_${index}_city`].placeholder}
-          options={[]}
+          options={cityOptions}
           className="col-span-4 md:col-span-2"
+          onValueChange={(val) => setValue(`address_${index}_city`, val.label)}
+          onSearch={(val) => handleSearchQueryChange("city", val)}
           {...register(`address_${index}_city`, {
             required: {
               value: isMainAddress,
@@ -94,8 +208,12 @@ const FormAdult = () => {
           required={isMainAddress}
           label={ATTR[`address_${index}_district`].label}
           placeholder={ATTR[`address_${index}_district`].placeholder}
-          options={[]}
+          options={districtOptions}
           className="col-span-4 md:col-span-3"
+          onValueChange={(val) =>
+            setValue(`address_${index}_district`, val.label)
+          }
+          onSearch={(val) => handleSearchQueryChange("district", val)}
           {...register(`address_${index}_district`, {
             required: {
               value: isMainAddress,
@@ -114,11 +232,15 @@ const FormAdult = () => {
 
         <ComboBox
           required={isMainAddress}
-          label={ATTR[`address_${index}_subdistrict`].label}
-          placeholder={ATTR[`address_${index}_subdistrict`].placeholder}
-          options={[]}
+          label={ATTR[`address_${index}_village`].label}
+          placeholder={ATTR[`address_${index}_village`].placeholder}
+          options={villageOptions}
           className="col-span-4 md:col-span-2"
-          {...register(`address_${index}_subdistrict`, {
+          onValueChange={(val) =>
+            setValue(`address_${index}_village`, val.label)
+          }
+          onSearch={(val) => handleSearchQueryChange("village", val)}
+          {...register(`address_${index}_village`, {
             required: {
               value: isMainAddress,
               message: "Wajib diisi",

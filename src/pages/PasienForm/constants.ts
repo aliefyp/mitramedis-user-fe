@@ -217,7 +217,7 @@ export const FORM_ADULT_PATIENT_ATTRIBUTES = {
     label: "Kode Pos",
     placeholder: "00xxx",
   },
-  address_1_subdistrict: {
+  address_1_village: {
     label: "Kelurahan / Desa",
     placeholder: "Pilih kelurahan atau desa",
   },
@@ -249,7 +249,7 @@ export const FORM_ADULT_PATIENT_ATTRIBUTES = {
     label: "Kode Pos",
     placeholder: "00xxx",
   },
-  address_2_subdistrict: {
+  address_2_village: {
     label: "Kelurahan / Desa",
     placeholder: "Pilih kelurahan atau desa",
   },

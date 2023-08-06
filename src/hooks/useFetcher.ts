@@ -5,9 +5,10 @@ import { useQuery } from "react-query";
 interface UseFetcherProps extends RawAxiosRequestConfig {
   withAuth?: boolean;
   queryKey: string;
+  skip?: boolean,
 }
 
-const useFetcher = ({ queryKey, withAuth = false, url, method, headers, ...rest }: UseFetcherProps) => {
+const useFetcher = ({ queryKey, withAuth = false, url, method, headers, skip = false, ...rest }: UseFetcherProps) => {
   const auth = useAuthUser();
   const signOut = useSignOut();
 
@@ -34,13 +35,17 @@ const useFetcher = ({ queryKey, withAuth = false, url, method, headers, ...rest 
     return data;
   };
 
-  return useQuery(queryKey, () => fetcher()
-    .catch(err => {
-      console.error(err)
-      if (err?.response?.status === 401 && withAuth) {
-        signOut();
-      }
-    }));
+  return useQuery({
+    queryKey,
+    queryFn: () => fetcher()
+      .catch(err => {
+        console.error(err)
+        if (err?.response?.status === 401 && withAuth) {
+          signOut();
+        }
+      }),
+    enabled: !skip,
+  });
 }
 
 export default useFetcher;
