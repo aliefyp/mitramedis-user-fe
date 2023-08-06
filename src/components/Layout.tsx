@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useIsAuthenticated } from "react-auth-kit";
-import { Flowbite } from "flowbite-react";
+import { Flowbite, Sidebar } from "flowbite-react";
 import type { CustomFlowbiteTheme } from "flowbite-react";
 import {
   TbReportMedical,
@@ -14,9 +14,7 @@ import {
 } from "react-icons/tb";
 import { HiMenu } from "react-icons/hi";
 import useAppContext from "context/AppContext";
-import Nav from "components/Nav";
-import NavLink from "components/NavLink";
-import Sidebar from "components/Sidebar";
+import MainNavigation from "components/MainNavigation";
 import Typography from "components/Typography";
 import { ErrorBoundary } from "react-error-boundary";
 import EmptyData from "./EmptyData";
@@ -51,6 +49,28 @@ const customTheme: CustomFlowbiteTheme = {
   dropdown: {
     content: "bg-sky-500",
   },
+  sidebar: {
+    root: {
+      base: "bg-transparent h-full",
+      inner: "h-full overflow-y-auto overflow-x-hidden rounded py-4 px-3",
+    },
+    collapse: {
+      label: {
+        base: "ml-3 flex-1 whitespace-nowrap text-left hover:font-bold",
+      },
+    },
+    item: {
+      content: {
+        base: "px-3 flex-1 whitespace-nowrap hover:font-bold",
+      },
+      active:
+        "bg-mm-navy-1000 text-white dark:bg-mm-navy-700 hover:bg-mm-navy-1000 hover:text-white",
+      icon: {
+        base: "h-5 w-5 flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white",
+        active: "text-white",
+      },
+    },
+  },
 };
 
 export const MAIN_MENU = {
@@ -59,7 +79,17 @@ export const MAIN_MENU = {
     { text: "Dashboard", icon: TbLayoutDashboard, url: "/" },
     { text: "Pasien", icon: TbUsers, url: "/pasien" },
     { text: "Rekam Medis", icon: TbReportMedical, url: "/rekam-medis" },
-    { text: "Stok", icon: TbMedicineSyrup, url: "/stok" },
+    {
+      text: "Obat dan BHP",
+      icon: TbMedicineSyrup,
+      child: [
+        { text: "Manajemen Stok", url: "/stok" },
+        { text: "Tambah Item Baru", url: "/stok/new" },
+        { text: "Entri Baru", url: "/stok/in" },
+        { text: "Kartu Stok", url: "/stok/card" },
+        { text: "Stok Opname", url: "/stok/opname" },
+      ],
+    },
   ],
 };
 
@@ -75,6 +105,7 @@ export const EXTRAS_MENU = {
 const Layout = () => {
   const [open, setOpen] = useState(false);
   const { isMobile } = useAppContext();
+  const { pathname } = useLocation();
   const isAuthenticated = useIsAuthenticated();
 
   if (!isAuthenticated()) return <Navigate replace to="/login" />;
@@ -82,33 +113,68 @@ const Layout = () => {
   return (
     <Flowbite theme={{ theme: customTheme }}>
       <div className="flex h-screen w-full">
-        <Sidebar
+        <MainNavigation
           open={open}
           setOpen={setOpen}
           title={<img src="/img_main_logo.png" alt="mitramedis" width={180} />}
         >
-          {[MAIN_MENU, EXTRAS_MENU].map((menu, index) => (
-            <Nav key={index} orientation="vertical" className="mb-6 gap-1">
-              <Typography
-                as="p"
-                smaller
-                className="mb-2 text-xs font-bold tracking-widest text-gray-500"
-              >
-                {menu.title}
-              </Typography>
-              {menu.items.map((menu) => (
-                <NavLink
-                  key={menu.url}
-                  onClick={() => setOpen(false)}
-                  to={menu.url}
-                >
-                  <menu.icon className="mr-4" size={20} />
-                  {menu.text}
-                </NavLink>
+          <Sidebar aria-label="Sidebar with multi-level dropdown example">
+            <Sidebar.Items>
+              {[MAIN_MENU, EXTRAS_MENU].map((menu, menuIndex) => (
+                <Sidebar.ItemGroup key={`menu-${menuIndex}`}>
+                  <Typography
+                    as="p"
+                    smaller
+                    className="mb-2 text-xs font-bold tracking-widest !text-gray-600"
+                  >
+                    {menu.title}
+                  </Typography>
+                  {menu.items.map((item, itemIndex) => {
+                    const hasChild = item?.child?.length;
+
+                    if (hasChild) {
+                      return (
+                        <Sidebar.Collapse
+                          key={`item-${itemIndex}`}
+                          icon={item.icon}
+                          label={item.text}
+                          open={item.child.map((c) => c.url).includes(pathname)}
+                        >
+                          {hasChild ? (
+                            item.child.map((c, childIndex) => (
+                              <Sidebar.Item
+                                key={`child-${childIndex}`}
+                                href={c.url}
+                                icon={c.icon}
+                                active={pathname === c.url}
+                              >
+                                {c.text}
+                              </Sidebar.Item>
+                            ))
+                          ) : (
+                            <p>{item.text}</p>
+                          )}
+                        </Sidebar.Collapse>
+                      );
+                    } else {
+                      return (
+                        <Sidebar.Item
+                          key={`item-${itemIndex}`}
+                          href={item.url}
+                          icon={item.icon}
+                          active={pathname === item.url}
+                        >
+                          {item.text}
+                        </Sidebar.Item>
+                      );
+                    }
+                  })}
+                </Sidebar.ItemGroup>
               ))}
-            </Nav>
-          ))}
-        </Sidebar>
+            </Sidebar.Items>
+          </Sidebar>
+        </MainNavigation>
+
         <div className="w-full">
           {isMobile && (
             <header className="sticky top-0 flex items-center justify-between border-b bg-slate-100 px-4 pb-2 pt-4 dark:bg-slate-700">

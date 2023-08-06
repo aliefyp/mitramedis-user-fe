@@ -4,21 +4,21 @@ import useAppContext from "context/AppContext";
 import React, { Fragment } from "react";
 import { HiX } from "react-icons/hi";
 
-interface SidebarProps {
+interface MainNavigationProps {
   children?: React.ReactNode;
   open?: boolean;
   setOpen?: (open: boolean) => void;
   title?: React.ReactNode;
-  width?: number;
+  width?: number | string;
 }
 
-function Sidebar({
+function MainNavigation({
   children,
   open,
   setOpen,
   title,
-  width = 240,
-}: SidebarProps) {
+  width = "auto",
+}: MainNavigationProps) {
   const { isMobile } = useAppContext();
 
   if (setOpen && isMobile) {
@@ -94,4 +94,4 @@ function Sidebar({
   );
 }
 
-export default Sidebar;
+export default MainNavigation;
