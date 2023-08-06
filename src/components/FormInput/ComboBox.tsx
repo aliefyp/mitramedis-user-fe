@@ -37,13 +37,21 @@ const ComboBox = ({
   truncateOption,
   onValueChange,
   onSearch,
+  onChange,
   onLoadMore,
+  onFocus,
   ...rest
 }: ComboboxProps) => {
   const comboBtn = useRef(null);
   const [selected, setSelected] = useState({});
 
-  const handleInputFocus = () => comboBtn.current?.click();
+  const handleInputFocus = (event) => {
+    if (onFocus) onFocus(event);
+    if (comboBtn.current) {
+      comboBtn.current?.click();
+    }
+  };
+
   const handleChange = (val: Option) => {
     setSelected(val);
     if (onValueChange) onValueChange(val);
@@ -73,9 +81,10 @@ const ComboBox = ({
               )}
               displayValue={(val: unknown) => (val as Option).label}
               onClick={handleInputFocus}
-              onChange={
-                onSearch ? (event) => onSearch(event.target.value) : null
-              }
+              onChange={(event) => {
+                onChange(event);
+                if (onSearch) onSearch(event.target.value);
+              }}
               {...rest}
             />
             <ComboboxHeadless.Button

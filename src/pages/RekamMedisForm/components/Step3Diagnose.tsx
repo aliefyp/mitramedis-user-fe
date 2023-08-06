@@ -89,6 +89,8 @@ const FormDiagnosis = ({ show, defaultValues, navigation, onSubmit }) => {
     return filtered.splice(0, 10 * icdPage);
   }, [icdList, icdPage, icdSearch]);
 
+  console.log("icdSearch", icdSearch);
+
   if (!show) return null;
 
   return (
