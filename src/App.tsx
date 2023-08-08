@@ -56,7 +56,7 @@ function App() {
           <AppProvider>
             <Routes>
               <Route path="/" element={<Layout />}>
-                <Route path="" element={<Home />} />
+                <Route path="/" element={<Home />} />
                 <Route path="/pasien" element={<Pasien />} />
                 <Route path="/pasien/new" element={<PasienForm type="new" />} />
                 <Route

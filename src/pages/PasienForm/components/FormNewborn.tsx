@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "components/Button";
 import FormSection from "components/FormSection";
 import ComboBox from "components/FormInput/ComboBox";
@@ -7,58 +7,60 @@ import { useForm } from "react-hook-form";
 import { PatientType } from "types/patient";
 import {
   OPTIONS_GENDER,
-  OPTIONS_HOUR,
-  OPTIONS_MINUTE,
   OPTIONS_PAYMENT_METHOD,
-  FORM_NEWBORN_PATIENT_ATTRIBUTES as ATTR,
+  PAYMENT_INSURANCE,
 } from "../constants";
 import CheckBox from "components/FormInput/CheckBox";
 import Typography from "components/Typography";
 import ConfirmationModal from "./ConfirmationModal";
 
-const FormNewborn = () => {
-  const [showOtherPaymentMethod, setShowOtherPaymentMethod] = useState(false);
+interface FormNewbornProps {
+  namePrefix: string;
+  onSubmit: (values: PatientType) => void;
+}
+
+const FormNewborn = ({
+  namePrefix = "Bayi Ny.",
+  onSubmit,
+}: FormNewbornProps) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [formData, setFormData] = useState<PatientType | undefined>(undefined);
   const {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<PatientType>();
 
-  const onSubmit = (val: PatientType) => {
+  const submitForm = (val: PatientType) => {
     setFormData(val);
     setShowConfirmation(true);
   };
 
-  const summaryData = useMemo(() => {
-    if (!formData) return [];
+  const handleConfirm = () => {
+    setShowConfirmation(false);
+    onSubmit(formData);
+  };
 
-    const keys = Object.keys(formData);
-    return keys
-      .filter((key) => ATTR[key]?.label)
-      .map((key) => ({
-        key: ATTR[key].label,
-        value: (() => {
-          const prefix = key === "patient_name" ? "Bayi Ny. " : "";
-          return formData[key] ? prefix + formData[key] : "-";
-        })(),
-      }));
-  }, [formData]);
+  const showOtherPaymentMethod = watch("payment_method") === PAYMENT_INSURANCE;
+
+  useEffect(() => {
+    if (!showOtherPaymentMethod) setValue("payment_method_other", "");
+  }, [setValue, showOtherPaymentMethod]);
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(submitForm)}>
         <FormSection title="Data Kelahiran">
           <div className="grid grid-cols-4 gap-6">
             {/* patient_name */}
             <Input
               required
-              prefix="Bayi Ny."
+              prefix={namePrefix}
               type="text"
-              label={ATTR.patient_name.label}
-              placeholder={ATTR.patient_name.placeholder}
+              label="Nama"
+              placeholder="Nama ibu bayi"
               className="col-span-4"
               error={Boolean(errors?.patient_name)}
               helper={errors?.patient_name?.message}
@@ -74,8 +76,8 @@ const FormNewborn = () => {
             <Input
               required
               type="text"
-              label={ATTR.id_card_number.label}
-              placeholder={ATTR.id_card_number.placeholder}
+              label="NIK Ibu Kandung"
+              placeholder="16 digit nomor KTP"
               className="col-span-4"
               error={Boolean(errors?.id_card_number)}
               helper={errors?.id_card_number?.message}
@@ -95,16 +97,13 @@ const FormNewborn = () => {
             <ComboBox
               required
               id="gender"
-              label={ATTR.gender.label}
-              placeholder={ATTR.gender.placeholder}
-              options={OPTIONS_GENDER.map((item, index) => ({
-                key: index + 1,
-                label: item,
-              }))}
-              className="col-span-4"
+              label="Jenis Kelamin"
+              placeholder="Pilih jenis kelamin"
+              options={OPTIONS_GENDER}
+              className="col-span-4 md:col-span-2"
               error={Boolean(errors?.gender)}
               helper={errors?.gender?.message}
-              onValueChange={(val) => setValue("gender", val.label)}
+              onValueChange={(val) => setValue("gender", val.key as number)}
               {...register("gender", {
                 required: {
                   value: true,
@@ -113,16 +112,16 @@ const FormNewborn = () => {
               })}
             />
 
-            {/* birth_date */}
+            {/* birthdate */}
             <Input
               required
               type="date"
-              label={ATTR.birth_date.label}
-              placeholder={ATTR.birth_date.placeholder}
-              className="col-span-4 md:col-span-2"
-              error={Boolean(errors?.birth_date)}
-              helper={errors?.birth_date?.message}
-              {...register("birth_date", {
+              label="Tanggal Lahir"
+              placeholder="DD/MM/YYYY"
+              className="col-span-2 md:col-span-1"
+              error={Boolean(errors?.birthdate)}
+              helper={errors?.birthdate?.message}
+              {...register("birthdate", {
                 required: {
                   value: true,
                   message: "Wajib diisi",
@@ -130,53 +129,36 @@ const FormNewborn = () => {
               })}
             />
 
-            {/* birth_hour */}
-            <ComboBox
-              id="birth_hour"
-              label={ATTR.birth_hour.label}
-              placeholder={ATTR.birth_hour.placeholder}
-              options={OPTIONS_HOUR.map((item, index) => ({
-                key: index + 1,
-                label: item,
-              }))}
-              className="col-span-4 md:col-span-1"
-              onValueChange={(val) => setValue("birth_hour", val.label)}
-              {...register("birth_hour")}
-            />
-
-            {/* birth_minute */}
-            <ComboBox
-              id="birth_minute"
-              label={ATTR.birth_minute.label}
-              placeholder={ATTR.birth_minute.placeholder}
-              options={OPTIONS_MINUTE.map((item, index) => ({
-                key: index + 1,
-                label: item,
-              }))}
-              className="col-span-4 md:col-span-1"
-              onValueChange={(val) => setValue("birth_minute", val.label)}
-              {...register("birth_minute")}
+            {/* birth_time */}
+            <Input
+              required
+              type="time"
+              label="Jam Lahir"
+              placeholder="00:00"
+              className="col-span-2 md:col-span-1"
+              error={Boolean(errors?.birth_time)}
+              helper={errors?.birth_time?.message}
+              {...register("birth_time")}
             />
 
             <ComboBox
-              label={ATTR.payment_method.label}
-              placeholder={ATTR.payment_method.placeholder}
+              autoFocus
+              label="Metode Pembayaran"
+              placeholder="Pilih metode pembayaran yang digunakan"
               className="col-span-4 md:col-span-2"
-              onValueChange={(val: { key: number; label: string }) =>
-                setShowOtherPaymentMethod(val.label === "Asuransi Lainnya")
+              onValueChange={(val) =>
+                setValue("payment_method", val.key as number)
               }
-              options={OPTIONS_PAYMENT_METHOD.map((item, index) => ({
-                key: index + 1,
-                label: item,
-              }))}
+              options={OPTIONS_PAYMENT_METHOD}
               {...register("payment_method")}
             />
+
             {showOtherPaymentMethod && (
               <Input
                 required={showOtherPaymentMethod}
                 type="text"
-                label={ATTR.payment_method_other.label}
-                placeholder={ATTR.payment_method_other.placeholder}
+                label="Metode Pembayaran"
+                placeholder="Pilih metode pembayaran yang digunakan"
                 className="col-span-4 md:col-span-2"
                 error={Boolean(errors?.payment_method_other)}
                 helper={errors?.payment_method_other?.message}
@@ -192,7 +174,7 @@ const FormNewborn = () => {
         </FormSection>
 
         <div className="col-span-4 flex items-start gap-2 py-6">
-          <CheckBox {...register("consent")} />
+          <CheckBox {...register("general_consent")} />
           <Typography>
             Pasien telah diberikan penjelasan mengenai <i>General Consent</i>{" "}
             atau Persetujuan Umum.
@@ -206,10 +188,11 @@ const FormNewborn = () => {
         </Button>
       </form>
       <ConfirmationModal
-        items={summaryData}
+        data={formData}
+        namePrefix={namePrefix}
         open={showConfirmation}
         onClose={() => setShowConfirmation(false)}
-        onContinue={() => setShowConfirmation(false)}
+        onContinue={handleConfirm}
       />
     </>
   );
