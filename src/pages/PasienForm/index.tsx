@@ -3,7 +3,7 @@ import PageHeading from "components/PageHeading";
 import Card from "components/Card";
 import Toggle from "components/Toggle";
 import FormNewborn from "./components/FormNewborn";
-// import FormAdult from "./components/FormAdult";
+import FormAdult from "./components/FormAdult";
 import { PatientType } from "types/patient";
 import { useAddPatient } from "api/patient";
 import { NEWBORN_PREFIX } from "./constants";
@@ -41,7 +41,10 @@ const PasienForm = ({ type }: PasienFormProps) => {
         state: {
           modal: {
             key: "new-patient",
-            data: createdPatient,
+            data: {
+              ...createdPatient,
+              ...addPatient.data.data,
+            },
           },
         },
       });
@@ -56,6 +59,7 @@ const PasienForm = ({ type }: PasienFormProps) => {
       });
     }
   }, [
+    addPatient.data.data,
     addPatient.error,
     addPatient.isError,
     addPatient.isSuccess,
@@ -86,7 +90,7 @@ const PasienForm = ({ type }: PasienFormProps) => {
         {isNewborn && (
           <FormNewborn namePrefix={NEWBORN_PREFIX} onSubmit={handleSubmit} />
         )}
-        {/* {!isNewborn && <FormAdult />} */}
+        {!isNewborn && <FormAdult onSubmit={handleSubmit} />}
       </Card>
     </div>
   );

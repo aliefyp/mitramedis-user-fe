@@ -3,7 +3,7 @@ import Input from "components/FormInput/Input";
 import TextArea from "components/FormInput/TextArea";
 import Toggle from "components/Toggle";
 import Typography from "components/Typography";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { PatientType } from "types/patient";
 import {
@@ -12,15 +12,18 @@ import {
   OPTIONS_MARITAL_STATUS,
   OPTIONS_OCCUPATION,
   OPTIONS_PAYMENT_METHOD,
-  FORM_ADULT_PATIENT_ATTRIBUTES as ATTR,
 } from "../constants";
 import FormSection from "components/FormSection";
 import CheckBox from "components/FormInput/CheckBox";
 import ComboBox from "components/FormInput/ComboBox";
-import ConfirmationModal from "./ConfirmationModal";
+// import ConfirmationModal from "./ConfirmationModal";
 import useTeritory from "api/address/useTeritory";
 
-const FormAdult = () => {
+interface FormAdultProps {
+  onSubmit: (values: PatientType) => void;
+}
+
+const FormAdult = ({ onSubmit }: FormAdultProps) => {
   const [sameAsAddress1, setSameAsAddress1] = useState(false);
   const [showOtherPaymentMethod, setShowOtherPaymentMethod] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -32,11 +35,13 @@ const FormAdult = () => {
     village: "",
   });
 
+  console.log(showConfirmation, formData, onSubmit);
+
   const { register, setValue, watch, handleSubmit } = useForm<PatientType>();
 
-  const watchProvince = watch("address_1_province");
-  const watchCity = watch("address_1_city");
-  const watchDistrict = watch("address_1_district");
+  const watchProvince = watch("province_code");
+  const watchCity = watch("city_code");
+  const watchDistrict = watch("district_code");
 
   const { data } = useTeritory({
     selectedProvince: watchProvince,
@@ -44,9 +49,7 @@ const FormAdult = () => {
     selectedDistrict: watchDistrict,
   });
 
-  console.log("watchProvince", watchProvince);
-
-  const onSubmit = (val: PatientType) => {
+  const submitForm = (val: PatientType) => {
     setFormData(val);
     setShowConfirmation(true);
   };
@@ -138,30 +141,35 @@ const FormAdult = () => {
     return filtered;
   }, [data.village, searchQuery.village]);
 
-  const summaryData = useMemo(() => {
-    if (!formData) return [];
+  // const summaryData = useMemo(() => {
+  //   if (!formData) return [];
 
-    const keys = Object.keys(formData);
-    return keys
-      .filter((key) => ATTR[key]?.label)
-      .map((key) => ({
-        key: ATTR[key].label,
-        value: formData[key] || "-",
-      }));
-  }, [formData]);
+  //   const keys = Object.keys(formData);
+  //   return keys
+  //     .filter((key) => ATTR[key]?.label)
+  //     .map((key) => ({
+  //       key: ATTR[key].label,
+  //       value: formData[key] || "-",
+  //     }));
+  // }, [formData]);
+
+  useEffect(() => {
+    if (!showOtherPaymentMethod) setValue("payment_method_other", "");
+  }, [setValue, showOtherPaymentMethod]);
 
   const AddressForm = (index: 1 | 2) => {
     const isMainAddress = index === 1;
+    const prefix = index === 2 ? "domicile_" : "";
 
     return (
       <>
         <TextArea
           required={isMainAddress}
-          label={ATTR[`address_${index}`].label}
-          placeholder={ATTR[`address_${index}`].placeholder}
+          label={isMainAddress ? "Alamat Lengkap" : "Alamat Domisili"}
+          placeholder="Alamat lengkap sesuai kartu identitas"
           className="col-span-4"
           rows={2}
-          {...register(`address_${index}`, {
+          {...register(`${prefix}address`, {
             required: {
               value: isMainAddress,
               message: "Wajib diisi",
@@ -171,16 +179,15 @@ const FormAdult = () => {
 
         <ComboBox
           required={isMainAddress}
-          label={ATTR[`address_${index}_province`].label}
-          placeholder={ATTR[`address_${index}_province`].placeholder}
+          label="Provinsi"
+          placeholder="Pilih provinsi"
           options={provinceOptions}
           className="col-span-4 md:col-span-2"
           onValueChange={(val) => {
-            console.log(val);
-            setValue(`address_${index}_province`, val.key as string);
+            setValue(`${prefix}province_code`, Number(val.key));
           }}
           onSearch={(val) => handleSearchQueryChange("province", val)}
-          {...register(`address_${index}_province`, {
+          {...register(`${prefix}province_code`, {
             required: {
               value: isMainAddress,
               message: "Wajib diisi",
@@ -190,13 +197,15 @@ const FormAdult = () => {
 
         <ComboBox
           required={isMainAddress}
-          label={ATTR[`address_${index}_city`].label}
-          placeholder={ATTR[`address_${index}_city`].placeholder}
+          label="Kotamadya / Kabupaten"
+          placeholder="Pilih kota atau kabupaten"
           options={cityOptions}
           className="col-span-4 md:col-span-2"
-          onValueChange={(val) => setValue(`address_${index}_city`, val.label)}
+          onValueChange={(val) =>
+            setValue(`${prefix}city_code`, Number(val.label))
+          }
           onSearch={(val) => handleSearchQueryChange("city", val)}
-          {...register(`address_${index}_city`, {
+          {...register(`${prefix}city_code`, {
             required: {
               value: isMainAddress,
               message: "Wajib diisi",
@@ -206,15 +215,15 @@ const FormAdult = () => {
 
         <ComboBox
           required={isMainAddress}
-          label={ATTR[`address_${index}_district`].label}
-          placeholder={ATTR[`address_${index}_district`].placeholder}
+          label="Kecamatan"
+          placeholder="Pilih kecamatan"
           options={districtOptions}
           className="col-span-4 md:col-span-3"
           onValueChange={(val) =>
-            setValue(`address_${index}_district`, val.label)
+            setValue(`${prefix}district_code`, Number(val.label))
           }
           onSearch={(val) => handleSearchQueryChange("district", val)}
-          {...register(`address_${index}_district`, {
+          {...register(`${prefix}district_code`, {
             required: {
               value: isMainAddress,
               message: "Wajib diisi",
@@ -224,23 +233,23 @@ const FormAdult = () => {
 
         <Input
           type="number"
-          label={ATTR[`address_${index}_zip`].label}
-          placeholder={ATTR[`address_${index}_zip`].placeholder}
+          label="Kode Pos"
+          placeholder="00xxx"
           className="col-span-4 md:col-span-1"
-          {...register(`address_${index}_zip`)}
+          {...register(`${prefix}zip_code`)}
         />
 
         <ComboBox
           required={isMainAddress}
-          label={ATTR[`address_${index}_village`].label}
-          placeholder={ATTR[`address_${index}_village`].placeholder}
+          label="Kelurahan / Desa"
+          placeholder="Pilih kelurahan atau desa"
           options={villageOptions}
           className="col-span-4 md:col-span-2"
           onValueChange={(val) =>
-            setValue(`address_${index}_village`, val.label)
+            setValue(`${prefix}village_code`, Number(val.label))
           }
           onSearch={(val) => handleSearchQueryChange("village", val)}
-          {...register(`address_${index}_village`, {
+          {...register(`${prefix}village_code`, {
             required: {
               value: isMainAddress,
               message: "Wajib diisi",
@@ -251,10 +260,10 @@ const FormAdult = () => {
         <Input
           required={isMainAddress}
           type="number"
-          label={ATTR[`address_${index}_rt`].label}
-          placeholder={ATTR[`address_${index}_rt`].placeholder}
+          label="Rukun Tetangga / RT"
+          placeholder="00x"
           className="col-span-4 md:col-span-1"
-          {...register(`address_${index}_rt`, {
+          {...register(`${prefix}rt`, {
             required: {
               value: isMainAddress,
               message: "Wajib diisi",
@@ -265,10 +274,10 @@ const FormAdult = () => {
         <Input
           required={isMainAddress}
           type="number"
-          label={ATTR[`address_${index}_rw`].label}
-          placeholder={ATTR[`address_${index}_rw`].placeholder}
+          label="Rukun Warga / RW"
+          placeholder="00x"
           className="col-span-4 md:col-span-1"
-          {...register(`address_${index}_rw`, {
+          {...register(`${prefix}rw`, {
             required: {
               value: isMainAddress,
               message: "Wajib diisi",
@@ -281,15 +290,15 @@ const FormAdult = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(submitForm)}>
         <FormSection title="Identitas">
           <div className="grid grid-cols-4 gap-6">
             {/* patient_name */}
             <Input
               required
               type="text"
-              label={ATTR.patient_name.label}
-              placeholder={ATTR.patient_name.placeholder}
+              label="Nama Lengkap"
+              placeholder="Nama pasien sesuai KTP"
               className="col-span-4"
               {...register("patient_name", {
                 required: {
@@ -303,8 +312,8 @@ const FormAdult = () => {
             <Input
               required
               type="text"
-              label={ATTR.id_card_number.label}
-              placeholder={ATTR.id_card_number.placeholder}
+              label="NIK"
+              placeholder="16 digit nomor KTP"
               className="col-span-4 md:col-span-2"
               {...register("id_card_number", {
                 required: {
@@ -317,30 +326,30 @@ const FormAdult = () => {
             {/* id_card_number_2 */}
             <Input
               type="text"
-              label={ATTR.id_card_number_2.label}
-              placeholder={ATTR.id_card_number_2.placeholder}
+              label="Nomor Identitas Lain (Khusus WNA)"
+              placeholder="Nomor PASPOR / KITAS"
               className="col-span-4 md:col-span-2"
-              {...register("id_card_number_2")}
+              {...register("other_id_card_number")}
             />
 
             {/* mother_name */}
             <Input
               required
               type="text"
-              label={ATTR.mother_name.label}
-              placeholder={ATTR.mother_name.placeholder}
+              label="Nama Ibu Kandung"
+              placeholder="Nama ibu kandung sesuai KTP"
               className="col-span-4"
               {...register("mother_name")}
             />
 
-            {/* birth_place */}
+            {/* birthplace */}
             <Input
               required
               type="text"
-              label={ATTR.birth_place.label}
-              placeholder={ATTR.birth_place.placeholder}
+              label="Tempat Lahir"
+              placeholder="Nama Kota/Kabupaten"
               className="col-span-4 md:col-span-2"
-              {...register("birth_place", {
+              {...register("birthplace", {
                 required: {
                   value: true,
                   message: "Wajib diisi",
@@ -348,14 +357,14 @@ const FormAdult = () => {
               })}
             />
 
-            {/* birth_date */}
+            {/* birthdate */}
             <Input
               required
               type="date"
-              label={ATTR.birth_date.label}
-              placeholder={ATTR.birth_date.placeholder}
+              label="Tanggal Lahir"
+              placeholder="DD/MM/YYYY"
               className="col-span-4 md:col-span-2"
-              {...register("birth_date", {
+              {...register("birthdate", {
                 required: {
                   value: true,
                   message: "Wajib diisi",
@@ -367,12 +376,9 @@ const FormAdult = () => {
             <ComboBox
               required
               id="gender"
-              label={ATTR.gender.label}
-              placeholder={ATTR.gender.placeholder}
-              options={OPTIONS_GENDER.map((item, index) => ({
-                key: index + 1,
-                label: item,
-              }))}
+              label="Jenis Kelamin"
+              placeholder="Pilih jenis kelamin"
+              options={OPTIONS_GENDER}
               className="col-span-4 md:col-span-2"
               {...register("gender", {
                 required: {
@@ -401,10 +407,10 @@ const FormAdult = () => {
             <Input
               required
               type="number"
-              label={ATTR.phone_1.label}
-              placeholder={ATTR.phone_1.placeholder}
+              label="No. HP"
+              placeholder="08123xxxxxxx"
               className="col-span-4 md:col-span-2"
-              {...register("phone_1", {
+              {...register("phone_number", {
                 required: {
                   value: true,
                   message: "Wajib diisi",
@@ -413,10 +419,10 @@ const FormAdult = () => {
             />
             <Input
               type="number"
-              label={ATTR.phone_2.label}
-              placeholder={ATTR.phone_2.placeholder}
+              label="No. Telepon Rumah"
+              placeholder="08123xxxxxxx"
               className="col-span-4 md:col-span-2"
-              {...register("phone_2")}
+              {...register("phone_number")}
             />
           </div>
         </FormSection>
@@ -424,40 +430,29 @@ const FormAdult = () => {
         <FormSection title="Lain-lain">
           <div className="grid grid-cols-3 gap-6">
             <ComboBox
-              id="education"
-              label={ATTR.education.label}
-              placeholder={ATTR.education.placeholder}
-              options={OPTIONS_EDUCATION.map((item, index) => ({
-                key: index + 1,
-                label: item,
-              }))}
+              label="Pendidikan Terakhir"
+              placeholder="Pilih pendidikan terakhir"
+              options={OPTIONS_EDUCATION}
               className="col-span-3 md:col-span-1"
               {...register("education")}
             />
 
             <ComboBox
-              id="occupation"
-              label={ATTR.occupation.label}
-              placeholder={ATTR.occupation.placeholder}
-              options={OPTIONS_OCCUPATION.map((item, index) => ({
-                key: index + 1,
-                label: item,
-              }))}
+              label="Pekerjaan"
+              placeholder="Pekerjaan saat ini"
+              options={OPTIONS_OCCUPATION}
               className="col-span-3 md:col-span-1"
-              {...register("occupation")}
+              {...register("job")}
             />
 
             <ComboBox
               required
-              id="marital_status"
-              label={ATTR.marital_status.label}
-              placeholder={ATTR.marital_status.placeholder}
-              options={OPTIONS_MARITAL_STATUS.map((item, index) => ({
-                key: index + 1,
-                label: item,
-              }))}
+              id="marital"
+              label="Status pernikahan"
+              placeholder="Status pernikahan"
+              options={OPTIONS_MARITAL_STATUS}
               className="col-span-3 md:col-span-1"
-              {...register("marital_status", {
+              {...register("marital", {
                 required: {
                   value: true,
                   message: "Wajib diisi",
@@ -465,23 +460,20 @@ const FormAdult = () => {
               })}
             />
             <ComboBox
-              label={ATTR.payment_method.label}
-              placeholder={ATTR.payment_method.placeholder}
+              label="Metode Pembayaran"
+              placeholder="Pilih metode pembayaran"
               className="col-span-3 md:col-span-2"
               onValueChange={(val: { key: number; label: string }) =>
                 setShowOtherPaymentMethod(val.label === "Asuransi Lainnya")
               }
-              options={OPTIONS_PAYMENT_METHOD.map((item, index) => ({
-                key: index + 1,
-                label: item,
-              }))}
+              options={OPTIONS_PAYMENT_METHOD}
               {...register("payment_method")}
             />
             {showOtherPaymentMethod && (
               <Input
                 type="text"
-                label={ATTR.payment_method_other.label}
-                placeholder={ATTR.payment_method_other.placeholder}
+                label="Asuransi Lainnya"
+                placeholder="Tulis jenis asuransi"
                 className="col-span-3 md:col-span-1"
                 {...register("payment_method_other", {
                   required: {
@@ -495,7 +487,7 @@ const FormAdult = () => {
         </FormSection>
 
         <div className="col-span-2 flex items-start gap-2 py-6">
-          <CheckBox {...register("consent")} />
+          <CheckBox {...register("general_consent")} />
           <Typography>
             Pasien telah diberikan penjelasan mengenai <i>General Consent</i>{" "}
             atau Persetujuan Umum.
@@ -509,12 +501,12 @@ const FormAdult = () => {
         </Button>
       </form>
 
-      <ConfirmationModal
+      {/* <ConfirmationModal
         items={summaryData}
         open={showConfirmation}
         onClose={() => setShowConfirmation(false)}
         onContinue={() => setShowConfirmation(false)}
-      />
+      /> */}
     </>
   );
 };

@@ -65,7 +65,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             type: "success",
             title: "Berhasil",
             message: `Data pasien baru atas nama <b>${state.modal.data.patient_name}</b> berhasil disimpan. Tekan tombol di bawah untuk membuat pemeriksaan atas nama pasien ini.`,
-            cta: () => navigate(`/rekam-medis/${state.modal.data.id}`),
+            cta: () => navigate(`/rekam-medis/${state.modal.data.patient_id}`),
             ctaText: "Pemeriksaan Baru",
           });
           break;
@@ -73,6 +73,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           break;
       }
     }
+
+    window.history.replaceState({}, document.title);
   }, [location, location.state, navigate]);
 
   useEffect(() => {
