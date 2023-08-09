@@ -43,7 +43,7 @@ const PasienForm = ({ type }: PasienFormProps) => {
             key: "new-patient",
             data: {
               ...createdPatient,
-              ...addPatient.data.data,
+              ...addPatient.data?.data,
             },
           },
         },
@@ -59,7 +59,7 @@ const PasienForm = ({ type }: PasienFormProps) => {
       });
     }
   }, [
-    addPatient.data.data,
+    addPatient.data?.data,
     addPatient.error,
     addPatient.isError,
     addPatient.isSuccess,
