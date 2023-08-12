@@ -30,8 +30,8 @@ const PasienForm = ({ type }: PasienFormProps) => {
 
     addPatient.mutate({
       ...values,
-      is_baby: isNewborn,
-      name_prefix: isNewborn,
+      is_baby: String(Number(isNewborn)),
+      name_prefix: isNewborn ? "Bayi Ny." : "",
     });
   };
 

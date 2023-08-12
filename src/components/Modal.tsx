@@ -8,6 +8,7 @@ type ModalProps = {
   onClose: () => void;
   open: boolean;
   className?: string;
+  showCloseButton?: boolean;
 };
 
 export default function Modal({
@@ -15,6 +16,7 @@ export default function Modal({
   className,
   onClose,
   open,
+  showCloseButton = true,
 }: ModalProps) {
   return (
     <Transition appear show={open} as={Fragment}>
@@ -58,13 +60,15 @@ export default function Modal({
                 className
               )}
             >
-              <button
-                type="button"
-                className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-gray-100"
-                onClick={onClose}
-              >
-                <HiX className="text-xl" />
-              </button>
+              {showCloseButton && (
+                <button
+                  type="button"
+                  className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-gray-100"
+                  onClick={onClose}
+                >
+                  <HiX className="text-xl" />
+                </button>
+              )}
               {children}
             </div>
           </Transition.Child>

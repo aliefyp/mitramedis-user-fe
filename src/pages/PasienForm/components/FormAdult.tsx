@@ -184,7 +184,7 @@ const FormAdult = ({ onSubmit }: FormAdultProps) => {
           options={provinceOptions}
           className="col-span-4 md:col-span-2"
           onValueChange={(val) => {
-            setValue(`${prefix}province_code`, Number(val.key));
+            setValue(`${prefix}province_code`, String(val.key));
           }}
           onSearch={(val) => handleSearchQueryChange("province", val)}
           {...register(`${prefix}province_code`, {
@@ -202,7 +202,7 @@ const FormAdult = ({ onSubmit }: FormAdultProps) => {
           options={cityOptions}
           className="col-span-4 md:col-span-2"
           onValueChange={(val) =>
-            setValue(`${prefix}city_code`, Number(val.label))
+            setValue(`${prefix}city_code`, String(val.key))
           }
           onSearch={(val) => handleSearchQueryChange("city", val)}
           {...register(`${prefix}city_code`, {
@@ -220,7 +220,7 @@ const FormAdult = ({ onSubmit }: FormAdultProps) => {
           options={districtOptions}
           className="col-span-4 md:col-span-3"
           onValueChange={(val) =>
-            setValue(`${prefix}district_code`, Number(val.label))
+            setValue(`${prefix}district_code`, String(val.key))
           }
           onSearch={(val) => handleSearchQueryChange("district", val)}
           {...register(`${prefix}district_code`, {
@@ -246,7 +246,7 @@ const FormAdult = ({ onSubmit }: FormAdultProps) => {
           options={villageOptions}
           className="col-span-4 md:col-span-2"
           onValueChange={(val) =>
-            setValue(`${prefix}village_code`, Number(val.label))
+            setValue(`${prefix}village_code`, String(val.key))
           }
           onSearch={(val) => handleSearchQueryChange("village", val)}
           {...register(`${prefix}village_code`, {

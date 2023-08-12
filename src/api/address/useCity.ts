@@ -1,6 +1,6 @@
 import useFetcher from "hooks/useFetcher";
 
-const useCity = ({ provinceCode }: { provinceCode?: number }) => {
+const useCity = ({ provinceCode }: { provinceCode?: string }) => {
   return useFetcher({
     queryKey: "city",
     withAuth: true,

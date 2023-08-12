@@ -13,6 +13,7 @@ import {
 import CheckBox from "components/FormInput/CheckBox";
 import Typography from "components/Typography";
 import ConfirmationModal from "./ConfirmationModal";
+import constructSummaryNewborn from "../helpers/constructSummaryNewborn";
 
 interface FormNewbornProps {
   namePrefix: string;
@@ -43,7 +44,8 @@ const FormNewborn = ({
     onSubmit(formData);
   };
 
-  const showOtherPaymentMethod = watch("payment_method") === PAYMENT_INSURANCE;
+  const showOtherPaymentMethod =
+    Number(watch("payment_method")) === PAYMENT_INSURANCE;
 
   useEffect(() => {
     if (!showOtherPaymentMethod) setValue("payment_method_other", "");
@@ -103,7 +105,7 @@ const FormNewborn = ({
               className="col-span-4 md:col-span-2"
               error={Boolean(errors?.gender)}
               helper={errors?.gender?.message}
-              onValueChange={(val) => setValue("gender", val.key as number)}
+              onValueChange={(val) => setValue("gender", String(val.key))}
               {...register("gender", {
                 required: {
                   value: true,
@@ -147,7 +149,7 @@ const FormNewborn = ({
               placeholder="Pilih metode pembayaran yang digunakan"
               className="col-span-4 md:col-span-2"
               onValueChange={(val) =>
-                setValue("payment_method", val.key as number)
+                setValue("payment_method", String(val.key))
               }
               options={OPTIONS_PAYMENT_METHOD}
               {...register("payment_method")}
@@ -188,7 +190,7 @@ const FormNewborn = ({
         </Button>
       </form>
       <ConfirmationModal
-        data={formData}
+        data={constructSummaryNewborn({ namePrefix, data: formData })}
         namePrefix={namePrefix}
         open={showConfirmation}
         onClose={() => setShowConfirmation(false)}

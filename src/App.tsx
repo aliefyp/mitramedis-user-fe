@@ -60,7 +60,7 @@ function App() {
                 <Route path="/pasien" element={<Pasien />} />
                 <Route path="/pasien/new" element={<PasienForm type="new" />} />
                 <Route
-                  path="/pasien/edit"
+                  path="/pasien/edit/:patient_id"
                   element={<PasienForm type="edit" />}
                 />
                 <Route path="/rekam-medis" element={<RekamMedis />} />

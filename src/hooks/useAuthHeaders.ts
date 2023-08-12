@@ -8,6 +8,7 @@ const useAuthHeaders = () => {
   const token = auth()?.token;
 
   return {
+    'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}`,
     'User-ID': userId,
     'Clinic-ID': clinicId,

@@ -1,13 +1,13 @@
 import clsx from "clsx";
 import { ReactNode } from "react";
 
-interface Item {
+export interface DataDisplayItem {
   key: string;
   value: ReactNode | string;
 }
 
 interface DataDisplayProps {
-  items: Item[];
+  items: DataDisplayItem[];
   className?: string;
 }
 

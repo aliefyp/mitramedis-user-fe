@@ -1,8 +1,5 @@
-import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { FaPlus } from "react-icons/fa";
 import Card from "components/Card";
-import Button from "components/Button";
 import Input from "components/FormInput/Input";
 
 interface PasienFilterParam {
@@ -13,7 +10,6 @@ interface PasienFilterParam {
 
 const PasienFilter = () => {
   const { register, handleSubmit } = useForm<PasienFilterParam>();
-  const navigate = useNavigate();
 
   const onSubmit = (val: PasienFilterParam) => {
     console.log(val);
@@ -48,17 +44,6 @@ const PasienFilter = () => {
             className="col-span-4 md:col-span-1"
             {...register("patient_name")}
           />
-          <div className="col-span-4 flex h-full items-end justify-end sm:col-span-1">
-            <Button
-              className="w-full sm:w-auto"
-              onClick={() => navigate("/pasien/new")}
-            >
-              <div className="flex items-center gap-4">
-                <FaPlus />
-                Pasien Baru
-              </div>
-            </Button>
-          </div>
         </div>
       </form>
     </Card>

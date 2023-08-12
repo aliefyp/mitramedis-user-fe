@@ -4,9 +4,9 @@ import useDistrict from "./useDistrict";
 import useVillage from "./useVillage";
 
 interface UseTeritoryProps {
-  selectedProvince?: number,
-  selectedCity?: number,
-  selectedDistrict?: number,
+  selectedProvince?: string,
+  selectedCity?: string,
+  selectedDistrict?: string,
 }
 
 const useTeritory = ({ selectedProvince, selectedCity, selectedDistrict }: UseTeritoryProps) => {
