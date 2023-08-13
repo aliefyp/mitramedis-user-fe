@@ -1,11 +1,10 @@
 import Button from "components/Button";
 import Input from "components/FormInput/Input";
-import TextArea from "components/FormInput/TextArea";
 import Toggle from "components/Toggle";
 import Typography from "components/Typography";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { PatientType } from "types/patient";
+import { PatientTypeForm } from "types/patient";
 import {
   OPTIONS_EDUCATION,
   OPTIONS_GENDER,
@@ -16,277 +15,45 @@ import {
 import FormSection from "components/FormSection";
 import CheckBox from "components/FormInput/CheckBox";
 import ComboBox from "components/FormInput/ComboBox";
-// import ConfirmationModal from "./ConfirmationModal";
-import useTeritory from "api/address/useTeritory";
+import AddressForm from "./AddressForm";
+import constructSummaryAdult from "../helpers/constructSummaryAdult";
+import NewPatientSummary from "./NewPatientSummary";
 
 interface FormAdultProps {
-  onSubmit: (values: PatientType) => void;
+  onSubmit: (values: PatientTypeForm) => void;
 }
 
 const FormAdult = ({ onSubmit }: FormAdultProps) => {
   const [sameAsAddress1, setSameAsAddress1] = useState(false);
-  const [showOtherPaymentMethod, setShowOtherPaymentMethod] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [formData, setFormData] = useState<PatientType | undefined>(undefined);
-  const [searchQuery, setSearchQuery] = useState({
-    province: "",
-    city: "",
-    district: "",
-    village: "",
-  });
+  const [formData, setFormData] = useState<PatientTypeForm | undefined>(
+    undefined
+  );
 
-  console.log(showConfirmation, formData, onSubmit);
+  const {
+    register,
+    setValue,
+    watch,
+    resetField,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<PatientTypeForm>();
 
-  const { register, setValue, watch, handleSubmit } = useForm<PatientType>();
+  const showOtherPaymentMethod = watch("payment_method") === 3;
 
-  const watchProvince = watch("province_code");
-  const watchCity = watch("city_code");
-  const watchDistrict = watch("district_code");
-
-  const { data } = useTeritory({
-    selectedProvince: watchProvince,
-    selectedCity: watchCity,
-    selectedDistrict: watchDistrict,
-  });
-
-  const submitForm = (val: PatientType) => {
+  const submitForm = (val: PatientTypeForm) => {
     setFormData(val);
     setShowConfirmation(true);
   };
 
-  const handleSearchQueryChange = (key: string, val: string) => {
-    setSearchQuery({
-      ...searchQuery,
-      [key]: val.trim(),
-    });
+  const handleConfirm = () => {
+    setShowConfirmation(false);
+    onSubmit(formData);
   };
-
-  const provinceOptions = useMemo(() => {
-    const list = data.province.map((item) => ({
-      key: item.province_code,
-      label: item.province_name,
-    }));
-
-    const copyList = [...list];
-    const filtered =
-      searchQuery.province === ""
-        ? copyList
-        : copyList.filter((val) =>
-            val.label
-              .toLowerCase()
-              .replace(/\s+/g, "")
-              .includes(searchQuery.province.toLowerCase().replace(/\s+/g, ""))
-          );
-
-    return filtered;
-  }, [data.province, searchQuery.province]);
-
-  const cityOptions = useMemo(() => {
-    const list = data.city.map((item) => ({
-      key: item.city_code,
-      label: item.city_name,
-    }));
-
-    const copyList = [...list];
-    const filtered =
-      searchQuery.city === ""
-        ? copyList
-        : copyList.filter((val) =>
-            val.label
-              .toLowerCase()
-              .replace(/\s+/g, "")
-              .includes(searchQuery.city.toLowerCase().replace(/\s+/g, ""))
-          );
-
-    return filtered;
-  }, [data.city, searchQuery.city]);
-
-  const districtOptions = useMemo(() => {
-    const list = data.district.map((item) => ({
-      key: item.district_code,
-      label: item.district_name,
-    }));
-
-    const copyList = [...list];
-    const filtered =
-      searchQuery.district === ""
-        ? copyList
-        : copyList.filter((val) =>
-            val.label
-              .toLowerCase()
-              .replace(/\s+/g, "")
-              .includes(searchQuery.district.toLowerCase().replace(/\s+/g, ""))
-          );
-
-    return filtered;
-  }, [data.district, searchQuery.district]);
-
-  const villageOptions = useMemo(() => {
-    const list = data.village.map((item) => ({
-      key: item.village_code,
-      label: item.village_name,
-    }));
-
-    const copyList = [...list];
-    const filtered =
-      searchQuery.village === ""
-        ? copyList
-        : copyList.filter((val) =>
-            val.label
-              .toLowerCase()
-              .replace(/\s+/g, "")
-              .includes(searchQuery.village.toLowerCase().replace(/\s+/g, ""))
-          );
-
-    return filtered;
-  }, [data.village, searchQuery.village]);
-
-  // const summaryData = useMemo(() => {
-  //   if (!formData) return [];
-
-  //   const keys = Object.keys(formData);
-  //   return keys
-  //     .filter((key) => ATTR[key]?.label)
-  //     .map((key) => ({
-  //       key: ATTR[key].label,
-  //       value: formData[key] || "-",
-  //     }));
-  // }, [formData]);
 
   useEffect(() => {
     if (!showOtherPaymentMethod) setValue("payment_method_other", "");
   }, [setValue, showOtherPaymentMethod]);
-
-  const AddressForm = (index: 1 | 2) => {
-    const isMainAddress = index === 1;
-    const prefix = index === 2 ? "domicile_" : "";
-
-    return (
-      <>
-        <TextArea
-          required={isMainAddress}
-          label={isMainAddress ? "Alamat Lengkap" : "Alamat Domisili"}
-          placeholder="Alamat lengkap sesuai kartu identitas"
-          className="col-span-4"
-          rows={2}
-          {...register(`${prefix}address`, {
-            required: {
-              value: isMainAddress,
-              message: "Wajib diisi",
-            },
-          })}
-        />
-
-        <ComboBox
-          required={isMainAddress}
-          label="Provinsi"
-          placeholder="Pilih provinsi"
-          options={provinceOptions}
-          className="col-span-4 md:col-span-2"
-          onValueChange={(val) => {
-            setValue(`${prefix}province_code`, String(val.key));
-          }}
-          onSearch={(val) => handleSearchQueryChange("province", val)}
-          {...register(`${prefix}province_code`, {
-            required: {
-              value: isMainAddress,
-              message: "Wajib diisi",
-            },
-          })}
-        />
-
-        <ComboBox
-          required={isMainAddress}
-          label="Kotamadya / Kabupaten"
-          placeholder="Pilih kota atau kabupaten"
-          options={cityOptions}
-          className="col-span-4 md:col-span-2"
-          onValueChange={(val) =>
-            setValue(`${prefix}city_code`, String(val.key))
-          }
-          onSearch={(val) => handleSearchQueryChange("city", val)}
-          {...register(`${prefix}city_code`, {
-            required: {
-              value: isMainAddress,
-              message: "Wajib diisi",
-            },
-          })}
-        />
-
-        <ComboBox
-          required={isMainAddress}
-          label="Kecamatan"
-          placeholder="Pilih kecamatan"
-          options={districtOptions}
-          className="col-span-4 md:col-span-3"
-          onValueChange={(val) =>
-            setValue(`${prefix}district_code`, String(val.key))
-          }
-          onSearch={(val) => handleSearchQueryChange("district", val)}
-          {...register(`${prefix}district_code`, {
-            required: {
-              value: isMainAddress,
-              message: "Wajib diisi",
-            },
-          })}
-        />
-
-        <Input
-          type="number"
-          label="Kode Pos"
-          placeholder="00xxx"
-          className="col-span-4 md:col-span-1"
-          {...register(`${prefix}zip_code`)}
-        />
-
-        <ComboBox
-          required={isMainAddress}
-          label="Kelurahan / Desa"
-          placeholder="Pilih kelurahan atau desa"
-          options={villageOptions}
-          className="col-span-4 md:col-span-2"
-          onValueChange={(val) =>
-            setValue(`${prefix}village_code`, String(val.key))
-          }
-          onSearch={(val) => handleSearchQueryChange("village", val)}
-          {...register(`${prefix}village_code`, {
-            required: {
-              value: isMainAddress,
-              message: "Wajib diisi",
-            },
-          })}
-        />
-
-        <Input
-          required={isMainAddress}
-          type="number"
-          label="Rukun Tetangga / RT"
-          placeholder="00x"
-          className="col-span-4 md:col-span-1"
-          {...register(`${prefix}rt`, {
-            required: {
-              value: isMainAddress,
-              message: "Wajib diisi",
-            },
-          })}
-        />
-
-        <Input
-          required={isMainAddress}
-          type="number"
-          label="Rukun Warga / RW"
-          placeholder="00x"
-          className="col-span-4 md:col-span-1"
-          {...register(`${prefix}rw`, {
-            required: {
-              value: isMainAddress,
-              message: "Wajib diisi",
-            },
-          })}
-        />
-      </>
-    );
-  };
 
   return (
     <>
@@ -299,6 +66,8 @@ const FormAdult = ({ onSubmit }: FormAdultProps) => {
               type="text"
               label="Nama Lengkap"
               placeholder="Nama pasien sesuai KTP"
+              error={Boolean(errors?.patient_name)}
+              helper={errors?.patient_name?.message}
               className="col-span-4"
               {...register("patient_name", {
                 required: {
@@ -314,11 +83,17 @@ const FormAdult = ({ onSubmit }: FormAdultProps) => {
               type="text"
               label="NIK"
               placeholder="16 digit nomor KTP"
+              error={Boolean(errors?.id_card_number)}
+              helper={errors?.id_card_number?.message}
               className="col-span-4 md:col-span-2"
               {...register("id_card_number", {
                 required: {
                   value: true,
                   message: "Wajib diisi",
+                },
+                pattern: {
+                  value: /[0-9]{16}/,
+                  message: "Format tidak sesuai",
                 },
               })}
             />
@@ -348,6 +123,8 @@ const FormAdult = ({ onSubmit }: FormAdultProps) => {
               type="text"
               label="Tempat Lahir"
               placeholder="Nama Kota/Kabupaten"
+              error={Boolean(errors?.birthplace)}
+              helper={errors?.birthplace?.message}
               className="col-span-4 md:col-span-2"
               {...register("birthplace", {
                 required: {
@@ -363,6 +140,8 @@ const FormAdult = ({ onSubmit }: FormAdultProps) => {
               type="date"
               label="Tanggal Lahir"
               placeholder="DD/MM/YYYY"
+              error={Boolean(errors?.birthdate)}
+              helper={errors?.birthdate?.message}
               className="col-span-4 md:col-span-2"
               {...register("birthdate", {
                 required: {
@@ -379,7 +158,13 @@ const FormAdult = ({ onSubmit }: FormAdultProps) => {
               label="Jenis Kelamin"
               placeholder="Pilih jenis kelamin"
               options={OPTIONS_GENDER}
+              error={Boolean(errors?.gender)}
+              helper={errors?.gender?.message}
               className="col-span-4 md:col-span-2"
+              onValueChange={(val: { key: number; label: string }) => {
+                setValue("gender", val.key);
+                setValue("gender_string", val.label);
+              }}
               {...register("gender", {
                 required: {
                   value: true,
@@ -392,13 +177,30 @@ const FormAdult = ({ onSubmit }: FormAdultProps) => {
 
         <FormSection title="Alamat">
           <div className="grid grid-cols-4 gap-6">
-            {AddressForm(1)}
+            <AddressForm
+              isMainAddress
+              watch={watch}
+              resetField={resetField}
+              register={register}
+              setValue={setValue}
+              errors={errors}
+            />
+
             <div className="col-span-4">
               <Toggle value={sameAsAddress1} onSwitch={setSameAsAddress1}>
                 Alamat domisili sama dengan alamat pada kartu identitas
               </Toggle>
             </div>
-            {!sameAsAddress1 && AddressForm(2)}
+            {!sameAsAddress1 && (
+              <AddressForm
+                isMainAddress={false}
+                watch={watch}
+                resetField={resetField}
+                register={register}
+                setValue={setValue}
+                errors={errors}
+              />
+            )}
           </div>
         </FormSection>
 
@@ -409,6 +211,8 @@ const FormAdult = ({ onSubmit }: FormAdultProps) => {
               type="number"
               label="No. HP"
               placeholder="08123xxxxxxx"
+              error={Boolean(errors?.phone_number)}
+              helper={errors?.phone_number?.message}
               className="col-span-4 md:col-span-2"
               {...register("phone_number", {
                 required: {
@@ -422,7 +226,7 @@ const FormAdult = ({ onSubmit }: FormAdultProps) => {
               label="No. Telepon Rumah"
               placeholder="08123xxxxxxx"
               className="col-span-4 md:col-span-2"
-              {...register("phone_number")}
+              {...register("other_phone_number")}
             />
           </div>
         </FormSection>
@@ -434,6 +238,10 @@ const FormAdult = ({ onSubmit }: FormAdultProps) => {
               placeholder="Pilih pendidikan terakhir"
               options={OPTIONS_EDUCATION}
               className="col-span-3 md:col-span-1"
+              onValueChange={(val: { key: number; label: string }) => {
+                setValue("education", val.key);
+                setValue("education_string", val.label);
+              }}
               {...register("education")}
             />
 
@@ -442,6 +250,9 @@ const FormAdult = ({ onSubmit }: FormAdultProps) => {
               placeholder="Pekerjaan saat ini"
               options={OPTIONS_OCCUPATION}
               className="col-span-3 md:col-span-1"
+              onValueChange={(val: { key: number; label: string }) => {
+                setValue("job", val.label);
+              }}
               {...register("job")}
             />
 
@@ -451,7 +262,13 @@ const FormAdult = ({ onSubmit }: FormAdultProps) => {
               label="Status pernikahan"
               placeholder="Status pernikahan"
               options={OPTIONS_MARITAL_STATUS}
+              error={Boolean(errors?.marital)}
+              helper={errors?.marital?.message}
               className="col-span-3 md:col-span-1"
+              onValueChange={(val: { key: number; label: string }) => {
+                setValue("marital", val.key);
+                setValue("marital_string", val.label);
+              }}
               {...register("marital", {
                 required: {
                   value: true,
@@ -463,9 +280,10 @@ const FormAdult = ({ onSubmit }: FormAdultProps) => {
               label="Metode Pembayaran"
               placeholder="Pilih metode pembayaran"
               className="col-span-3 md:col-span-2"
-              onValueChange={(val: { key: number; label: string }) =>
-                setShowOtherPaymentMethod(val.label === "Asuransi Lainnya")
-              }
+              onValueChange={(val: { key: number; label: string }) => {
+                setValue("payment_method", val.key);
+                setValue("payment_method_string", val.label);
+              }}
               options={OPTIONS_PAYMENT_METHOD}
               {...register("payment_method")}
             />
@@ -475,6 +293,8 @@ const FormAdult = ({ onSubmit }: FormAdultProps) => {
                 label="Asuransi Lainnya"
                 placeholder="Tulis jenis asuransi"
                 className="col-span-3 md:col-span-1"
+                error={Boolean(errors?.payment_method_other)}
+                helper={errors?.payment_method_other?.message}
                 {...register("payment_method_other", {
                   required: {
                     value: showOtherPaymentMethod,
@@ -501,12 +321,12 @@ const FormAdult = ({ onSubmit }: FormAdultProps) => {
         </Button>
       </form>
 
-      {/* <ConfirmationModal
-        items={summaryData}
+      <NewPatientSummary
+        data={constructSummaryAdult({ data: formData })}
         open={showConfirmation}
         onClose={() => setShowConfirmation(false)}
-        onContinue={() => setShowConfirmation(false)}
-      /> */}
+        onContinue={handleConfirm}
+      />
     </>
   );
 };

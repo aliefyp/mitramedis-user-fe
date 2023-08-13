@@ -29,8 +29,6 @@ const ConfirmationModal = ({
   const dataStep5 = data[5];
   const dataStep6 = data[6];
 
-  console.log("dataStep5", dataStep5);
-
   const physicalNoteStep2 = Object.keys(dataStep2).filter((item) =>
     item.startsWith("note_")
   );

@@ -2,10 +2,10 @@ export const NEWBORN_PREFIX = 'Bayi Ny.';
 export const PAYMENT_INSURANCE = 3;
 
 export const OPTIONS_GENDER = [
-  { key: 1, label: "Tidak diketahui" },
-  { key: 2, label: "Laki-laki" },
-  { key: 3, label: "Perempuan" },
-  { key: 4, label: "Tidak dapat ditentukan" },
+  { key: 0, label: "Tidak diketahui" },
+  { key: 1, label: "Laki-laki" },
+  { key: 2, label: "Perempuan" },
+  { key: 3, label: "Tidak dapat ditentukan" },
 ]
 
 export const OPTIONS_RELIGION = [
@@ -20,23 +20,23 @@ export const OPTIONS_RELIGION = [
 ]
 
 export const OPTIONS_EDUCATION = [
-  { key: 1, label: "Tidak Sekolah" },
-  { key: 2, label: "SD" },
-  { key: 3, label: "SLTP/Sederajat" },
-  { key: 4, label: "SLTA/Sederajat" },
-  { key: 5, label: "D1-D3/Sederajat" },
-  { key: 6, label: "S1" },
-  { key: 7, label: "S2" },
-  { key: 8, label: "S3" },
+  { key: 0, label: "Tidak Sekolah" },
+  { key: 1, label: "SD" },
+  { key: 2, label: "SLTP/Sederajat" },
+  { key: 3, label: "SLTA/Sederajat" },
+  { key: 4, label: "D1-D3/Sederajat" },
+  { key: 5, label: "S1" },
+  { key: 6, label: "S2" },
+  { key: 7, label: "S3" },
 ]
 
 export const OPTIONS_OCCUPATION = [
-  { key: 1, label: "Tidak bekerja" },
-  { key: 2, label: "PNS" },
-  { key: 3, label: "TNI/Polri" },
-  { key: 4, label: "BUMN" },
-  { key: 5, label: "Pegawai Swasta/Wiraswasta" },
-  { key: 6, label: "Lain-lain" },
+  { key: 0, label: "Tidak bekerja" },
+  { key: 1, label: "PNS" },
+  { key: 2, label: "TNI/Polri" },
+  { key: 3, label: "BUMN" },
+  { key: 4, label: "Pegawai Swasta/Wiraswasta" },
+  { key: 5, label: "Lain-lain" },
 ]
 
 export const OPTIONS_MARITAL_STATUS = [

@@ -6,21 +6,19 @@ import ModalFooter from "components/ModalFooter";
 import ModalHeader from "components/ModalHeader";
 import Typography from "components/Typography";
 
-interface ConfirmationModalProps {
+interface NewPatientSummaryProps {
   data: DataDisplayItem[];
   open: boolean;
-  namePrefix: string;
   onClose: () => void;
   onContinue: () => void;
 }
 
-const ConfirmationModal = ({
+const NewPatientSummary = ({
   data,
   open,
-  namePrefix,
   onClose,
   onContinue,
-}: ConfirmationModalProps) => {
+}: NewPatientSummaryProps) => {
   return (
     <Modal open={open} onClose={onClose}>
       <ModalHeader>Konfirmasi</ModalHeader>
@@ -43,4 +41,4 @@ const ConfirmationModal = ({
   );
 };
 
-export default ConfirmationModal;
+export default NewPatientSummary;

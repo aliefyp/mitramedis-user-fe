@@ -4,7 +4,7 @@ import FormSection from "components/FormSection";
 import ComboBox from "components/FormInput/ComboBox";
 import Input from "components/FormInput/Input";
 import { useForm } from "react-hook-form";
-import { PatientType } from "types/patient";
+import { PatientTypeForm } from "types/patient";
 import {
   OPTIONS_GENDER,
   OPTIONS_PAYMENT_METHOD,
@@ -12,12 +12,12 @@ import {
 } from "../constants";
 import CheckBox from "components/FormInput/CheckBox";
 import Typography from "components/Typography";
-import ConfirmationModal from "./ConfirmationModal";
+import NewPatientSummary from "./NewPatientSummary";
 import constructSummaryNewborn from "../helpers/constructSummaryNewborn";
 
 interface FormNewbornProps {
   namePrefix: string;
-  onSubmit: (values: PatientType) => void;
+  onSubmit: (values: PatientTypeForm) => void;
 }
 
 const FormNewborn = ({
@@ -25,16 +25,18 @@ const FormNewborn = ({
   onSubmit,
 }: FormNewbornProps) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [formData, setFormData] = useState<PatientType | undefined>(undefined);
+  const [formData, setFormData] = useState<PatientTypeForm | undefined>(
+    undefined
+  );
   const {
     register,
     handleSubmit,
     setValue,
     watch,
     formState: { errors },
-  } = useForm<PatientType>();
+  } = useForm<PatientTypeForm>();
 
-  const submitForm = (val: PatientType) => {
+  const submitForm = (val: PatientTypeForm) => {
     setFormData(val);
     setShowConfirmation(true);
   };
@@ -105,7 +107,10 @@ const FormNewborn = ({
               className="col-span-4 md:col-span-2"
               error={Boolean(errors?.gender)}
               helper={errors?.gender?.message}
-              onValueChange={(val) => setValue("gender", String(val.key))}
+              onValueChange={(val: { key: number; label: string }) => {
+                setValue("gender", val.key);
+                setValue("gender_string", val.label);
+              }}
               {...register("gender", {
                 required: {
                   value: true,
@@ -148,9 +153,10 @@ const FormNewborn = ({
               label="Metode Pembayaran"
               placeholder="Pilih metode pembayaran yang digunakan"
               className="col-span-4 md:col-span-2"
-              onValueChange={(val) =>
-                setValue("payment_method", String(val.key))
-              }
+              onValueChange={(val: { key: number; label: string }) => {
+                setValue("payment_method", val.key);
+                setValue("payment_method_string", val.label);
+              }}
               options={OPTIONS_PAYMENT_METHOD}
               {...register("payment_method")}
             />
@@ -189,9 +195,8 @@ const FormNewborn = ({
           Simpan
         </Button>
       </form>
-      <ConfirmationModal
+      <NewPatientSummary
         data={constructSummaryNewborn({ namePrefix, data: formData })}
-        namePrefix={namePrefix}
         open={showConfirmation}
         onClose={() => setShowConfirmation(false)}
         onContinue={handleConfirm}

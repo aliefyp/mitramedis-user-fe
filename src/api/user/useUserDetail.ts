@@ -1,13 +1,17 @@
+import { useQuery } from "react-query";
+import { AxiosResponse } from "axios";
+import { UserResponse, UserParam } from "types/user";
 import useFetcher from "hooks/useFetcher";
-import { UserParam } from "types/user";
 
-function useUserDetail({ userId }: UserParam) {
-  return useFetcher({
-    queryKey: "user",
-    withAuth: true,
-    method: "GET",
-    url: `${process.env.REACT_APP_API_ENDPOINT}/user/${userId}`,
-  });
+type GetUserResponse = AxiosResponse & UserResponse;
+
+const useUserDetail = ({ userId }: UserParam) => {
+  const fetch = useFetcher(`${process.env.REACT_APP_API_ENDPOINT}/user/${userId}`);
+
+  return useQuery<unknown, Error, GetUserResponse>({
+    queryKey: 'get-user-detail',
+    queryFn: fetch,
+  })
 }
 
 export default useUserDetail;

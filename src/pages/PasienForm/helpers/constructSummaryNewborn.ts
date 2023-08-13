@@ -1,10 +1,9 @@
 import moment from "moment";
-import { PatientType } from "types/patient";
-import { OPTIONS_GENDER, OPTIONS_PAYMENT_METHOD } from "../constants";
+import { PatientTypeForm } from "types/patient";
 
 interface Props {
   namePrefix?: string;
-  data?: PatientType;
+  data?: PatientTypeForm;
 }
 
 const constructSummaryNewborn = ({ namePrefix, data }: Props) => {
@@ -21,7 +20,7 @@ const constructSummaryNewborn = ({ namePrefix, data }: Props) => {
     },
     {
       key: "Jenis Kelamin",
-      value: OPTIONS_GENDER.find((i) => i.key === Number(data.gender)).label,
+      value: data.gender_string,
     },
     {
       key: "Tanggal Lahir",
@@ -33,10 +32,7 @@ const constructSummaryNewborn = ({ namePrefix, data }: Props) => {
     },
     {
       key: "Metode Pembayaran",
-      value: `${
-        OPTIONS_PAYMENT_METHOD.find((i) => i.key === Number(data.payment_method))
-          .label
-      } ${data.payment_method_other && `: ${data.payment_method_other}`}`,
+      value: `${data.payment_method_string} ${data.payment_method_other && `: ${data.payment_method_other}`}`,
     },
   ]
 }

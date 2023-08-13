@@ -1,51 +1,19 @@
 import axios, { RawAxiosRequestConfig } from "axios"
-import { useAuthUser, useSignOut } from "react-auth-kit";
-import { useQuery } from "react-query";
+import { useSignOut } from "react-auth-kit";
+import useAuthHeaders from "./useAuthHeaders";
 
-interface UseFetcherProps extends RawAxiosRequestConfig {
-  withAuth?: boolean;
-  queryKey: string;
-  skip?: boolean,
-}
-
-const useFetcher = ({ queryKey, withAuth = false, url, method, headers, skip = false, ...rest }: UseFetcherProps) => {
-  const auth = useAuthUser();
+const useFetcher = (url: string, config?: RawAxiosRequestConfig) => {
   const signOut = useSignOut();
+  const headers = useAuthHeaders();
 
-  const userId = auth()?.userId;
-  const clinicId = auth()?.clinicId;
-  const token = auth()?.token;
-
-  const fetcher = async () => {
-    const { data } = await axios({
-      url,
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-        ...(withAuth ? {
-          'Authorization': `Bearer ${token}`,
-          'User-ID': userId,
-          'Clinic-ID': clinicId,
-        } : {}),
-        ...headers,
-      },
-      ...rest,
-    })
-
-    return data;
-  };
-
-  return useQuery({
-    queryKey,
-    queryFn: () => fetcher()
-      .catch(err => {
-        console.error(err)
-        if (err?.response?.status === 401 && withAuth) {
-          signOut();
-        }
-      }),
-    enabled: !skip,
-  });
+  return async () => {
+    try {
+      return await axios.get(url, { headers, ...config })
+    } catch (err) {
+      console.error(err);
+      if (err?.response?.status === 401) signOut();
+    }
+  }
 }
 
 export default useFetcher;

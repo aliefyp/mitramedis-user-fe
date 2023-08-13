@@ -76,18 +76,7 @@ const PasienTable = ({
               )}
               {!loading &&
                 data?.map((item, index) => {
-                  const ageYears = moment().diff(item.birthdate, "years");
-                  const ageMonths = moment().diff(item.birthdate, "months");
-                  const ageDays = moment().diff(item.birthdate, "days");
-
-                  const displayedAge = item.birthdate
-                    ? `${ageYears} tahun ${ageMonths} bulan ${ageDays} hari`
-                    : "-";
-                  const displayedAddress = !item.is_baby
-                    ? `${item.village_code + ","} ${item.district_code + ","} ${
-                        item.city_code + ","
-                      } ${item.province_code}`
-                    : "-";
+                  const age = moment.duration(moment().diff(item.birthdate));
 
                   return (
                     <Table.Row
@@ -98,9 +87,9 @@ const PasienTable = ({
                         {item.medical_record_number}
                       </Table.Cell>
                       <Table.Cell>{item.patient_name}</Table.Cell>
-                      <Table.Cell>{displayedAge}</Table.Cell>
+                      <Table.Cell>{`${age.years()} tahun ${age.months()} bulan ${age.days()} hari`}</Table.Cell>
                       <Table.Cell>{item.id_card_number}</Table.Cell>
-                      <Table.Cell>{displayedAddress}</Table.Cell>
+                      <Table.Cell>{item.address}</Table.Cell>
                       <Table.Cell>
                         <div className="flex gap-1">
                           <Tooltip content="Cetak">

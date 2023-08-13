@@ -5,12 +5,6 @@ import { PatientType } from "types/patient"
 import useAuthHeaders from "hooks/useAuthHeaders";
 import { useState } from "react";
 
-// interface AddPatientResponse {
-//   data: {
-//     patient_id: number;
-//   }
-// }
-
 interface DeletePatientPayload {
   patient_id: string;
 }
