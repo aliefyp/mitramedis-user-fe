@@ -31,7 +31,7 @@ interface PasienTablePreviewProps {
   data: PatientTypeData[];
   pagination: PaginationType;
   loading: boolean;
-  setPage: (page: number) => void;
+  onPageChange: (page: number) => void;
   onDelete: (id: string) => void;
   onEdit: (id: string) => void;
   onView: (mr_id: string) => void;
@@ -41,7 +41,7 @@ const PasienTable = ({
   data,
   pagination,
   loading,
-  setPage,
+  onPageChange,
   onDelete,
   onEdit,
   onView,
@@ -152,16 +152,20 @@ const PasienTable = ({
             </Table.Body>
           </Table>
         </div>
-        <div className="mt-4 flex items-center justify-end gap-2">
-          <Typography className="mt-2 text-sm !text-gray-500">
-            {`Menampilkan halaman ${pagination.current_page} dari ${pagination.total_page}`}
-          </Typography>
-          <Pagination
-            currentPage={pagination.current_page}
-            totalPages={pagination.total_page}
-            onPageChange={(page) => setPage(page)}
-          />
-        </div>
+        {pagination && (
+          <div className="mt-4 flex items-center justify-end gap-2">
+            <Typography className="mt-2 text-sm !text-gray-400">
+              {`Menampilkan halaman ${pagination?.current_page || 0} dari ${
+                pagination?.total_page || 0
+              }`}
+            </Typography>
+            <Pagination
+              currentPage={pagination?.current_page}
+              totalPages={pagination?.total_page}
+              onPageChange={onPageChange}
+            />
+          </div>
+        )}
       </Card>
       <ModalConfirmation
         open={showConfirmation}
