@@ -10,7 +10,7 @@ import { FaPlus } from "react-icons/fa";
 
 const PasienPage = () => {
   const location = useLocation();
-  const { data, isFetching, page, setPage, refetch } = useAllPatient();
+  const { data, isFetching, setPage, refetch } = useAllPatient();
   const deletePatient = useDeletePatient();
   const navigate = useNavigate();
 
@@ -28,14 +28,10 @@ const PasienPage = () => {
     deletePatient.mutate({ patient_id: id });
   };
 
-  const handleSubmitFilter = (f) => {
-    const query = new URLSearchParams(f).toString();
+  const handleSubmitFilter = (filter) => {
+    const query = new URLSearchParams(filter).toString();
     navigate(`${location.pathname}?${query}`);
   };
-
-  // useEffect(() => {
-  //   if (filter) refetch();
-  // }, [filter, refetch]);
 
   useEffect(() => {
     if (deletePatient.isSuccess) refetch();
@@ -58,9 +54,9 @@ const PasienPage = () => {
         <PasienFilter onSubmit={handleSubmitFilter} />
         <PasienTable
           data={data?.data?.data?.patient}
+          pagination={data?.data?.data?.pagination}
           loading={isFetching}
           setPage={setPage}
-          currentPage={page}
           onDelete={handleDeletePatient}
           onEdit={handleEditPatient}
           onView={handleViewPatient}

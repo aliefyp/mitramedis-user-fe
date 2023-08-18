@@ -12,6 +12,7 @@ import EmptyData from "components/EmptyData";
 import { PatientTypeData } from "types/patient";
 import ModalConfirmation from "components/organism/ModalConfirmation";
 import { useState } from "react";
+import Typography from "components/Typography";
 
 const PATIENT_TABLE_ROW = [
   "No. Rekam Medis",
@@ -22,10 +23,14 @@ const PATIENT_TABLE_ROW = [
   "",
 ];
 
+interface PaginationType {
+  current_page: number;
+  total_page: number;
+}
 interface PasienTablePreviewProps {
   data: PatientTypeData[];
+  pagination: PaginationType;
   loading: boolean;
-  currentPage: number;
   setPage: (page: number) => void;
   onDelete: (id: string) => void;
   onEdit: (id: string) => void;
@@ -34,8 +39,8 @@ interface PasienTablePreviewProps {
 
 const PasienTable = ({
   data,
+  pagination,
   loading,
-  currentPage,
   setPage,
   onDelete,
   onEdit,
@@ -147,11 +152,14 @@ const PasienTable = ({
             </Table.Body>
           </Table>
         </div>
-        <div className="mt-4 flex justify-center">
+        <div className="mt-4 flex items-center justify-end gap-2">
+          <Typography className="mt-2 text-sm !text-gray-500">
+            {`Menampilkan halaman ${pagination.current_page} dari ${pagination.total_page}`}
+          </Typography>
           <Pagination
-            currentPage={currentPage}
+            currentPage={pagination.current_page}
+            totalPages={pagination.total_page}
             onPageChange={(page) => setPage(page)}
-            totalPages={100}
           />
         </div>
       </Card>

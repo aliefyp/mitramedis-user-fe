@@ -14,6 +14,10 @@ interface GetAllPatientResponse extends AxiosResponse {
   data: {
     data: {
       patient: PatientTypeData[];
+      pagination: {
+        current_page: number;
+        total_page: number;
+      }
     }
   }
 }
