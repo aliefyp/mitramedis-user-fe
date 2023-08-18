@@ -16,7 +16,7 @@ interface PageHeadingProps {
 
 const PageHeading = ({ title, breadcrumbs, children }: PageHeadingProps) => {
   return (
-    <div className="mb-4 flex flex-col items-start justify-between gap-8 md:flex-row md:items-end md:gap-2">
+    <div className="mb-4 flex flex-col items-start justify-between gap-2 md:flex-row md:items-end">
       <div className="shrink-0 space-y-2">
         <Breadcrumb
           aria-label="Main breadcrumb"

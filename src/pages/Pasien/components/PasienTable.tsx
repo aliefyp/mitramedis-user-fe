@@ -9,7 +9,7 @@ import {
 import Card from "components/Card";
 import Button from "components/Button";
 import EmptyData from "components/EmptyData";
-import { PatientType } from "types/patient";
+import { PatientTypeData } from "types/patient";
 import ModalConfirmation from "components/organism/ModalConfirmation";
 import { useState } from "react";
 
@@ -23,7 +23,7 @@ const PATIENT_TABLE_ROW = [
 ];
 
 interface PasienTablePreviewProps {
-  data: PatientType[];
+  data: PatientTypeData[];
   loading: boolean;
   currentPage: number;
   setPage: (page: number) => void;
@@ -83,6 +83,7 @@ const PasienTable = ({
               {!loading &&
                 data?.map((item, index) => {
                   const age = moment.duration(moment().diff(item.birthdate));
+                  const displayedAddress = `${item.village_name}, ${item.district_name}, ${item.city_name}, ${item.province_name}`;
 
                   return (
                     <Table.Row
@@ -93,9 +94,9 @@ const PasienTable = ({
                         {item.medical_record_number}
                       </Table.Cell>
                       <Table.Cell>{item.patient_name}</Table.Cell>
-                      <Table.Cell>{`${age.years()} tahun ${age.months()} bulan ${age.days()} hari`}</Table.Cell>
+                      <Table.Cell className="min-w-[80px]">{`${age.years()} tahun ${age.months()} bulan ${age.days()} hari`}</Table.Cell>
                       <Table.Cell>{item.id_card_number}</Table.Cell>
-                      <Table.Cell>{item.address}</Table.Cell>
+                      <Table.Cell>{displayedAddress}</Table.Cell>
                       <Table.Cell>
                         <div className="flex justify-end gap-1">
                           <Tooltip content="Cetak">

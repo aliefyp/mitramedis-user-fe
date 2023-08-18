@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios"
 import { useSignOut } from "react-auth-kit";
 import { useMutation, useQuery } from "react-query"
-import { PatientType } from "types/patient"
+import { PatientType, PatientTypeData } from "types/patient"
 import useAuthHeaders from "hooks/useAuthHeaders";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -13,7 +13,7 @@ interface DeletePatientPayload {
 interface GetAllPatientResponse extends AxiosResponse {
   data: {
     data: {
-      patient: PatientType[];
+      patient: PatientTypeData[];
     }
   }
 }

@@ -54,3 +54,10 @@ export interface PatientTypeForm extends PatientType {
   marital_string: string;
   payment_method_string: string;
 }
+
+export interface PatientTypeData extends PatientType {
+  city_name: string;
+  district_name: string;
+  province_name: string;
+  village_name: string;
+}

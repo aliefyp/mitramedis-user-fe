@@ -45,7 +45,7 @@ const PasienFilter = ({ onSubmit }: PasienFilterProps) => {
             className="col-span-4 md:col-span-1"
             {...register("id_card_number")}
           />
-          <div className="flex items-center justify-end gap-2">
+          <div className="col-span-4 flex items-center justify-end gap-2 md:col-span-1">
             <Button type="reset" color="ghost-primary">
               Reset
             </Button>
