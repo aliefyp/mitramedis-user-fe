@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAllPatient, useDeletePatient } from "api/patient";
 import PageHeading from "components/PageHeading";
 import PasienFilter from "./components/PasienFilter";
 import PasienTable from "./components/PasienTable";
-// import PasienPreviewModal from "./components/PasienPreviewModal";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "components/Button";
 import { FaPlus } from "react-icons/fa";
@@ -13,8 +12,6 @@ const PasienPage = () => {
   const { data, isFetching, setPage, refetch } = useAllPatient();
   const deletePatient = useDeletePatient();
   const navigate = useNavigate();
-
-  // const [showPreview, setShowPreview] = useState(false);
 
   const handleEditPatient = (id: string) => {
     navigate(`/pasien/edit/${id}`);
@@ -62,10 +59,6 @@ const PasienPage = () => {
           onView={handleViewPatient}
         />
       </div>
-      {/* <PasienPreviewModal
-        open={showPreview}
-        onClose={() => setShowPreview(false)}
-      /> */}
     </div>
   );
 };
