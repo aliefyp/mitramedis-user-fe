@@ -4,11 +4,12 @@ import PageHeading from "components/PageHeading";
 import PasienFilter from "./components/PasienFilter";
 import PasienTable from "./components/PasienTable";
 import PasienPreviewModal from "./components/PasienPreviewModal";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Button from "components/Button";
 import { FaPlus } from "react-icons/fa";
 
 const PasienPage = () => {
+  const location = useLocation();
   const { data, isFetching, page, setPage, refetch } = useAllPatient();
   const deletePatient = useDeletePatient();
   const navigate = useNavigate();
@@ -23,8 +24,18 @@ const PasienPage = () => {
     navigate(`/rekam-medis?mr_id=${mr_id}`);
   };
 
-  const handleDeletePatient = (id: string) =>
+  const handleDeletePatient = (id: string) => {
     deletePatient.mutate({ patient_id: id });
+  };
+
+  const handleSubmitFilter = (f) => {
+    const query = new URLSearchParams(f).toString();
+    navigate(`${location.pathname}?${query}`);
+  };
+
+  // useEffect(() => {
+  //   if (filter) refetch();
+  // }, [filter, refetch]);
 
   useEffect(() => {
     if (deletePatient.isSuccess) refetch();
@@ -44,7 +55,7 @@ const PasienPage = () => {
         </Button>
       </PageHeading>
       <div className="space-y-4">
-        <PasienFilter />
+        <PasienFilter onSubmit={handleSubmitFilter} />
         <PasienTable
           data={data?.data?.data?.patient}
           loading={isFetching}

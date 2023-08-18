@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa";
 import Card from "components/Card";
 import Button from "components/Button";
+import EmptyData from "components/EmptyData";
 import { PatientType } from "types/patient";
 import ModalConfirmation from "components/organism/ModalConfirmation";
 import { useState } from "react";
@@ -55,7 +56,7 @@ const PasienTable = ({
 
   return (
     <>
-      <Card className="rounded-2xl border-none p-6 shadow-sm">
+      <Card className="rounded-2xl border-none p-3 shadow-sm">
         <div className=" min-w-2xl overflow-auto">
           <Table>
             <Table.Head>
@@ -72,6 +73,11 @@ const PasienTable = ({
               {loading && (
                 <Table.Cell colSpan={6}>
                   <Spinner size="lg" className="mx-auto w-full" />
+                </Table.Cell>
+              )}
+              {!loading && data.length === 0 && (
+                <Table.Cell colSpan={6}>
+                  <EmptyData>Data tidak ditemukan</EmptyData>
                 </Table.Cell>
               )}
               {!loading &&
@@ -91,7 +97,7 @@ const PasienTable = ({
                       <Table.Cell>{item.id_card_number}</Table.Cell>
                       <Table.Cell>{item.address}</Table.Cell>
                       <Table.Cell>
-                        <div className="flex gap-1">
+                        <div className="flex justify-end gap-1">
                           <Tooltip content="Cetak">
                             <Button
                               size="small"
