@@ -33,11 +33,11 @@ const StockNewEntry = () => {
   const handleReset = () => {
     reset({
       item_name: null,
-      item_code: null,
+      code: null,
       quantity: null,
       unit: null,
-      purchase_price: null,
-      selling_price: null,
+      cogs: null,
+      sales_price: null,
       expired_date: null,
     });
   };
@@ -71,7 +71,7 @@ const StockNewEntry = () => {
               })}
             />
 
-            {/* item_code */}
+            {/* code */}
             <Input
               required
               type="date"
@@ -133,16 +133,16 @@ const StockNewEntry = () => {
               })}
             />
 
-            {/* item_code */}
+            {/* code */}
             <Input
               required
               type="text"
               label="Kode Item"
               placeholder="9090xxxx"
               className="col-span-4 md:col-span-2"
-              error={Boolean(errors?.item_code)}
-              helper={errors?.item_code?.message}
-              {...register("item_code", {
+              error={Boolean(errors?.code)}
+              helper={errors?.code?.message}
+              {...register("code", {
                 required: {
                   value: true,
                   message: "Wajib diisi",
@@ -150,7 +150,7 @@ const StockNewEntry = () => {
               })}
             />
 
-            {/* item_code */}
+            {/* code */}
             <Input
               required
               type="number"
@@ -192,9 +192,9 @@ const StockNewEntry = () => {
               label="Harga Beli Satuan"
               placeholder=""
               className="col-span-6 md:col-span-3"
-              error={Boolean(errors?.purchase_price)}
-              helper={errors?.purchase_price?.message}
-              {...register("purchase_price", {
+              error={Boolean(errors?.cogs)}
+              helper={errors?.cogs?.message}
+              {...register("cogs", {
                 required: {
                   value: true,
                   message: "Wajib diisi",
@@ -202,7 +202,7 @@ const StockNewEntry = () => {
               })}
             />
 
-            {/* selling_price */}
+            {/* sales_price */}
             <Input
               required
               type="text"
@@ -210,9 +210,9 @@ const StockNewEntry = () => {
               label="Harga Jual"
               placeholder=""
               className="col-span-6 md:col-span-3"
-              error={Boolean(errors?.selling_price)}
-              helper={errors?.selling_price?.message}
-              {...register("selling_price", {
+              error={Boolean(errors?.sales_price)}
+              helper={errors?.sales_price?.message}
+              {...register("sales_price", {
                 required: {
                   value: true,
                   message: "Wajib diisi",

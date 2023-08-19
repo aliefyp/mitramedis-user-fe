@@ -26,7 +26,7 @@ const MEDICAL_RECORD_DATA = [
     unit: "pcs",
     category: "Obat",
     base_price: 15000,
-    selling_price: 20000,
+    sales_price: 20000,
     supplier: "Afi Farma",
     expired_date: "Feb 2024",
   },
@@ -37,7 +37,7 @@ const MEDICAL_RECORD_DATA = [
     unit: "pcs",
     category: "Obat",
     base_price: 15000,
-    selling_price: 20000,
+    sales_price: 20000,
     supplier: "Afi Farma",
     expired_date: "Feb 2024",
   },
@@ -48,7 +48,7 @@ const MEDICAL_RECORD_DATA = [
     unit: "pcs",
     category: "Obat",
     base_price: 15000,
-    selling_price: 20000,
+    sales_price: 20000,
     supplier: "Afi Farma",
     expired_date: "Feb 2024",
   },
@@ -89,7 +89,7 @@ const MedicalRecordTable = ({ onPreview }: MedicalRecordTableProps) => {
                 <Table.Cell>{item.unit}</Table.Cell>
                 <Table.Cell>{item.category}</Table.Cell>
                 <Table.Cell>{toIDR(item.base_price)}</Table.Cell>
-                <Table.Cell>{toIDR(item.selling_price)}</Table.Cell>
+                <Table.Cell>{toIDR(item.sales_price)}</Table.Cell>
                 <Table.Cell>{item.supplier}</Table.Cell>
                 <Table.Cell>{item.expired_date}</Table.Cell>
                 <Table.Cell>

@@ -5,8 +5,8 @@ import { Flowbite, Sidebar } from "flowbite-react";
 import type { CustomFlowbiteTheme } from "flowbite-react";
 import {
   TbReportMedical,
-  TbMedicineSyrup,
-  TbUsers,
+  TbBox,
+  TbUserHeart,
   TbLayoutDashboard,
   TbLogout,
   TbHeadset,
@@ -77,15 +77,15 @@ export const MAIN_MENU = {
   title: "MENU",
   items: [
     { text: "Dashboard", icon: TbLayoutDashboard, url: "/" },
-    { text: "Pasien", icon: TbUsers, url: "/pasien" },
+    { text: "Pasien", icon: TbUserHeart, url: "/pasien" },
     { text: "Rekam Medis", icon: TbReportMedical, url: "/rekam-medis" },
     {
-      text: "Obat dan BHP",
-      icon: TbMedicineSyrup,
+      text: "Stok",
+      icon: TbBox,
       child: [
-        { text: "Data Stok", url: "/stok" },
+        { text: "Manajemen Stok", url: "/stok" },
         { text: "Item Baru", url: "/stok/new" },
-        { text: "Entri Baru", url: "/stok/in" },
+        { text: "Pembelian", url: "/stok/in" },
         { text: "Kartu Stok", url: "/stok/card" },
         { text: "Stok Opname", url: "/stok/opname" },
       ],

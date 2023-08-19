@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import Card from "components/Card";
 import Input from "components/FormInput/Input";
 import Button from "components/Button";
+import { TbSearch } from "react-icons/tb";
 
 interface PasienFilterParam {
   id_card_number: string;
@@ -50,7 +51,10 @@ const PasienFilter = ({ onSubmit }: PasienFilterProps) => {
               Reset
             </Button>
             <Button type="submit" color="secondary">
-              Terapkan Filter
+              <div className="flex items-center gap-2">
+                <TbSearch />
+                Cari
+              </div>
             </Button>
           </div>
         </div>

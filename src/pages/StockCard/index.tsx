@@ -9,7 +9,7 @@ import StockCardTable from "./components/StockCardTable";
 import Typography from "components/Typography";
 import ComboBox from "components/FormInput/ComboBox";
 
-type EntryType = Pick<StockEntryType, "item_code" | "item_name">;
+type EntryType = Pick<StockEntryType, "code" | "item_name">;
 interface StockCardType extends EntryType {
   start_date: string;
   end_date: string;
@@ -63,16 +63,16 @@ const StockCard = () => {
               })}
             />
 
-            {/* item_code */}
+            {/* code */}
             <Input
               required
               type="text"
               label="Kode Item KFA / Barcode"
               placeholder="9090xxxx"
               className="col-span-3 md:col-span-1"
-              error={Boolean(errors?.item_code)}
-              helper={errors?.item_code?.message}
-              {...register("item_code", {
+              error={Boolean(errors?.code)}
+              helper={errors?.code?.message}
+              {...register("code", {
                 required: {
                   value: true,
                   message: "Wajib diisi",

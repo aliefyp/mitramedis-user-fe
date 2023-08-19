@@ -1,13 +1,21 @@
 export interface StockType {
+  stock_id: string;
+  clinic_id: string;
+  type: string;
+  code: string;
   item_name: string;
-  item_code: number;
+  description: string;
   unit: string;
-  category: string;
-  purchase_price: number;
-  selling_price: number;
-  bpjs_price: number;
-  minimum_stock: number;
-  supplier: string;
+  cogs: string;
+  sales_price: string;
+  expired_date: string;
+  current_stock: string;
+  status: string;
+  created_by: string;
+  updated_by: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string;
 }
 
 export interface StockEntryType extends StockType {

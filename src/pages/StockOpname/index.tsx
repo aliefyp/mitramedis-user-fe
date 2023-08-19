@@ -9,14 +9,14 @@ import StockOpnameTable from "./components/StockOpnameTable";
 import Typography from "components/Typography";
 import ComboBox from "components/FormInput/ComboBox";
 
-type EntryType = Pick<StockEntryType, "item_code" | "item_name">;
+type EntryType = Pick<StockEntryType, "code" | "item_name">;
 interface StockOpnameFilterType extends EntryType {
   date: string;
 }
 
 const DUMMY_ITEMS = [
   {
-    item_code: 9203920,
+    code: 9203920,
     item_name: "Paracetamol",
     quantity: 1000,
     unit: "Pcs",
@@ -103,16 +103,16 @@ const StockOpname = () => {
               })}
             />
 
-            {/* item_code */}
+            {/* code */}
             <Input
               required
               type="text"
               label="Kode Item KFA / Barcode"
               placeholder="9090xxxx"
               className="col-span-3 md:col-span-1"
-              error={Boolean(errors?.item_code)}
-              helper={errors?.item_code?.message}
-              {...register("item_code", {
+              error={Boolean(errors?.code)}
+              helper={errors?.code?.message}
+              {...register("code", {
                 required: {
                   value: true,
                   message: "Wajib diisi",

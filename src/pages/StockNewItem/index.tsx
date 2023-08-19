@@ -62,16 +62,16 @@ const StockNewItem = () => {
               })}
             />
 
-            {/* item_code */}
+            {/* code */}
             <Input
               required
               type="text"
               label="Kode Item KFA / Barcode"
               placeholder="9090xxxx"
               className="col-span-3 md:col-span-1"
-              error={Boolean(errors?.item_code)}
-              helper={errors?.item_code?.message}
-              {...register("item_code", {
+              error={Boolean(errors?.code)}
+              helper={errors?.code?.message}
+              {...register("code", {
                 required: {
                   value: true,
                   message: "Wajib diisi",
@@ -115,7 +115,7 @@ const StockNewItem = () => {
               })}
             />
 
-            {/* purchase_price */}
+            {/* cogs */}
             <Input
               required
               type="text"
@@ -123,9 +123,9 @@ const StockNewItem = () => {
               label="Harga Beli Satuan"
               placeholder=""
               className="col-span-3 md:col-span-1"
-              error={Boolean(errors?.purchase_price)}
-              helper={errors?.purchase_price?.message}
-              {...register("purchase_price", {
+              error={Boolean(errors?.cogs)}
+              helper={errors?.cogs?.message}
+              {...register("cogs", {
                 required: {
                   value: true,
                   message: "Wajib diisi",
@@ -133,7 +133,7 @@ const StockNewItem = () => {
               })}
             />
 
-            {/* selling_price */}
+            {/* sales_price */}
             <Input
               required
               type="text"
@@ -141,27 +141,9 @@ const StockNewItem = () => {
               label="Harga Jual"
               placeholder=""
               className="col-span-3 md:col-span-1"
-              error={Boolean(errors?.selling_price)}
-              helper={errors?.selling_price?.message}
-              {...register("selling_price", {
-                required: {
-                  value: true,
-                  message: "Wajib diisi",
-                },
-              })}
-            />
-
-            {/* bpjs_price */}
-            <Input
-              required
-              type="text"
-              prefix="Rp"
-              label="Harga BPJS"
-              placeholder=""
-              className="col-span-3 md:col-span-1"
-              error={Boolean(errors?.bpjs_price)}
-              helper={errors?.bpjs_price?.message}
-              {...register("bpjs_price", {
+              error={Boolean(errors?.sales_price)}
+              helper={errors?.sales_price?.message}
+              {...register("sales_price", {
                 required: {
                   value: true,
                   message: "Wajib diisi",

@@ -5,13 +5,13 @@ import PasienFilter from "./components/PasienFilter";
 import PasienTable from "./components/PasienTable";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "components/Button";
-import { FaPlus } from "react-icons/fa";
+import { TbPlus } from "react-icons/tb";
 
 const PasienPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { data, isFetching, setPage, refetch } = useAllPatient();
   const deletePatient = useDeletePatient();
-  const navigate = useNavigate();
 
   const handleEditPatient = (id: string) => {
     navigate(`/pasien/edit/${id}`);
@@ -42,7 +42,7 @@ const PasienPage = () => {
           onClick={() => navigate("/pasien/new")}
         >
           <div className="flex items-center gap-4">
-            <FaPlus />
+            <TbPlus />
             Pasien Baru
           </div>
         </Button>
