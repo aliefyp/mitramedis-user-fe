@@ -4,6 +4,7 @@ import Modal from "components/Modal";
 import ModalBody from "components/ModalBody";
 import ModalFooter from "components/ModalFooter";
 import ModalHeader from "components/ModalHeader";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 interface FormSupplierType {
@@ -14,12 +15,17 @@ const AddNewSupplier = ({ open, onClose, onSubmit }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormSupplierType>();
 
   const submitForm = (val: FormSupplierType) => {
-    onSubmit(val.supplier_name);
+    onSubmit(val);
   };
+
+  useEffect(() => {
+    if (open) reset();
+  }, [open, reset]);
 
   return (
     <Modal open={open} onClose={onClose}>

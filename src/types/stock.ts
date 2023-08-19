@@ -16,6 +16,8 @@ export interface StockType {
   created_at: string;
   updated_at: string;
   deleted_at: string;
+  supplier: string;
+  minimum_stock: number;
 }
 
 export interface StockEntryType extends StockType {

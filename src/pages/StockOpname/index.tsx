@@ -14,16 +14,16 @@ interface StockOpnameFilterType extends EntryType {
   date: string;
 }
 
-const DUMMY_ITEMS = [
-  {
-    code: 9203920,
-    item_name: "Paracetamol",
-    quantity: 1000,
-    unit: "Pcs",
-    real_quantity: 0,
-    officer_name: "",
-  },
-];
+// const DUMMY_ITEMS = [
+//   {
+//     code: 9203920,
+//     item_name: "Paracetamol",
+//     quantity: 1000,
+//     unit: "Pcs",
+//     real_quantity: 0,
+//     officer_name: "",
+//   },
+// ];
 export interface Data extends Partial<StockType> {
   quantity: number;
   real_quantity: number;
@@ -32,7 +32,7 @@ export interface Data extends Partial<StockType> {
 
 const StockOpname = () => {
   const [filter, setFilterData] = useState<StockOpnameFilterType>();
-  const [data, setData] = useState<Data[]>(DUMMY_ITEMS);
+  const [data, setData] = useState<Data[]>([]);
 
   console.log(filter);
 

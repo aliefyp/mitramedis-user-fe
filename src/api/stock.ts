@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios"
 import { useSignOut } from "react-auth-kit";
-import { useQuery } from "react-query"
+import { useMutation, useQuery } from "react-query"
 import useAuthHeaders from "hooks/useAuthHeaders";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -18,19 +18,19 @@ interface GetAllStockResponse extends AxiosResponse {
   }
 }
 
-// export const useAddStock = () => {
-//   const signOut = useSignOut();
-//   const headers = useAuthHeaders();
+export const useAddStock = () => {
+  const signOut = useSignOut();
+  const headers = useAuthHeaders();
 
-//   return useMutation(async (payload: StockType) => {
-//     try {
-//       return await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/patient`, JSON.stringify(payload), { headers });
-//     } catch (err) {
-//       console.error(err);
-//       if (err?.response?.status === 401) signOut();
-//     }
-//   })
-// }
+  return useMutation(async (payload: StockType) => {
+    try {
+      return await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/stock`, JSON.stringify(payload), { headers });
+    } catch (err) {
+      console.error(err);
+      if (err?.response?.status === 401) signOut();
+    }
+  })
+}
 
 export const useAllStock = () => {
   const signOut = useSignOut();

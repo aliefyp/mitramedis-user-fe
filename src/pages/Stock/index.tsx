@@ -9,7 +9,7 @@ import { useAllStock } from "api/stock";
 const StokPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { data, isFetching, setPage, refetch } = useAllStock();
+  const { data, isFetching, setPage } = useAllStock();
 
   const handleViewStock = (code: string) => {
     navigate(`/stok/card?mr_id=${code}`);

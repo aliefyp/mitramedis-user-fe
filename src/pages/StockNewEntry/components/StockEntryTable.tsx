@@ -64,12 +64,14 @@ const StockEntryTable = ({ items, onDelete }: StockEntryTableProps) => {
               <Table.Cell>{item.item_name}</Table.Cell>
               <Table.Cell>{item.quantity}</Table.Cell>
               <Table.Cell>{item.unit}</Table.Cell>
-              <Table.Cell>{toIDR(item.cogs)}</Table.Cell>
-              <Table.Cell>{toIDR(item.sales_price)}</Table.Cell>
+              <Table.Cell>{toIDR(Number(item.cogs))}</Table.Cell>
+              <Table.Cell>{toIDR(Number(item.sales_price))}</Table.Cell>
               <Table.Cell>
                 {moment(item.expired_date).format("DD/MM/YY")}
               </Table.Cell>
-              <Table.Cell>{toIDR(item.quantity * item.cogs)}</Table.Cell>
+              <Table.Cell>
+                {toIDR(item.quantity * Number(item.cogs))}
+              </Table.Cell>
 
               <Table.Cell>
                 <Tooltip content="Hapus">

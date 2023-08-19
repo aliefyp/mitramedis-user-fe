@@ -1,59 +1,125 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FaPlusCircle } from "react-icons/fa";
+import { useForm } from "react-hook-form";
+import { Tooltip } from "flowbite-react";
+import { useDebounce } from "use-debounce";
 import Button from "components/Button";
+import Card from "components/Card";
 import ComboBox from "components/FormInput/ComboBox";
 import Input from "components/FormInput/Input";
-import { useForm } from "react-hook-form";
-import { StockType } from "types/stock";
-import { OPTIONS_UNIT } from "./constants";
 import PageHeading from "components/PageHeading";
-import Card from "components/Card";
+import { useKfa } from "api/kfa";
+import { useAddStock } from "api/stock";
+import { useAddSupplier, useSupplier } from "api/supplier";
+import { SupplierType } from "types/supplier";
+import { StockType } from "types/stock";
 import AddNewSupplier from "./components/AddNewSupplier";
-import { FaPlusCircle } from "react-icons/fa";
-import { Tooltip } from "flowbite-react";
+import ModalConfirmation from "components/organism/ModalConfirmation";
+import { OPTIONS_CATEGORY, OPTIONS_UNIT } from "./constants";
 
 const StockNewItem = () => {
+  const navigate = useNavigate();
+  const [showSuccessAddSupplier, setShowSuccessAddSupplier] = useState(false);
+  const [showAddStockNotif, setShowAddStockNotif] = useState(false);
+  const [isSuccessAddStock, setSuccessAddStock] = useState(false);
+
+  const [searchText, setSearchText] = useState("");
   const [showModalNewSupplier, setShowModalNewSupplier] = useState(false);
-  const [suppliers, setSuppliers] = useState([
-    { key: 1, label: "Farma 1" },
-    { key: 2, label: "Farma 2" },
-    { key: 3, label: "Farma 3" },
-  ]);
 
   const {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<StockType>();
 
+  const [keyword] = useDebounce(searchText, 500);
+
+  const { data: dataKfa, isLoading: loadingKfa } = useKfa({ keyword: keyword });
+  const {
+    data: dataSupplier,
+    isLoading: loadingSupplier,
+    refetch: refetchSupplier,
+  } = useSupplier();
+  const addSupplier = useAddSupplier();
+  const addStock = useAddStock();
+
   const submitForm = (val: StockType) => {
-    console.log(val);
+    addStock.mutate(val);
   };
 
-  const handleSubmitNewSupplier = (val: string) => {
-    setSuppliers([...suppliers, { key: suppliers.length, label: val }]);
-    setShowModalNewSupplier(false);
-    setValue("supplier", val);
+  const handleSubmitNewSupplier = (val: SupplierType) => {
+    addSupplier.mutate(val);
   };
+
+  const handleBlankForm = () => {
+    setShowAddStockNotif(false);
+    reset();
+  };
+
+  const handleGoToStockCard = () => {
+    navigate(`/stok/card/${addStock.data.data.stock_id}`);
+  };
+
+  const itemOptions = useMemo(() => {
+    if (!dataKfa?.data?.result) return [];
+
+    return dataKfa?.data?.result?.map((item) => ({
+      key: item.kfa_code,
+      label: item.display_name,
+    }));
+  }, [dataKfa]);
+
+  const supplierOptions = useMemo(() => {
+    if (!dataSupplier?.data?.data?.supplier) return [];
+
+    return dataSupplier?.data?.data?.supplier?.map((item) => ({
+      key: item.supplier_id,
+      label: item.supplier_name,
+    }));
+  }, [dataSupplier]);
+
+  useEffect(() => {
+    if (addSupplier.isSuccess) {
+      setShowSuccessAddSupplier(true);
+      setShowModalNewSupplier(false);
+      refetchSupplier();
+    }
+  }, [addSupplier.isSuccess, refetchSupplier]);
+
+  useEffect(() => {
+    if (addStock.isSuccess) {
+      setShowAddStockNotif(true);
+      setSuccessAddStock(addStock.data?.status === 200);
+    }
+  }, [addStock.data?.status, addStock.isSuccess]);
 
   return (
     <div>
       <PageHeading
-        title="Tambah Item Baru"
+        title="Item Baru"
         breadcrumbs={[{ text: "Stok", url: "/stok" }, { text: "Item Baru" }]}
       />
       <Card className="max-w-screen-md rounded-2xl border-none p-6 shadow-sm">
         <form onSubmit={handleSubmit(submitForm)}>
           <div className="grid grid-cols-3 gap-6">
-            {/* item_name */}
-            <Input
+            <ComboBox
               required
               type="text"
               label="Nama Item"
-              placeholder="Paracetamol 60 mg / 0,6 mL Drops"
+              placeholder="Paracetamol"
               className="col-span-3"
+              loading={loadingKfa}
+              options={itemOptions}
               error={Boolean(errors?.item_name)}
               helper={errors?.item_name?.message}
+              onValueChange={(val) => {
+                setValue("item_name", val.label);
+                setValue("code", String(val.key));
+              }}
+              onSearch={(val) => setSearchText(val)}
               {...register("item_name", {
                 required: {
                   value: true,
@@ -65,6 +131,8 @@ const StockNewItem = () => {
             {/* code */}
             <Input
               required
+              readOnly
+              disabled
               type="text"
               label="Kode Item KFA / Barcode"
               placeholder="9090xxxx"
@@ -102,12 +170,12 @@ const StockNewItem = () => {
               required
               label="Kategori"
               placeholder="Obat"
-              options={OPTIONS_UNIT}
+              options={OPTIONS_CATEGORY}
               className="col-span-3 md:col-span-1"
-              error={Boolean(errors?.category)}
-              helper={errors?.category?.message}
-              onValueChange={(val) => setValue("category", val.label)}
-              {...register("category", {
+              error={Boolean(errors?.type)}
+              helper={errors?.type?.message}
+              onValueChange={(val) => setValue("type", val.label)}
+              {...register("type", {
                 required: {
                   value: true,
                   message: "Wajib diisi",
@@ -130,6 +198,10 @@ const StockNewItem = () => {
                   value: true,
                   message: "Wajib diisi",
                 },
+                pattern: {
+                  value: /[0-9]/,
+                  message: "Format tidak sesuai",
+                },
               })}
             />
 
@@ -148,13 +220,16 @@ const StockNewItem = () => {
                   value: true,
                   message: "Wajib diisi",
                 },
+                pattern: {
+                  value: /[0-9]/,
+                  message: "Format tidak sesuai",
+                },
               })}
             />
 
             {/* minimum_stock */}
             <Input
               type="text"
-              prefix="Rp"
               label="Stok Minimum"
               placeholder=""
               className="col-span-3 md:col-span-1 md:col-start-1"
@@ -167,7 +242,8 @@ const StockNewItem = () => {
                 required
                 label="Supplier"
                 placeholder="Pilih Supplier"
-                options={suppliers}
+                loading={loadingSupplier}
+                options={supplierOptions}
                 error={Boolean(errors?.supplier)}
                 helper={errors?.supplier?.message}
                 className="grow"
@@ -212,6 +288,38 @@ const StockNewItem = () => {
           open={showModalNewSupplier}
           onClose={() => setShowModalNewSupplier(false)}
           onSubmit={handleSubmitNewSupplier}
+        />
+
+        <ModalConfirmation
+          open={showSuccessAddSupplier}
+          type="success"
+          title="Berhasil"
+          message="Berhasil menambahkan data supplier"
+          primaryAction="Tutup"
+          onClose={() => setShowSuccessAddSupplier(false)}
+          onPrimaryActionClick={() => setShowSuccessAddSupplier(false)}
+        />
+
+        <ModalConfirmation
+          open={showAddStockNotif}
+          type={isSuccessAddStock ? "success" : "error"}
+          title={isSuccessAddStock ? "Berhasil" : "Gagal"}
+          message={
+            isSuccessAddStock
+              ? "Berhasil menambahkan item baru"
+              : "Gagal menyimpan data"
+          }
+          primaryAction={isSuccessAddStock ? "Ke Pembelian" : "Tutup"}
+          onPrimaryActionClick={
+            isSuccessAddStock
+              ? handleGoToStockCard
+              : () => setShowAddStockNotif(false)
+          }
+          {...(isSuccessAddStock && {
+            secondaryAction: "Item Baru",
+            onSecondaryActionClick: handleBlankForm,
+          })}
+          onClose={handleBlankForm}
         />
       </Card>
     </div>
