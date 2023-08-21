@@ -3,7 +3,6 @@ import Button from "components/Button";
 import Input from "components/FormInput/Input";
 import { PurchaseFormType } from "types/purchase";
 import ComboBox from "components/FormInput/ComboBox";
-import { OPTIONS_UNIT } from "../constants";
 import { FaArrowDown } from "react-icons/fa";
 import { useKfa } from "api/kfa";
 import { useSupplier } from "api/supplier";

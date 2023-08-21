@@ -27,3 +27,12 @@ export interface StockPurchaseType extends StockType {
   quantity: number;
   expired_date: string;
 }
+
+export interface StockCardType {
+  stock_card_id: string;
+  prescription_id: string;
+  stock_id: string;
+  qty: string;
+  source: string;
+  created_at: string;
+}

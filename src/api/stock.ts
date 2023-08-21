@@ -3,20 +3,8 @@ import { useSignOut } from "react-auth-kit";
 import { useMutation, useQuery } from "react-query"
 import useAuthHeaders from "hooks/useAuthHeaders";
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
-import { StockType } from "types/stock";
+import { StockCardType, StockType } from "types/stock";
 
-interface GetAllStockResponse extends AxiosResponse {
-  data: {
-    data: {
-      stock: StockType[];
-      pagination: {
-        current_page: number;
-        total_page: number;
-      }
-    }
-  }
-}
 
 export const useAddStock = () => {
   const signOut = useSignOut();
@@ -32,15 +20,75 @@ export const useAddStock = () => {
   })
 }
 
-export const useAllStock = () => {
+
+type UseStockCardProps = {
+  stock_id: string;
+  filter?:  Record<string, string>
+}
+
+interface GetStockCardResponse extends AxiosResponse {
+  data: {
+    data: {
+      stock_card: StockCardType[];
+    }
+  }
+}
+export const useStockCard = ({ filter, stock_id }: UseStockCardProps) => {
+  const signOut = useSignOut();
+  const headers = useAuthHeaders();
+
+  // const [page, setPage] = useState(1);
+  // const [perPage, setPerPage] = useState(10);
+
+  return {
+    // page,
+    // perPage,
+    // setPage,
+    // setPerPage,
+    ...useQuery<unknown, unknown, GetStockCardResponse>({
+      queryKey: ['get-all-stock', filter, stock_id],
+      queryFn: async () => {
+        const query = new URLSearchParams({
+          // page: String(page),
+          // per_page: String(perPage),
+          ...filter,
+        });
+
+        try {
+          return await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/stock-card/${stock_id}?${query}`, { headers })
+        } catch (err) {
+          console.error(err);
+          if (err?.response?.status === 401) signOut();
+        }
+      },
+      enabled: Boolean(stock_id),
+    }),
+  }
+}
+
+
+type UseAllStockProps = {
+  filter?:  Record<string, string>
+}
+
+interface GetAllStockResponse extends AxiosResponse {
+  data: {
+    data: {
+      stock: StockType[];
+      pagination: {
+        current_page: number;
+        total_page: number;
+      }
+    }
+  }
+}
+
+export const useAllStock = (payload?: UseAllStockProps) => {
   const signOut = useSignOut();
   const headers = useAuthHeaders();
 
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
-
-  const location = useLocation();
-  const filter = Object.fromEntries(new URLSearchParams(location.search));
 
   return {
     page,
@@ -48,12 +96,12 @@ export const useAllStock = () => {
     setPage,
     setPerPage,
     ...useQuery<unknown, unknown, GetAllStockResponse>({
-      queryKey: ['get-all-stock', filter],
+      queryKey: ['get-all-stock', payload?.filter],
       queryFn: async () => {
         const query = new URLSearchParams({
           page: String(page),
           per_page: String(perPage),
-          ...filter,
+          ...payload?.filter,
         });
 
         try {
@@ -62,7 +110,7 @@ export const useAllStock = () => {
           console.error(err);
           if (err?.response?.status === 401) signOut();
         }
-      }
+      },
     }),
   }
 }

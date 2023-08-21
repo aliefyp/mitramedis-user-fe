@@ -61,7 +61,7 @@ const StockTable = ({
                 <Spinner size="lg" className="mx-auto w-full" />
               </Table.Cell>
             )}
-            {!loading && data.length === 0 && (
+            {!loading && !data.length && (
               <Table.Cell colSpan={10}>
                 <EmptyData>Data tidak ditemukan</EmptyData>
               </Table.Cell>
