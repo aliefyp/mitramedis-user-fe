@@ -10,11 +10,11 @@ import { NEWBORN_PREFIX } from "./constants";
 import { useNavigate } from "react-router-dom";
 import useToaster from "context/ToasterContext";
 
-interface PasienFormProps {
+interface PatientFormProps {
   type: "new" | "edit";
 }
 
-const PasienForm = ({ type }: PasienFormProps) => {
+const PatientForm = ({ type }: PatientFormProps) => {
   const [isNewborn, setNewborn] = useState(false);
   const [createdPatient, setCreatedPatient] = useState<
     { patient_name: string } | undefined
@@ -96,4 +96,4 @@ const PasienForm = ({ type }: PasienFormProps) => {
   );
 };
 
-export default PasienForm;
+export default PatientForm;

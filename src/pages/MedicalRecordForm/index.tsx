@@ -25,7 +25,7 @@ interface RekamMedisFormProps {
   type: "new" | "edit";
 }
 
-const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
+const MedicalRecordForm = ({ type }: RekamMedisFormProps) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [formValues, setFormValues] = useState({
@@ -174,4 +174,4 @@ const RekamMedisForm = ({ type }: RekamMedisFormProps) => {
   );
 };
 
-export default RekamMedisForm;
+export default MedicalRecordForm;

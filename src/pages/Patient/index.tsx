@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Button from "components/Button";
 import { TbPlus } from "react-icons/tb";
 
-const PasienPage = () => {
+const PatientPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { data, isFetching, setPage, refetch } = useAllPatient();
@@ -63,4 +63,4 @@ const PasienPage = () => {
   );
 };
 
-export default PasienPage;
+export default PatientPage;

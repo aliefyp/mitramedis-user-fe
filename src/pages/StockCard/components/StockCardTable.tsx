@@ -24,9 +24,6 @@ const StockEntryTable = ({ data, loading }: StockEntryTableProps) => {
             Tanggal
           </Table.HeadCell>
           <Table.HeadCell className="text-md whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white">
-            Keterangan
-          </Table.HeadCell>
-          <Table.HeadCell className="text-md whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white">
             Barang Masuk
           </Table.HeadCell>
           <Table.HeadCell className="text-md whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white">
@@ -34,9 +31,6 @@ const StockEntryTable = ({ data, loading }: StockEntryTableProps) => {
           </Table.HeadCell>
           <Table.HeadCell className="text-md whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white">
             Saldo Barang
-          </Table.HeadCell>
-          <Table.HeadCell className="text-md whitespace-nowrap bg-slate-100 uppercase text-slate-800 dark:text-white">
-            Supplier / Nama Pasien
           </Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
@@ -60,11 +54,9 @@ const StockEntryTable = ({ data, loading }: StockEntryTableProps) => {
               <Table.Cell>
                 {moment(item.created_at).format("DD/MM/YYYY")}
               </Table.Cell>
-              <Table.Cell>{"item.remark"}</Table.Cell>
               <Table.Cell>{"item.item_in"}</Table.Cell>
               <Table.Cell>{"item.item_out"}</Table.Cell>
               <Table.Cell>{item.qty}</Table.Cell>
-              <Table.Cell>{"item.respondent"}</Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
