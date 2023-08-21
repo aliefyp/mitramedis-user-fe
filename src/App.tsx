@@ -18,7 +18,7 @@ import RekamMedis from "pages/RekamMedis/index";
 import RekamMedisForm from "pages/RekamMedisForm/index";
 import Stock from "pages/Stock/index";
 import StockNewItem from "pages/StockNewItem/index";
-import StockNewEntry from "pages/StockNewEntry/index";
+import StockPurchase from "pages/StockPurchase/index";
 import StockCard from "pages/StockCard/index";
 import StockOpname from "pages/StockOpname/index";
 import "./App.css";
@@ -68,7 +68,7 @@ function App() {
                 />
                 <Route path="/stok" element={<Stock />} />
                 <Route path="/stok/new" element={<StockNewItem />} />
-                <Route path="/stok/in" element={<StockNewEntry />} />
+                <Route path="/stok/in" element={<StockPurchase />} />
                 <Route path="/stok/card" element={<StockCard />} />
                 <Route path="/stok/opname" element={<StockOpname />} />
                 <Route path="/logout" element={<Logout />} />

@@ -20,7 +20,7 @@ export interface StockType {
   minimum_stock: number;
 }
 
-export interface StockEntryType extends StockType {
+export interface StockPurchaseType extends StockType {
   invoice: string;
   created_date: string;
   supplier: string;

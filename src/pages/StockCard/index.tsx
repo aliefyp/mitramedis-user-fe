@@ -2,14 +2,14 @@ import { useState } from "react";
 import Button from "components/Button";
 import Input from "components/FormInput/Input";
 import { useForm } from "react-hook-form";
-import { StockEntryType } from "types/stock";
+import { StockPurchaseType } from "types/stock";
 import PageHeading from "components/PageHeading";
 import Card from "components/Card";
 import StockCardTable from "./components/StockCardTable";
 import Typography from "components/Typography";
 import ComboBox from "components/FormInput/ComboBox";
 
-type EntryType = Pick<StockEntryType, "code" | "item_name">;
+type EntryType = Pick<StockPurchaseType, "code" | "item_name">;
 interface StockCardType extends EntryType {
   start_date: string;
   end_date: string;
