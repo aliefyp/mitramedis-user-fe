@@ -191,7 +191,7 @@ const Layout = () => {
           )}
           <div
             id="scrollable-section"
-            className="h-screen grow overflow-auto bg-slate-100 px-4 py-6 dark:bg-slate-700 sm:px-6"
+            className="h-screen grow overflow-auto bg-slate-50 px-4 py-6 dark:bg-slate-700 sm:px-6"
           >
             <div className="mx-auto max-w-screen-xl">
               <ErrorBoundary fallback={<EmptyData />}>

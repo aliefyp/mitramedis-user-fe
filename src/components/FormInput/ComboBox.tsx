@@ -7,7 +7,7 @@ import Typography from "components/Typography";
 import Label from "./Label";
 import { Spinner } from "flowbite-react";
 
-interface Option {
+interface Option extends Record<string, number | string> {
   key: number | string;
   label: string;
 }

@@ -48,6 +48,7 @@ const StockPurchaseForm = ({ form, onSubmit }) => {
     return dataKfa?.data?.result?.map((item) => ({
       key: item.kfa_code,
       label: item.display_name,
+      unit: item.uom_id,
     }));
   }, [dataKfa]);
 
@@ -121,7 +122,7 @@ const StockPurchaseForm = ({ form, onSubmit }) => {
           />
         </div>
 
-        <div className="grid grid-cols-12 gap-4 rounded-b-xl !bg-slate-100 p-3">
+        <div className="grid grid-cols-12 gap-4 rounded-b-xl border-t !bg-slate-100 p-3">
           {/* item_name */}
           <ComboBox
             required
@@ -136,6 +137,7 @@ const StockPurchaseForm = ({ form, onSubmit }) => {
               setValue("code", String(val.key));
               setValue("stock_id", Number(val.key));
               setValue("stock_string", val.label);
+              setValue("unit", val.unit);
             }}
             onSearch={(val) => setSearchText(val)}
             {...register("stock_id", {
@@ -183,15 +185,15 @@ const StockPurchaseForm = ({ form, onSubmit }) => {
           />
 
           {/* unit */}
-          <ComboBox
+          <Input
             required
+            readOnly
+            disabled
             label="Satuan"
             placeholder="Pcs"
-            options={OPTIONS_UNIT}
             className="col-span-6 md:col-span-2"
             error={Boolean(errors?.unit)}
             helper={errors?.unit?.message}
-            onValueChange={(val) => setValue("unit", val.label)}
             {...register("unit", {
               required: {
                 value: true,
