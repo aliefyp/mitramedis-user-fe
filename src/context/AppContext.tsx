@@ -64,7 +64,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             type: "success",
             title: "Berhasil",
             message: `Data pasien baru atas nama <b>${state.modal.data.patient_name}</b> berhasil disimpan. Tekan tombol di bawah untuk membuat pemeriksaan atas nama pasien ini.`,
-            primaryAction: "Pemeriksaan Baru",
+            primaryAction: "Rekam Medis Baru",
             onPrimaryActionClick: () =>
               navigate(`/rekam-medis/${state.modal.data.patient_id}`),
           });

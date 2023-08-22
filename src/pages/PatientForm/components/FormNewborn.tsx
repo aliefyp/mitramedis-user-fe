@@ -14,6 +14,8 @@ import CheckBox from "components/FormInput/CheckBox";
 import Typography from "components/Typography";
 import NewPatientSummary from "./NewPatientSummary";
 import constructSummaryNewborn from "../helpers/constructSummaryNewborn";
+import AddressForm from "./AddressForm";
+import Toggle from "components/Toggle";
 
 interface FormNewbornProps {
   namePrefix: string;
@@ -24,6 +26,7 @@ const FormNewborn = ({
   namePrefix = "Bayi Ny.",
   onSubmit,
 }: FormNewbornProps) => {
+  const [sameAsAddress1, setSameAsAddress1] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [formData, setFormData] = useState<PatientTypeForm | undefined>(
     undefined
@@ -33,6 +36,7 @@ const FormNewborn = ({
     handleSubmit,
     setValue,
     watch,
+    resetField,
     formState: { errors },
   } = useForm<PatientTypeForm>();
 
@@ -149,7 +153,6 @@ const FormNewborn = ({
             />
 
             <ComboBox
-              autoFocus
               label="Metode Pembayaran"
               placeholder="Pilih metode pembayaran yang digunakan"
               className="col-span-4 md:col-span-2"
@@ -160,13 +163,77 @@ const FormNewborn = ({
               options={OPTIONS_PAYMENT_METHOD}
               {...register("payment_method")}
             />
+          </div>
+        </FormSection>
 
+        <FormSection title="Alamat">
+          <div className="grid grid-cols-4 gap-6">
+            <AddressForm
+              isMainAddress
+              watch={watch}
+              resetField={resetField}
+              register={register}
+              setValue={setValue}
+              errors={errors}
+            />
+
+            <div className="col-span-4">
+              <Toggle value={sameAsAddress1} onSwitch={setSameAsAddress1}>
+                Alamat domisili sama dengan alamat pada kartu identitas
+              </Toggle>
+            </div>
+            {!sameAsAddress1 && (
+              <AddressForm
+                isMainAddress={false}
+                watch={watch}
+                resetField={resetField}
+                register={register}
+                setValue={setValue}
+                errors={errors}
+              />
+            )}
+          </div>
+        </FormSection>
+
+        <FormSection title="Kontak">
+          <div className="grid grid-cols-4 gap-6">
+            <Input
+              type="number"
+              label="No. HP"
+              placeholder="08123xxxxxxx"
+              error={Boolean(errors?.phone_number)}
+              helper={errors?.phone_number?.message}
+              className="col-span-4 md:col-span-2"
+              {...register("phone_number")}
+            />
+            <Input
+              type="number"
+              label="No. Telepon Rumah"
+              placeholder="08123xxxxxxx"
+              className="col-span-4 md:col-span-2"
+              {...register("other_phone_number")}
+            />
+          </div>
+        </FormSection>
+
+        <FormSection title="Lain-lain">
+          <div className="grid grid-cols-4 gap-6">
+            <ComboBox
+              label="Metode Pembayaran"
+              placeholder="Pilih metode pembayaran"
+              className="col-span-4 md:col-span-2"
+              onValueChange={(val: { key: number; label: string }) => {
+                setValue("payment_method", val.key);
+                setValue("payment_method_string", val.label);
+              }}
+              options={OPTIONS_PAYMENT_METHOD}
+              {...register("payment_method")}
+            />
             {showOtherPaymentMethod && (
               <Input
-                required={showOtherPaymentMethod}
                 type="text"
-                label="Metode Pembayaran"
-                placeholder="Pilih metode pembayaran yang digunakan"
+                label="Asuransi Lainnya"
+                placeholder="Tulis jenis asuransi"
                 className="col-span-4 md:col-span-2"
                 error={Boolean(errors?.payment_method_other)}
                 helper={errors?.payment_method_other?.message}

@@ -95,6 +95,7 @@ const AddressForm = ({
     const list = data.village.map((item) => ({
       key: item.village_code,
       label: item.village_name,
+      zip_code: item.zip_code,
     }));
 
     const copyList = [...list];
@@ -220,19 +221,6 @@ const AddressForm = ({
         })}
       />
 
-      <Input
-        type="text"
-        label="Kode Pos"
-        placeholder="00xxx"
-        className="col-span-4 md:col-span-2"
-        {...register(`${prefix}zip_code`, {
-          pattern: {
-            value: /[0-9]/,
-            message: "Format tidak sesuai",
-          },
-        })}
-      />
-
       <ComboBox
         required={isMainAddress}
         label="Kelurahan / Desa"
@@ -244,12 +232,26 @@ const AddressForm = ({
         onValueChange={(val) => {
           setValue(`${prefix}village_code`, String(val.key));
           setValue(`${prefix}village_string`, String(val.label));
+          setValue(`${prefix}zip_code`, String(val.zip_code));
         }}
         onSearch={(val) => handleSearchQueryChange("village", val)}
         {...register(`${prefix}village_code`, {
           required: {
             value: isMainAddress,
             message: "Wajib diisi",
+          },
+        })}
+      />
+
+      <Input
+        type="text"
+        label="Kode Pos"
+        placeholder="00xxx"
+        className="col-span-4 md:col-span-2"
+        {...register(`${prefix}zip_code`, {
+          pattern: {
+            value: /[0-9]/,
+            message: "Format tidak sesuai",
           },
         })}
       />

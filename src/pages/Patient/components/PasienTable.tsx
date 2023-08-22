@@ -88,7 +88,7 @@ const PasienTable = ({
               {!loading &&
                 data?.map((item, index) => {
                   const age = moment.duration(moment().diff(item.birthdate));
-                  const displayedAddress = `${item.village_name}, ${item.district_name}, ${item.city_name}, ${item.province_name}`;
+                  const displayedAddress = `RT${item.rt}/RW${item.rt}, ${item.village_name}, ${item.district_name}`;
 
                   return (
                     <Table.Row
@@ -98,8 +98,11 @@ const PasienTable = ({
                       <Table.Cell className="whitespace-nowrap font-medium text-slate-800 dark:text-white">
                         {item.medical_record_number}
                       </Table.Cell>
-                      <Table.Cell>{item.patient_name}</Table.Cell>
-                      <Table.Cell className="min-w-[80px]">{`${age.years()} tahun ${age.months()} bulan ${age.days()} hari`}</Table.Cell>
+                      <Table.Cell>
+                        {item.is_baby && "Bayi Ny. "}
+                        {item.patient_name}
+                      </Table.Cell>
+                      <Table.Cell className="min-w-[80px]">{`${age.years()}th ${age.months()}bln ${age.days()}hr`}</Table.Cell>
                       <Table.Cell>{item.id_card_number}</Table.Cell>
                       <Table.Cell>{displayedAddress}</Table.Cell>
                       <Table.Cell>
