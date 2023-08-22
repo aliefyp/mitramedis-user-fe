@@ -1,7 +1,7 @@
 export interface StockType {
   stock_id: string;
   clinic_id: string;
-  type: string;
+  category: string;
   code: string;
   item_name: string;
   description: string;
@@ -18,6 +18,7 @@ export interface StockType {
   deleted_at: string;
   supplier: string;
   minimum_stock: number;
+  supplier_id: string;
 }
 
 export interface StockPurchaseType extends StockType {

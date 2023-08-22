@@ -268,7 +268,7 @@ const AddressForm = ({
             message: "Wajib diisi",
           },
           pattern: {
-            value: /[0-9]{16}/,
+            value: /[0-9]/,
             message: "Format tidak sesuai",
           },
         })}
@@ -288,7 +288,7 @@ const AddressForm = ({
             message: "Wajib diisi",
           },
           pattern: {
-            value: /[0-9]{16}/,
+            value: /[0-9]/,
             message: "Format tidak sesuai",
           },
         })}

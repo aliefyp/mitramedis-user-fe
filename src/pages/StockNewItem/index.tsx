@@ -172,10 +172,10 @@ const StockNewItem = () => {
               placeholder="Obat"
               options={OPTIONS_CATEGORY}
               className="col-span-3 md:col-span-1"
-              error={Boolean(errors?.type)}
-              helper={errors?.type?.message}
-              onValueChange={(val) => setValue("type", val.label)}
-              {...register("type", {
+              error={Boolean(errors?.category)}
+              helper={errors?.category?.message}
+              onValueChange={(val) => setValue("category", val.label)}
+              {...register("category", {
                 required: {
                   value: true,
                   message: "Wajib diisi",

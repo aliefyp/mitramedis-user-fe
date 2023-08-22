@@ -43,7 +43,7 @@ const MedicalRecordPage = () => {
       >
         <Button
           className="w-full sm:w-auto"
-          onClick={() => navigate("/pasien/new")}
+          onClick={() => navigate("/rekam-medis/new")}
         >
           <div className="flex items-center gap-4">
             <TbPlus />
