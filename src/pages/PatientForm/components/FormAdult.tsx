@@ -20,10 +20,11 @@ import constructSummaryAdult from "../helpers/constructSummaryAdult";
 import NewPatientSummary from "./NewPatientSummary";
 
 interface FormAdultProps {
+  defaultValue?: PatientTypeForm;
   onSubmit: (values: PatientTypeForm) => void;
 }
 
-const FormAdult = ({ onSubmit }: FormAdultProps) => {
+const FormAdult = ({ defaultValue, onSubmit }: FormAdultProps) => {
   const [sameAsAddress1, setSameAsAddress1] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [formData, setFormData] = useState<PatientTypeForm | undefined>(
@@ -37,12 +38,12 @@ const FormAdult = ({ onSubmit }: FormAdultProps) => {
     resetField,
     handleSubmit,
     formState: { errors },
-  } = useForm<PatientTypeForm>();
+  } = useForm<PatientTypeForm>({ defaultValues: defaultValue });
 
   const showOtherPaymentMethod = watch("payment_method") === 3;
 
   const submitForm = (val: PatientTypeForm) => {
-    setFormData(val);
+    setFormData({ ...val, is_same_domicile: String(Number(sameAsAddress1)) });
     setShowConfirmation(true);
   };
 
@@ -54,6 +55,12 @@ const FormAdult = ({ onSubmit }: FormAdultProps) => {
   useEffect(() => {
     if (!showOtherPaymentMethod) setValue("payment_method_other", "");
   }, [setValue, showOtherPaymentMethod]);
+
+  useEffect(() => {
+    if (defaultValue.is_same_domicile) {
+      setSameAsAddress1(Boolean(Number(defaultValue.is_same_domicile)));
+    }
+  }, [defaultValue.is_same_domicile, setValue]);
 
   return (
     <>
@@ -208,7 +215,7 @@ const FormAdult = ({ onSubmit }: FormAdultProps) => {
           <div className="grid grid-cols-4 gap-6">
             <Input
               required
-              type="number"
+              type="text"
               label="No. HP"
               placeholder="08123xxxxxxx"
               error={Boolean(errors?.phone_number)}
@@ -219,14 +226,23 @@ const FormAdult = ({ onSubmit }: FormAdultProps) => {
                   value: true,
                   message: "Wajib diisi",
                 },
+                pattern: {
+                  value: /[0-9]/,
+                  message: "Format tidak sesuai",
+                },
               })}
             />
             <Input
-              type="number"
+              type="text"
               label="No. Telepon Rumah"
               placeholder="08123xxxxxxx"
               className="col-span-4 md:col-span-2"
-              {...register("other_phone_number")}
+              {...register("other_phone_number", {
+                pattern: {
+                  value: /[0-9]/,
+                  message: "Format tidak sesuai",
+                },
+              })}
             />
           </div>
         </FormSection>

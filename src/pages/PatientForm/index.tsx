@@ -5,9 +5,9 @@ import Toggle from "components/Toggle";
 import FormNewborn from "./components/FormNewborn";
 import FormAdult from "./components/FormAdult";
 import { PatientType } from "types/patient";
-import { useAddPatient } from "api/patient";
+import { useAddPatient, usePatientDetail } from "api/patient";
 import { NEWBORN_PREFIX } from "./constants";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useToaster from "context/ToasterContext";
 
 interface PatientFormProps {
@@ -15,15 +15,22 @@ interface PatientFormProps {
 }
 
 const PatientForm = ({ type }: PatientFormProps) => {
+  const [defaultValue, setDafaultValue] = useState(null);
   const [isNewborn, setNewborn] = useState(false);
   const [createdPatient, setCreatedPatient] = useState<
     { patient_name: string } | undefined
   >(undefined);
-  const addPatient = useAddPatient();
   const navigate = useNavigate();
   const { open: openToaster } = useToaster();
+  const addPatient = useAddPatient();
+  const { patient_id } = useParams();
 
   const isEdit = type === "edit";
+
+  const { data } = usePatientDetail({
+    patient_id,
+    skip: !isEdit,
+  });
 
   const handleSubmit = (values: PatientType) => {
     setCreatedPatient(values);
@@ -43,7 +50,7 @@ const PatientForm = ({ type }: PatientFormProps) => {
             key: "new-patient",
             data: {
               ...createdPatient,
-              ...addPatient.data?.data,
+              ...addPatient.data.data,
             },
           },
         },
@@ -68,6 +75,14 @@ const PatientForm = ({ type }: PatientFormProps) => {
     openToaster,
   ]);
 
+  useEffect(() => {
+    if (data?.data?.data?.patient) {
+      const patientData = data?.data?.data?.patient;
+      setNewborn(Boolean(patientData.is_baby));
+      setDafaultValue(patientData);
+    }
+  }, [data?.data?.data?.patient]);
+
   return (
     <div>
       <PageHeading
@@ -87,10 +102,20 @@ const PatientForm = ({ type }: PatientFormProps) => {
             Pasien adalah bayi baru lahir
           </Toggle>
         </div>
-        {isNewborn && (
-          <FormNewborn namePrefix={NEWBORN_PREFIX} onSubmit={handleSubmit} />
+        {((isEdit && defaultValue) || !isEdit) && (
+          <>
+            {isNewborn && (
+              <FormNewborn
+                namePrefix={NEWBORN_PREFIX}
+                defaultValue={defaultValue}
+                onSubmit={handleSubmit}
+              />
+            )}
+            {!isNewborn && (
+              <FormAdult defaultValue={defaultValue} onSubmit={handleSubmit} />
+            )}
+          </>
         )}
-        {!isNewborn && <FormAdult onSubmit={handleSubmit} />}
       </Card>
     </div>
   );

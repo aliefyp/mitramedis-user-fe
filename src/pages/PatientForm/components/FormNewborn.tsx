@@ -19,11 +19,13 @@ import Toggle from "components/Toggle";
 
 interface FormNewbornProps {
   namePrefix: string;
+  defaultValue?: PatientTypeForm;
   onSubmit: (values: PatientTypeForm) => void;
 }
 
 const FormNewborn = ({
   namePrefix = "Bayi Ny.",
+  defaultValue,
   onSubmit,
 }: FormNewbornProps) => {
   const [sameAsAddress1, setSameAsAddress1] = useState(false);
@@ -38,10 +40,10 @@ const FormNewborn = ({
     watch,
     resetField,
     formState: { errors },
-  } = useForm<PatientTypeForm>();
+  } = useForm<PatientTypeForm>({ defaultValues: defaultValue });
 
   const submitForm = (val: PatientTypeForm) => {
-    setFormData(val);
+    setFormData({ ...val, is_same_domicile: String(Number(sameAsAddress1)) });
     setShowConfirmation(true);
   };
 
@@ -56,6 +58,12 @@ const FormNewborn = ({
   useEffect(() => {
     if (!showOtherPaymentMethod) setValue("payment_method_other", "");
   }, [setValue, showOtherPaymentMethod]);
+
+  useEffect(() => {
+    if (defaultValue.is_same_domicile) {
+      setSameAsAddress1(Boolean(Number(defaultValue.is_same_domicile)));
+    }
+  }, [defaultValue.is_same_domicile, setValue]);
 
   return (
     <>
@@ -198,20 +206,30 @@ const FormNewborn = ({
         <FormSection title="Kontak">
           <div className="grid grid-cols-4 gap-6">
             <Input
-              type="number"
+              type="text"
               label="No. HP"
               placeholder="08123xxxxxxx"
               error={Boolean(errors?.phone_number)}
               helper={errors?.phone_number?.message}
               className="col-span-4 md:col-span-2"
-              {...register("phone_number")}
+              {...register("phone_number", {
+                pattern: {
+                  value: /[0-9]/,
+                  message: "Format tidak sesuai",
+                },
+              })}
             />
             <Input
-              type="number"
+              type="text"
               label="No. Telepon Rumah"
               placeholder="08123xxxxxxx"
               className="col-span-4 md:col-span-2"
-              {...register("other_phone_number")}
+              {...register("other_phone_number", {
+                pattern: {
+                  value: /[0-9]/,
+                  message: "Format tidak sesuai",
+                },
+              })}
             />
           </div>
         </FormSection>
