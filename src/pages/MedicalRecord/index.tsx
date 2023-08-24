@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import PageHeading from "components/PageHeading";
 import MedicalRecordFilter from "./components/MedicalRecordFilter";
 import MedicalRecordTable from "./components/MedicalRecordTable";
@@ -7,10 +7,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAllMedicalRecord, useDeleteMedicalRecord } from "api/medicalRecord";
 import Button from "components/Button";
 import { TbPlus } from "react-icons/tb";
+import SearchPasien from "components/organism/SearchPasien";
 
 const MedicalRecordPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [showPasienModal, setShowPasienModal] = useState(false);
+
   const { data, isFetching, setPage, refetch } = useAllMedicalRecord();
   const deleteMedicalRecord = useDeleteMedicalRecord();
 
@@ -43,7 +47,7 @@ const MedicalRecordPage = () => {
       >
         <Button
           className="w-full sm:w-auto"
-          onClick={() => navigate("/rekam-medis/new")}
+          onClick={() => setShowPasienModal(true)}
         >
           <div className="flex items-center gap-4">
             <TbPlus />
@@ -63,10 +67,11 @@ const MedicalRecordPage = () => {
           onSelect={handleViewMedicalRecord}
         />
       </div>
-      {/* <ModalMedicalRecordPreview
-        open={showPreview}
-        onClose={() => setShowPreview(false)}
-      /> */}
+
+      <SearchPasien
+        open={showPasienModal}
+        onClose={() => setShowPasienModal(false)}
+      />
     </div>
   );
 };

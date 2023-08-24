@@ -1,15 +1,10 @@
 import Typography from "components/Typography";
 import { FaChevronRight } from "react-icons/fa";
-
-interface PasienType {
-  name: string;
-  mr_number: string;
-  nik: string;
-}
+import { PatientTypeData } from "types/patient";
 
 interface SearchPasienItemDisplayProps {
-  item: PasienType;
-  onClick: (item: PasienType) => void;
+  item: PatientTypeData;
+  onClick: (item: PatientTypeData) => void;
 }
 
 const SearchPasienItemDisplay = ({
@@ -17,15 +12,15 @@ const SearchPasienItemDisplay = ({
   onClick,
 }: SearchPasienItemDisplayProps) => (
   <div
-    className="flex cursor-pointer items-center justify-between border border-l-0 border-r-0 border-t-0 px-4 py-2 hover:bg-gray-100"
+    className="flex cursor-pointer items-center justify-between border-b px-4 py-2 last:border-none hover:bg-gray-100"
     onClick={() => onClick(item)}
   >
     <div className="space-y-0">
       <Typography as="div" className=" text-md font-bold">
-        {item.name}
+        {item.patient_name}
       </Typography>
       <Typography as="div" className=" text-sm text-gray-500">
-        {item.mr_number} | {item.nik}
+        {item.medical_record_number} | {item.id_card_number}
       </Typography>
     </div>
     <div>

@@ -3,8 +3,6 @@ import { useSignOut } from "react-auth-kit";
 import { useMutation, useQuery } from "react-query"
 import { PatientType, PatientTypeData } from "types/patient"
 import useAuthHeaders from "hooks/useAuthHeaders";
-import { useState } from "react";
-import { useLocation } from "react-router-dom";
 
 export const useAddPatient = () => {
   const signOut = useSignOut();
@@ -95,37 +93,19 @@ interface GetAllPatientResponse extends AxiosResponse {
   }
 }
 
-export const useAllPatient = () => {
+export const useAllPatient = (query: string) => {
   const signOut = useSignOut();
   const headers = useAuthHeaders();
 
-  const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(10);
-
-  const location = useLocation();
-  const filter = Object.fromEntries(new URLSearchParams(location.search));
-
-  return {
-    page,
-    perPage,
-    setPage,
-    setPerPage,
-    ...useQuery<unknown, unknown, GetAllPatientResponse>({
-      queryKey: ['get-all-patient', filter],
-      queryFn: async () => {
-        const query = new URLSearchParams({
-          page: String(page),
-          per_page: String(perPage),
-          ...filter,
-        });
-
-        try {
-          return await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/patient?${query}`, { headers })
-        } catch (err) {
-          console.error(err);
-          if (err?.response?.status === 401) signOut();
-        }
+  return useQuery<unknown, unknown, GetAllPatientResponse>({
+    queryKey: ['get-all-patient', query],
+    queryFn: async () => {
+      try {
+        return await axios.get(`${process.env.REACT_APP_API_ENDPOINT}/patient?${query}`, { headers })
+      } catch (err) {
+        console.error(err);
+        if (err?.response?.status === 401) signOut();
       }
-    }),
-  }
+    }
+  })
 }

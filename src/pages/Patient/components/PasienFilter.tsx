@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import Card from "components/Card";
-import Input from "components/FormInput/Input";
 import Button from "components/Button";
 import { TbSearch } from "react-icons/tb";
+import { TextInput } from "flowbite-react";
 
 interface PasienFilterParam {
   id_card_number: string;
@@ -25,21 +25,21 @@ const PasienFilter = ({ onSubmit }: PasienFilterProps) => {
     <Card className="rounded-2xl border-none p-3 shadow-sm">
       <form onSubmit={handleSubmit(submitForm)}>
         <div className="grid grid-cols-4 items-center gap-4">
-          <Input
+          <TextInput
             type="search"
             id="patient_name"
             placeholder="Nama pasien"
             className="col-span-4 md:col-span-1"
             {...register("patient_name")}
           />
-          <Input
+          <TextInput
             type="search"
             id="medical_record_number"
             placeholder="Nomor Rekam Medis"
             className="col-span-4 md:col-span-1"
             {...register("medical_record_number")}
           />
-          <Input
+          <TextInput
             type="search"
             id="id_card_number"
             placeholder="NIK pasien"

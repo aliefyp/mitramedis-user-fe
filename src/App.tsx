@@ -66,7 +66,7 @@ function App() {
                 />
                 <Route path="/rekam-medis" element={<MedicalRecord />} />
                 <Route
-                  path="/rekam-medis/new"
+                  path="/rekam-medis/new/:patient_id"
                   element={<MedicalRecordForm type="new" />}
                 />
                 <Route path="/stok" element={<Stock />} />
