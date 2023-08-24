@@ -183,7 +183,7 @@ const AddressForm = ({
           required={isMainAddress}
           placeholder="Alamat lengkap sesuai kartu identitas"
           rows={2}
-          error={Boolean(errors?.[`${prefix}address`])}
+          color={Boolean(errors?.[`${prefix}address`]) ? "failure" : "gray"}
           helperText={errors?.[`${prefix}address`]?.message}
           {...register(`${prefix}address`, {
             required: {
@@ -199,7 +199,9 @@ const AddressForm = ({
         <Select
           required={isMainAddress}
           placeholder="Pilih provinsi"
-          error={Boolean(errors?.[`${prefix}province_code`])}
+          color={
+            Boolean(errors?.[`${prefix}province_code`]) ? "failure" : "gray"
+          }
           helperText={errors?.[`${prefix}province_code`]?.message}
           {...register(`${prefix}province_code`, {
             required: {
@@ -219,7 +221,7 @@ const AddressForm = ({
         <Select
           required={isMainAddress}
           placeholder="Pilih kota atau kabupaten"
-          error={Boolean(errors?.[`${prefix}city_code`])}
+          color={Boolean(errors?.[`${prefix}city_code`]) ? "failure" : "gray"}
           helperText={errors?.[`${prefix}city_code`]?.message}
           {...register(`${prefix}city_code`, {
             required: {
@@ -239,7 +241,9 @@ const AddressForm = ({
         <Select
           required={isMainAddress}
           // placeholder="Pilih kecamatan"
-          error={Boolean(errors?.[`${prefix}district_code`])}
+          color={
+            Boolean(errors?.[`${prefix}district_code`]) ? "failure" : "gray"
+          }
           helperText={errors?.[`${prefix}district_code`]?.message}
           {...register(`${prefix}district_code`, {
             required: {
@@ -259,7 +263,9 @@ const AddressForm = ({
         <Select
           required={isMainAddress}
           // placeholder="Pilih kelurahan atau desa"
-          error={Boolean(errors?.[`${prefix}village_code`])}
+          color={
+            Boolean(errors?.[`${prefix}village_code`]) ? "failure" : "gray"
+          }
           helperText={errors?.[`${prefix}village_code`]?.message}
           {...register(`${prefix}village_code`, {
             required: {
@@ -296,7 +302,7 @@ const AddressForm = ({
           type="text"
           label="Rukun Tetangga / RT"
           placeholder="00x"
-          error={Boolean(errors?.[`${prefix}rt`])}
+          color={Boolean(errors?.[`${prefix}rt`]) ? "failure" : "gray"}
           helper={errors?.[`${prefix}rt`]?.message}
           {...register(`${prefix}rt`, {
             required: {
@@ -317,7 +323,7 @@ const AddressForm = ({
           required={isMainAddress}
           type="text"
           placeholder="00x"
-          error={Boolean(errors?.[`${prefix}rw`])}
+          color={Boolean(errors?.[`${prefix}rw`]) ? "failure" : "gray"}
           helper={errors?.[`${prefix}rw`]?.message}
           {...register(`${prefix}rw`, {
             required: {
