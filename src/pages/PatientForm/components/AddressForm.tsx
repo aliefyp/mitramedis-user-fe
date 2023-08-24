@@ -128,6 +128,7 @@ const AddressForm = ({
       <div className="col-span-4 md:col-span-2">
         <Label htmlFor={`${prefix}province_code`} value="Provinsi" />
         <Select
+          defaultValue=""
           required={isMainAddress}
           color={
             Boolean(errors?.[`${prefix}province_code`]) ? "failure" : "gray"
@@ -140,11 +141,13 @@ const AddressForm = ({
             },
           })}
         >
-          <option value="" disabled selected>
+          <option value="" disabled>
             Pilih provinsi
           </option>
           {provinceOptions?.map((item) => (
-            <option value={item.key}>{item.label}</option>
+            <option key={item.key} value={item.key}>
+              {item.label}
+            </option>
           ))}
         </Select>
       </div>
@@ -152,6 +155,7 @@ const AddressForm = ({
       <div className="col-span-4 md:col-span-2">
         <Label htmlFor={`${prefix}city_code`} value="Kota / Kabupaten" />
         <Select
+          defaultValue=""
           required={isMainAddress}
           color={Boolean(errors?.[`${prefix}city_code`]) ? "failure" : "gray"}
           helperText={errors?.[`${prefix}city_code`]?.message}
@@ -162,11 +166,13 @@ const AddressForm = ({
             },
           })}
         >
-          <option value="" disabled selected>
+          <option value="" disabled>
             Pilih kota atau kabupaten
           </option>
           {cityOptions?.map((item) => (
-            <option value={item.key}>{item.label}</option>
+            <option key={item.key} value={item.key}>
+              {item.label}
+            </option>
           ))}
         </Select>
       </div>
@@ -174,6 +180,7 @@ const AddressForm = ({
       <div className="col-span-4 md:col-span-2">
         <Label htmlFor={`${prefix}district_code`} value="Kecamatan" />
         <Select
+          defaultValue=""
           required={isMainAddress}
           color={
             Boolean(errors?.[`${prefix}district_code`]) ? "failure" : "gray"
@@ -186,11 +193,13 @@ const AddressForm = ({
             },
           })}
         >
-          <option value="" disabled selected>
+          <option value="" disabled>
             Pilih kecamatan
           </option>
           {districtOptions?.map((item) => (
-            <option value={item.key}>{item.label}</option>
+            <option key={item.key} value={item.key}>
+              {item.label}
+            </option>
           ))}
         </Select>
       </div>
@@ -198,6 +207,7 @@ const AddressForm = ({
       <div className="col-span-4 md:col-span-2">
         <Label htmlFor={`${prefix}village_code`} value="Kelurahan / Desa" />
         <Select
+          defaultValue=""
           required={isMainAddress}
           color={
             Boolean(errors?.[`${prefix}village_code`]) ? "failure" : "gray"
@@ -210,11 +220,13 @@ const AddressForm = ({
             },
           })}
         >
-          <option value="" disabled selected>
+          <option value="" disabled>
             Pilih kelurahan atau desa
           </option>
           {villageOptions?.map((item) => (
-            <option value={item.key}>{item.label}</option>
+            <option key={item.key} value={item.key}>
+              {item.label}
+            </option>
           ))}
         </Select>
       </div>

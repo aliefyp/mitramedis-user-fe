@@ -238,6 +238,7 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
             <div className="col-span-4 md:col-span-2">
               <Label htmlFor="gender" value="Jenis Kelamin" />
               <Select
+                defaultValue=""
                 required
                 color={Boolean(errors?.gender) ? "failure" : "gray"}
                 helperText={errors?.gender?.message}
@@ -248,11 +249,13 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
                   },
                 })}
               >
-                <option value="" disabled selected>
+                <option value="" disabled>
                   Pilih jenis kelamin
                 </option>
                 {OPTIONS_GENDER.map((item) => (
-                  <option value={item.key}>{item.label}</option>
+                  <option key={item.key} value={item.key}>
+                    {item.label}
+                  </option>
                 ))}
               </Select>
             </div>
@@ -351,15 +354,18 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
                   </Typography>
                 </div>
                 <Select
+                  defaultValue=""
                   color={Boolean(errors?.education) ? "failure" : "gray"}
                   helperText={errors?.education?.message}
                   {...register("education")}
                 >
-                  <option value="" disabled selected>
+                  <option value="" disabled>
                     Pilih pendidikan terakhir
                   </option>
                   {OPTIONS_EDUCATION.map((item) => (
-                    <option value={item.key}>{item.label}</option>
+                    <option key={item.key} value={item.key}>
+                      {item.label}
+                    </option>
                   ))}
                 </Select>
               </div>
@@ -374,15 +380,18 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
                   </Typography>
                 </div>
                 <Select
+                  defaultValue=""
                   color={Boolean(errors?.job) ? "failure" : "gray"}
                   helperText={errors?.job?.message}
                   {...register("job")}
                 >
-                  <option value="" disabled selected>
+                  <option value="" disabled>
                     Pilih pekerjaan saat ini
                   </option>
                   {OPTIONS_OCCUPATION.map((item) => (
-                    <option value={item.label}>{item.label}</option>
+                    <option key={item.key} value={item.label}>
+                      {item.label}
+                    </option>
                   ))}
                 </Select>
               </div>
@@ -392,6 +401,7 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
               <div className="col-span-3 md:col-span-1">
                 <Label htmlFor="marital" value="Status pernikahan" />
                 <Select
+                  defaultValue=""
                   required
                   color={Boolean(errors?.marital) ? "failure" : "gray"}
                   helperText={errors?.marital?.message}
@@ -402,11 +412,13 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
                     },
                   })}
                 >
-                  <option value="" disabled selected>
+                  <option value="" disabled>
                     Pilih status pernikahan
                   </option>
                   {OPTIONS_MARITAL_STATUS.map((item) => (
-                    <option value={item.key}>{item.label}</option>
+                    <option key={item.key} value={item.key}>
+                      {item.label}
+                    </option>
                   ))}
                 </Select>
               </div>
@@ -420,15 +432,18 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
                 </Typography>
               </div>
               <Select
+                defaultValue=""
                 color={Boolean(errors?.payment_method) ? "failure" : "gray"}
                 helperText={errors?.payment_method?.message}
                 {...register("payment_method")}
               >
-                <option value="" disabled selected>
+                <option value="" disabled>
                   Pilih metode pembayaran
                 </option>
                 {OPTIONS_PAYMENT_METHOD.map((item) => (
-                  <option value={item.key}>{item.label}</option>
+                  <option key={item.key} value={item.key}>
+                    {item.label}
+                  </option>
                 ))}
               </Select>
             </div>
