@@ -2,11 +2,9 @@ import { useEffect, useState } from "react";
 import PageHeading from "components/PageHeading";
 import Card from "components/Card";
 import Toggle from "components/Toggle";
-// import FormNewborn from "./components/FormNewborn";
-import FormAdult from "./components/FormAdult";
+import MainForm from "./components/MainForm";
 import { PatientType } from "types/patient";
 import { useAddPatient, useEditPatient, usePatientDetail } from "api/patient";
-// import { NEWBORN_PREFIX } from "./constants";
 import { useNavigate, useParams } from "react-router-dom";
 import useToaster from "context/ToasterContext";
 
@@ -145,20 +143,11 @@ const PatientForm = ({ type }: PatientFormProps) => {
         </div>
         {((isEdit && defaultValue) || !isEdit) && (
           <>
-            {/* {isNewborn && (
-              <FormNewborn
-                namePrefix={NEWBORN_PREFIX}
-                defaultValue={defaultValue}
-                onSubmit={handleSubmit}
-              />
-            )} */}
-            {/* {!isNewborn && ( */}
-            <FormAdult
+            <MainForm
               isBaby={isNewborn}
               defaultValue={defaultValue}
               onSubmit={handleSubmit}
             />
-            {/* )} */}
           </>
         )}
       </Card>

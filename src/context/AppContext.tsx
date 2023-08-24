@@ -52,6 +52,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   const handleCloseModal = useCallback(() => {
     setModal({ ...modal, open: false });
+    window.history.replaceState({}, document.title);
   }, [modal]);
 
   useEffect(() => {
@@ -69,6 +70,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             onPrimaryActionClick: () =>
               navigate(`/rekam-medis/${state.modal.data.patient_id}`),
           });
+          window.history.replaceState({}, document.title);
           break;
 
         case "edit-patient":
@@ -78,7 +80,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             title: "Berhasil",
             message: `Data pasien atas nama <b>${state.modal.data.patient_name}</b> berhasil disimpan.`,
             primaryAction: "Tutup",
-            onPrimaryActionClick: () => navigate(`/pasien`),
+            onPrimaryActionClick: handleCloseModal,
           });
           break;
         default:

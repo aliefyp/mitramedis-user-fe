@@ -1,6 +1,6 @@
 import useTeritory from "api/teritory/useTeritory";
 import { Label, Textarea, TextInput, Select } from "flowbite-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 
 const AddressForm = ({
   isMainAddress,
@@ -10,15 +10,6 @@ const AddressForm = ({
   setValue,
   errors,
 }) => {
-  const [searchQuery, setSearchQuery] = useState({
-    province: "",
-    city: "",
-    district: "",
-    village: "",
-  });
-
-  console.log(setSearchQuery);
-
   const prefix = !isMainAddress ? "domicile_" : "";
 
   const watchProvince = watch(`${prefix}province_code`);
@@ -33,92 +24,33 @@ const AddressForm = ({
   });
 
   const provinceOptions = useMemo(() => {
-    const list = data.province.map((item) => ({
+    return data.province.map((item) => ({
       key: item.province_code,
       label: item.province_name,
     }));
-
-    const copyList = [...list];
-    const filtered =
-      searchQuery.province === ""
-        ? copyList
-        : copyList.filter((val) =>
-            val.label
-              .toLowerCase()
-              .replace(/\s+/g, "")
-              .includes(searchQuery.province.toLowerCase().replace(/\s+/g, ""))
-          );
-
-    return filtered;
-  }, [data.province, searchQuery.province]);
+  }, [data.province]);
 
   const cityOptions = useMemo(() => {
-    const list = data.city.map((item) => ({
+    return data.city.map((item) => ({
       key: item.city_code,
       label: item.city_name,
     }));
-
-    const copyList = [...list];
-    const filtered =
-      searchQuery.city === ""
-        ? copyList
-        : copyList.filter((val) =>
-            val.label
-              .toLowerCase()
-              .replace(/\s+/g, "")
-              .includes(searchQuery.city.toLowerCase().replace(/\s+/g, ""))
-          );
-
-    return filtered;
-  }, [data.city, searchQuery.city]);
+  }, [data.city]);
 
   const districtOptions = useMemo(() => {
-    const list = data.district.map((item) => ({
+    return data.district.map((item) => ({
       key: item.district_code,
       label: item.district_name,
     }));
-
-    const copyList = [...list];
-    const filtered =
-      searchQuery.district === ""
-        ? copyList
-        : copyList.filter((val) =>
-            val.label
-              .toLowerCase()
-              .replace(/\s+/g, "")
-              .includes(searchQuery.district.toLowerCase().replace(/\s+/g, ""))
-          );
-
-    return filtered;
-  }, [data.district, searchQuery.district]);
+  }, [data.district]);
 
   const villageOptions = useMemo(() => {
-    const list = data.village.map((item) => ({
+    return data.village.map((item) => ({
       key: item.village_code,
       label: item.village_name,
       zip_code: item.zip_code,
     }));
-
-    const copyList = [...list];
-    const filtered =
-      searchQuery.village === ""
-        ? copyList
-        : copyList.filter((val) =>
-            val.label
-              .toLowerCase()
-              .replace(/\s+/g, "")
-              .includes(searchQuery.village.toLowerCase().replace(/\s+/g, ""))
-          );
-
-    return filtered;
-  }, [data.village, searchQuery.village]);
-
-  // const handleSearchQueryChange = (key: string, val: string) => {
-  //   setSearchQuery({
-  //     ...searchQuery,
-  //     [key]: val.trim(),
-  //   });
-  // };
+  }, [data.village]);
 
   useEffect(() => {
     if (watchProvince) {
@@ -126,10 +58,10 @@ const AddressForm = ({
       resetField(`${prefix}district_code`);
       resetField(`${prefix}village_code`);
 
-      // setValue(
-      //   `${prefix}province_string`,
-      //   provinceOptions.find((i) => i.key === watchProvince).label
-      // );
+      setValue(
+        `${prefix}province_string`,
+        provinceOptions.find((i) => i.key === watchProvince).label
+      );
     }
   }, [prefix, provinceOptions, resetField, setValue, watchProvince]);
 
@@ -138,10 +70,10 @@ const AddressForm = ({
       resetField(`${prefix}district_code`);
       resetField(`${prefix}village_code`);
 
-      // setValue(
-      //   `${prefix}city_string`,
-      //   cityOptions.find((i) => i.key === watchCity).label
-      // );
+      setValue(
+        `${prefix}city_string`,
+        cityOptions.find((i) => i.key === watchCity).label
+      );
     }
   }, [cityOptions, prefix, resetField, setValue, watchCity]);
 
@@ -149,10 +81,10 @@ const AddressForm = ({
     if (watchDistrict) {
       resetField(`${prefix}village_code`);
 
-      // setValue(
-      //   `${prefix}district_string`,
-      //   districtOptions.find((i) => i.key === watchDistrict).label
-      // );
+      setValue(
+        `${prefix}district_string`,
+        districtOptions.find((i) => i.key === watchDistrict).label
+      );
     }
   }, [districtOptions, prefix, resetField, setValue, watchDistrict]);
 
@@ -162,11 +94,10 @@ const AddressForm = ({
         `${prefix}zip_code`,
         villageOptions.find((i) => i.key === watchVillage)?.zip_code
       );
-
-      // setValue(
-      //   `${prefix}village_string`,
-      //   villageOptions.find((i) => i.key === watchVillage).label
-      // );
+      setValue(
+        `${prefix}village_string`,
+        villageOptions.find((i) => i.key === watchVillage).label
+      );
     }
   }, [prefix, setValue, villageOptions, watchVillage]);
 
@@ -180,9 +111,9 @@ const AddressForm = ({
           />
         </div>
         <Textarea
+          rows={2}
           required={isMainAddress}
           placeholder="Alamat lengkap sesuai kartu identitas"
-          rows={2}
           color={Boolean(errors?.[`${prefix}address`]) ? "failure" : "gray"}
           helperText={errors?.[`${prefix}address`]?.message}
           {...register(`${prefix}address`, {
@@ -198,7 +129,6 @@ const AddressForm = ({
         <Label htmlFor={`${prefix}province_code`} value="Provinsi" />
         <Select
           required={isMainAddress}
-          placeholder="Pilih provinsi"
           color={
             Boolean(errors?.[`${prefix}province_code`]) ? "failure" : "gray"
           }
@@ -210,6 +140,9 @@ const AddressForm = ({
             },
           })}
         >
+          <option value="" disabled selected>
+            Pilih provinsi
+          </option>
           {provinceOptions?.map((item) => (
             <option value={item.key}>{item.label}</option>
           ))}
@@ -220,7 +153,6 @@ const AddressForm = ({
         <Label htmlFor={`${prefix}city_code`} value="Kota / Kabupaten" />
         <Select
           required={isMainAddress}
-          placeholder="Pilih kota atau kabupaten"
           color={Boolean(errors?.[`${prefix}city_code`]) ? "failure" : "gray"}
           helperText={errors?.[`${prefix}city_code`]?.message}
           {...register(`${prefix}city_code`, {
@@ -230,6 +162,9 @@ const AddressForm = ({
             },
           })}
         >
+          <option value="" disabled selected>
+            Pilih kota atau kabupaten
+          </option>
           {cityOptions?.map((item) => (
             <option value={item.key}>{item.label}</option>
           ))}
@@ -240,7 +175,6 @@ const AddressForm = ({
         <Label htmlFor={`${prefix}district_code`} value="Kecamatan" />
         <Select
           required={isMainAddress}
-          // placeholder="Pilih kecamatan"
           color={
             Boolean(errors?.[`${prefix}district_code`]) ? "failure" : "gray"
           }
@@ -252,6 +186,9 @@ const AddressForm = ({
             },
           })}
         >
+          <option value="" disabled selected>
+            Pilih kecamatan
+          </option>
           {districtOptions?.map((item) => (
             <option value={item.key}>{item.label}</option>
           ))}
@@ -262,7 +199,6 @@ const AddressForm = ({
         <Label htmlFor={`${prefix}village_code`} value="Kelurahan / Desa" />
         <Select
           required={isMainAddress}
-          // placeholder="Pilih kelurahan atau desa"
           color={
             Boolean(errors?.[`${prefix}village_code`]) ? "failure" : "gray"
           }
@@ -274,6 +210,9 @@ const AddressForm = ({
             },
           })}
         >
+          <option value="" disabled selected>
+            Pilih kelurahan atau desa
+          </option>
           {villageOptions?.map((item) => (
             <option value={item.key}>{item.label}</option>
           ))}
