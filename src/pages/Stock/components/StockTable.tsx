@@ -77,10 +77,10 @@ const StockTable = ({
                 <Table.Cell>{item.item_name}</Table.Cell>
                 <Table.Cell>{item.current_stock}</Table.Cell>
                 <Table.Cell>{item.unit}</Table.Cell>
-                <Table.Cell>{item.category}</Table.Cell>
+                <Table.Cell>{item.category_name}</Table.Cell>
                 <Table.Cell>{toIDR(Number(item.cogs))}</Table.Cell>
                 <Table.Cell>{toIDR(Number(item.sales_price))}</Table.Cell>
-                <Table.Cell>{item.supplier_id}</Table.Cell>
+                <Table.Cell>{item.supplier_name}</Table.Cell>
                 <Table.Cell>
                   {moment(item.expired_date).isValid()
                     ? moment(item.expired_date).format("DD MMMM YYYY")

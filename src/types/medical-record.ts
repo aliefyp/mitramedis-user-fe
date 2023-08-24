@@ -58,6 +58,7 @@ export interface MedicalRecordTypeForm extends MedicalRecordType {
 
 export interface MedicalRecordTypeData extends MedicalRecordType {
   medical_record_id: string
+  medical_record_number: string
   patient_id: string
   patient_name: string
   visit_date_time: string

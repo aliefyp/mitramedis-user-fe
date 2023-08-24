@@ -34,7 +34,7 @@ interface PasienTablePreviewProps {
   onPageChange: (page: number) => void;
   onDelete: (id: string) => void;
   onEdit: (id: string) => void;
-  onView: (mr_id: string) => void;
+  onView: (medical_record_number: string) => void;
 }
 
 const PasienTable = ({
