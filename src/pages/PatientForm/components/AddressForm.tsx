@@ -60,7 +60,7 @@ const AddressForm = ({
 
       setValue(
         `${prefix}province_string`,
-        provinceOptions.find((i) => i.key === watchProvince).label
+        provinceOptions.find((i) => i.key === watchProvince)?.label
       );
     }
   }, [prefix, provinceOptions, resetField, setValue, watchProvince]);
@@ -72,7 +72,7 @@ const AddressForm = ({
 
       setValue(
         `${prefix}city_string`,
-        cityOptions.find((i) => i.key === watchCity).label
+        cityOptions.find((i) => i.key === watchCity)?.label
       );
     }
   }, [cityOptions, prefix, resetField, setValue, watchCity]);
@@ -83,7 +83,7 @@ const AddressForm = ({
 
       setValue(
         `${prefix}district_string`,
-        districtOptions.find((i) => i.key === watchDistrict).label
+        districtOptions.find((i) => i.key === watchDistrict)?.label
       );
     }
   }, [districtOptions, prefix, resetField, setValue, watchDistrict]);
@@ -96,7 +96,7 @@ const AddressForm = ({
       );
       setValue(
         `${prefix}village_string`,
-        villageOptions.find((i) => i.key === watchVillage).label
+        villageOptions.find((i) => i.key === watchVillage)?.label
       );
     }
   }, [prefix, setValue, villageOptions, watchVillage]);
