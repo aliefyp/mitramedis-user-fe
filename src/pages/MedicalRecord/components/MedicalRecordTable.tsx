@@ -28,7 +28,7 @@ interface MedicalRecordTableProps {
   onPageChange: (page: number) => void;
   onDelete: (id: string) => void;
   onEdit: (id: string) => void;
-  onSelect: (mr_id: string) => void;
+  onSelect: (medical_record_number: string) => void;
 }
 
 const MedicalRecordTable = ({
@@ -72,15 +72,15 @@ const MedicalRecordTable = ({
                   className="bg-white hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800"
                 >
                   <Table.Cell className="whitespace-nowrap font-medium text-slate-800 dark:text-white">
-                    {item.medical_record_id}
+                    {item.medical_record_number}
                   </Table.Cell>
                   <Table.Cell>{item.patient_name}</Table.Cell>
                   <Table.Cell>
                     {moment(item.visit_date_time).format("dddd, DD MMMM YYYY")}
                   </Table.Cell>
                   <Table.Cell>{item.symptom}</Table.Cell>
-                  <Table.Cell>{"item.diagnosis"}</Table.Cell>
-                  <Table.Cell>{"item.patient_status"}</Table.Cell>
+                  <Table.Cell>{item.diagnosis}</Table.Cell>
+                  <Table.Cell>{item.patient_status}</Table.Cell>
                   <Table.Cell>
                     <div className="flex gap-1">
                       <Tooltip content="Ubah">

@@ -8,7 +8,7 @@ import { TextInput } from "flowbite-react";
 interface MedicalRecordFilterParam {
   id_card_number: string;
   patient_name: string;
-  mr_id: string;
+  medical_record_number: string;
 }
 
 interface MedicalRecordFilterProps {
@@ -39,10 +39,10 @@ const MedicalRecordFilter = ({ onSubmit }: MedicalRecordFilterProps) => {
           />
           <TextInput
             type="search"
-            id="mr_id"
+            id="medical_record_number"
             placeholder="Nomor Rekam Medis"
             className="col-span-4 md:col-span-1"
-            {...register("mr_id")}
+            {...register("medical_record_number")}
           />
           <TextInput
             type="search"

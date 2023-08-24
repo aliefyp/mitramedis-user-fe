@@ -13,7 +13,7 @@ const StokPage = () => {
   const { data, isFetching, setPage } = useAllStock();
 
   const handleViewStock = (code: string) => {
-    navigate(`/stok/card?mr_id=${code}`);
+    navigate(`/stok/card?medical_record_number=${code}`);
   };
 
   const handleSubmitFilter = (filter) => {

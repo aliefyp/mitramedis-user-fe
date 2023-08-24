@@ -17,8 +17,8 @@ const PatientPage = () => {
     navigate(`/pasien/edit/${id}`);
   };
 
-  const handleViewPatient = (mr_id: string) => {
-    navigate(`/rekam-medis?mr_id=${mr_id}`);
+  const handleViewPatient = (medical_record_number: string) => {
+    navigate(`/rekam-medis?medical_record_number=${medical_record_number}`);
   };
 
   const handleDeletePatient = (id: string) => {
