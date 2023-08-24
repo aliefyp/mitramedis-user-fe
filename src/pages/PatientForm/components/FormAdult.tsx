@@ -58,7 +58,7 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(submitForm)}>
+      <form noValidate onSubmit={handleSubmit(submitForm)}>
         <FormSection title="Identitas">
           <div className="grid grid-cols-4 gap-6">
             {/* patient_name */}
@@ -71,7 +71,7 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
                 placeholder={
                   isBaby ? "Nama ibu bayi" : "Nama pasien sesuai KTP"
                 }
-                color={Boolean(errors?.patient_name) ? "error" : "gray"}
+                color={Boolean(errors?.patient_name) ? "failure" : "gray"}
                 helperText={errors?.patient_name?.message}
                 {...register("patient_name", {
                   required: {
@@ -92,7 +92,7 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
                 required
                 type="text"
                 placeholder="16 digit nomor KTP"
-                color={Boolean(errors?.id_card_number) ? "error" : "gray"}
+                color={Boolean(errors?.id_card_number) ? "failure" : "gray"}
                 helperText={errors?.id_card_number?.message}
                 {...register("id_card_number", {
                   required: {
@@ -143,7 +143,7 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
                   required
                   type="text"
                   placeholder="Nama Kota/Kabupaten"
-                  color={Boolean(errors?.birthplace) ? "error" : "gray"}
+                  color={Boolean(errors?.birthplace) ? "failure" : "gray"}
                   helperText={errors?.birthplace?.message}
                   {...register("birthplace", {
                     required: {
@@ -162,7 +162,7 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
                 required
                 type="date"
                 placeholder="DD/MM/YYYY"
-                color={Boolean(errors?.birthdate) ? "error" : "gray"}
+                color={Boolean(errors?.birthdate) ? "failure" : "gray"}
                 helperText={errors?.birthdate?.message}
                 {...register("birthdate", {
                   required: {
@@ -181,7 +181,7 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
                   required
                   type="time"
                   placeholder="00:00"
-                  color={Boolean(errors?.birth_time) ? "error" : "gray"}
+                  color={Boolean(errors?.birth_time) ? "failure" : "gray"}
                   helperText={errors?.birth_time?.message}
                   {...register("birth_time", {
                     required: {
@@ -199,7 +199,7 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
               <Select
                 required
                 placeholder="Pilih jenis kelamin"
-                color={Boolean(errors?.gender) ? "error" : "gray"}
+                color={Boolean(errors?.gender) ? "failure" : "gray"}
                 helperText={errors?.gender?.message}
                 {...register("gender", {
                   required: {
@@ -254,7 +254,7 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
                 required={!isBaby}
                 type="text"
                 placeholder="08123xxxxxxx"
-                color={Boolean(errors?.phone_number) ? "error" : "gray"}
+                color={Boolean(errors?.phone_number) ? "failure" : "gray"}
                 helperText={errors?.phone_number?.message}
                 {...register("phone_number", {
                   required: {
@@ -292,7 +292,7 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
                 <Label htmlFor="education" value="Pendidikan Terakhir" />
                 <Select
                   placeholder="Pilih pendidikan terakhir"
-                  color={Boolean(errors?.education) ? "error" : "gray"}
+                  color={Boolean(errors?.education) ? "failure" : "gray"}
                   helperText={errors?.education?.message}
                   {...register("education")}
                 >
@@ -308,7 +308,7 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
                 <Label htmlFor="job" value="Pekerjaan" />
                 <Select
                   placeholder="Pekerjaan saat ini"
-                  color={Boolean(errors?.job) ? "error" : "gray"}
+                  color={Boolean(errors?.job) ? "failure" : "gray"}
                   helperText={errors?.job?.message}
                   {...register("job")}
                 >
@@ -325,7 +325,7 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
                 <Select
                   required
                   placeholder="Status pernikahan"
-                  color={Boolean(errors?.marital) ? "error" : "gray"}
+                  color={Boolean(errors?.marital) ? "failure" : "gray"}
                   helperText={errors?.marital?.message}
                   {...register("marital", {
                     required: {
@@ -345,7 +345,7 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
               <Label htmlFor="payment_method" value="Metode Pembayaran" />
               <Select
                 placeholder="Pilih metode pembayaran"
-                color={Boolean(errors?.payment_method) ? "error" : "gray"}
+                color={Boolean(errors?.payment_method) ? "failure" : "gray"}
                 helperText={errors?.payment_method?.message}
                 {...register("payment_method")}
               >
@@ -365,7 +365,7 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
                   type="text"
                   placeholder="Tulis jenis asuransi"
                   color={
-                    Boolean(errors?.payment_method_other) ? "error" : "gray"
+                    Boolean(errors?.payment_method_other) ? "failure" : "gray"
                   }
                   helperText={errors?.payment_method_other?.message}
                   {...register("payment_method_other", {
