@@ -1,7 +1,5 @@
 import useTeritory from "api/teritory/useTeritory";
-import ComboBox from "components/FormInput/ComboBox";
-import Input from "components/FormInput/Input";
-import TextArea from "components/FormInput/TextArea";
+import { Label, Textarea, TextInput, Select } from "flowbite-react";
 import { useEffect, useMemo, useState } from "react";
 
 const AddressForm = ({
@@ -19,11 +17,14 @@ const AddressForm = ({
     village: "",
   });
 
+  console.log(setSearchQuery);
+
   const prefix = !isMainAddress ? "domicile_" : "";
 
   const watchProvince = watch(`${prefix}province_code`);
   const watchCity = watch(`${prefix}city_code`);
   const watchDistrict = watch(`${prefix}district_code`);
+  const watchVillage = watch(`${prefix}village_code`);
 
   const { data } = useTeritory({
     provinceCode: watchProvince,
@@ -112,189 +113,224 @@ const AddressForm = ({
     return filtered;
   }, [data.village, searchQuery.village]);
 
-  const handleSearchQueryChange = (key: string, val: string) => {
-    setSearchQuery({
-      ...searchQuery,
-      [key]: val.trim(),
-    });
-  };
+  // const handleSearchQueryChange = (key: string, val: string) => {
+  //   setSearchQuery({
+  //     ...searchQuery,
+  //     [key]: val.trim(),
+  //   });
+  // };
 
   useEffect(() => {
     if (watchProvince) {
-      resetField("city_code");
-      resetField("district_code");
-      resetField("village_code");
+      resetField(`${prefix}city_code`);
+      resetField(`${prefix}district_code`);
+      resetField(`${prefix}village_code`);
+
+      // setValue(
+      //   `${prefix}province_string`,
+      //   provinceOptions.find((i) => i.key === watchProvince).label
+      // );
     }
-  }, [resetField, watchProvince]);
+  }, [prefix, provinceOptions, resetField, setValue, watchProvince]);
 
   useEffect(() => {
     if (watchCity) {
-      resetField("district_code");
-      resetField("village_code");
+      resetField(`${prefix}district_code`);
+      resetField(`${prefix}village_code`);
+
+      // setValue(
+      //   `${prefix}city_string`,
+      //   cityOptions.find((i) => i.key === watchCity).label
+      // );
     }
-  }, [resetField, watchCity]);
+  }, [cityOptions, prefix, resetField, setValue, watchCity]);
 
   useEffect(() => {
     if (watchDistrict) {
-      resetField("village_code");
+      resetField(`${prefix}village_code`);
+
+      // setValue(
+      //   `${prefix}district_string`,
+      //   districtOptions.find((i) => i.key === watchDistrict).label
+      // );
     }
-  }, [resetField, watchDistrict]);
+  }, [districtOptions, prefix, resetField, setValue, watchDistrict]);
+
+  useEffect(() => {
+    if (watchVillage) {
+      setValue(
+        `${prefix}zip_code`,
+        villageOptions.find((i) => i.key === watchVillage)?.zip_code
+      );
+
+      // setValue(
+      //   `${prefix}village_string`,
+      //   villageOptions.find((i) => i.key === watchVillage).label
+      // );
+    }
+  }, [prefix, setValue, villageOptions, watchVillage]);
 
   return (
     <>
-      <TextArea
-        required={isMainAddress}
-        label={isMainAddress ? "Alamat Lengkap" : "Alamat Domisili"}
-        placeholder="Alamat lengkap sesuai kartu identitas"
-        className="col-span-4"
-        rows={2}
-        error={Boolean(errors?.[`${prefix}address`])}
-        helper={errors?.[`${prefix}address`]?.message}
-        {...register(`${prefix}address`, {
-          required: {
-            value: isMainAddress,
-            message: "Wajib diisi",
-          },
-        })}
-      />
+      <div className="col-span-4">
+        <div className="mb-2 block">
+          <Label
+            htmlFor={`${prefix}address`}
+            value={isMainAddress ? "Alamat Lengkap" : "Alamat Domisili"}
+          />
+        </div>
+        <Textarea
+          required={isMainAddress}
+          placeholder="Alamat lengkap sesuai kartu identitas"
+          rows={2}
+          error={Boolean(errors?.[`${prefix}address`])}
+          helperText={errors?.[`${prefix}address`]?.message}
+          {...register(`${prefix}address`, {
+            required: {
+              value: isMainAddress,
+              message: "Wajib diisi",
+            },
+          })}
+        />
+      </div>
 
-      <ComboBox
-        required={isMainAddress}
-        label="Provinsi"
-        placeholder="Pilih provinsi"
-        options={provinceOptions}
-        error={Boolean(errors?.[`${prefix}province_code`])}
-        helper={errors?.[`${prefix}province_code`]?.message}
-        className="col-span-4 md:col-span-2"
-        onValueChange={(val) => {
-          setValue(`${prefix}province_code`, String(val.key));
-          setValue(`${prefix}province_string`, String(val.label));
-        }}
-        onSearch={(val) => handleSearchQueryChange("province", val)}
-        {...register(`${prefix}province_code`, {
-          required: {
-            value: isMainAddress,
-            message: "Wajib diisi",
-          },
-        })}
-      />
+      <div className="col-span-4 md:col-span-2">
+        <Label htmlFor={`${prefix}province_code`} value="Provinsi" />
+        <Select
+          required={isMainAddress}
+          placeholder="Pilih provinsi"
+          error={Boolean(errors?.[`${prefix}province_code`])}
+          helperText={errors?.[`${prefix}province_code`]?.message}
+          {...register(`${prefix}province_code`, {
+            required: {
+              value: isMainAddress,
+              message: "Wajib diisi",
+            },
+          })}
+        >
+          {provinceOptions?.map((item) => (
+            <option value={item.key}>{item.label}</option>
+          ))}
+        </Select>
+      </div>
 
-      <ComboBox
-        required={isMainAddress}
-        label="Kotamadya / Kabupaten"
-        placeholder="Pilih kota atau kabupaten"
-        options={cityOptions}
-        className="col-span-4 md:col-span-2"
-        error={Boolean(errors?.[`${prefix}city_code`])}
-        helper={errors?.[`${prefix}city_code`]?.message}
-        onValueChange={(val) => {
-          setValue(`${prefix}city_code`, String(val.key));
-          setValue(`${prefix}city_string`, String(val.label));
-        }}
-        onSearch={(val) => handleSearchQueryChange("city", val)}
-        {...register(`${prefix}city_code`, {
-          required: {
-            value: isMainAddress,
-            message: "Wajib diisi",
-          },
-        })}
-      />
+      <div className="col-span-4 md:col-span-2">
+        <Label htmlFor={`${prefix}city_code`} value="Kota / Kabupaten" />
+        <Select
+          required={isMainAddress}
+          placeholder="Pilih kota atau kabupaten"
+          error={Boolean(errors?.[`${prefix}city_code`])}
+          helperText={errors?.[`${prefix}city_code`]?.message}
+          {...register(`${prefix}city_code`, {
+            required: {
+              value: isMainAddress,
+              message: "Wajib diisi",
+            },
+          })}
+        >
+          {cityOptions?.map((item) => (
+            <option value={item.key}>{item.label}</option>
+          ))}
+        </Select>
+      </div>
 
-      <ComboBox
-        required={isMainAddress}
-        label="Kecamatan"
-        placeholder="Pilih kecamatan"
-        options={districtOptions}
-        error={Boolean(errors?.[`${prefix}district_code`])}
-        helper={errors?.[`${prefix}district_code`]?.message}
-        className="col-span-4 md:col-span-2"
-        onValueChange={(val) => {
-          setValue(`${prefix}district_code`, String(val.key));
-          setValue(`${prefix}district_string`, String(val.label));
-        }}
-        onSearch={(val) => handleSearchQueryChange("district", val)}
-        {...register(`${prefix}district_code`, {
-          required: {
-            value: isMainAddress,
-            message: "Wajib diisi",
-          },
-        })}
-      />
+      <div className="col-span-4 md:col-span-2">
+        <Label htmlFor={`${prefix}district_code`} value="Kecamatan" />
+        <Select
+          required={isMainAddress}
+          // placeholder="Pilih kecamatan"
+          error={Boolean(errors?.[`${prefix}district_code`])}
+          helperText={errors?.[`${prefix}district_code`]?.message}
+          {...register(`${prefix}district_code`, {
+            required: {
+              value: isMainAddress,
+              message: "Wajib diisi",
+            },
+          })}
+        >
+          {districtOptions?.map((item) => (
+            <option value={item.key}>{item.label}</option>
+          ))}
+        </Select>
+      </div>
 
-      <ComboBox
-        required={isMainAddress}
-        label="Kelurahan / Desa"
-        placeholder="Pilih kelurahan atau desa"
-        options={villageOptions}
-        error={Boolean(errors?.[`${prefix}village_code`])}
-        helper={errors?.[`${prefix}village_code`]?.message}
-        className="col-span-4 md:col-span-2"
-        onValueChange={(val) => {
-          setValue(`${prefix}village_code`, String(val.key));
-          setValue(`${prefix}village_string`, String(val.label));
-          setValue(`${prefix}zip_code`, String(val.zip_code));
-        }}
-        onSearch={(val) => handleSearchQueryChange("village", val)}
-        {...register(`${prefix}village_code`, {
-          required: {
-            value: isMainAddress,
-            message: "Wajib diisi",
-          },
-        })}
-      />
+      <div className="col-span-4 md:col-span-2">
+        <Label htmlFor={`${prefix}village_code`} value="Kelurahan / Desa" />
+        <Select
+          required={isMainAddress}
+          // placeholder="Pilih kelurahan atau desa"
+          error={Boolean(errors?.[`${prefix}village_code`])}
+          helperText={errors?.[`${prefix}village_code`]?.message}
+          {...register(`${prefix}village_code`, {
+            required: {
+              value: isMainAddress,
+              message: "Wajib diisi",
+            },
+          })}
+        >
+          {villageOptions?.map((item) => (
+            <option value={item.key}>{item.label}</option>
+          ))}
+        </Select>
+      </div>
 
-      <Input
-        type="text"
-        label="Kode Pos"
-        placeholder="00xxx"
-        className="col-span-4 md:col-span-2"
-        {...register(`${prefix}zip_code`, {
-          pattern: {
-            value: /[0-9]/,
-            message: "Format tidak sesuai",
-          },
-        })}
-      />
+      <div className="col-span-4 md:col-span-2">
+        <Label htmlFor={`${prefix}zip_code`} value="Kode Pos" />
+        <TextInput
+          type="text"
+          placeholder="00xxx"
+          className="col-span-4 md:col-span-2"
+          {...register(`${prefix}zip_code`, {
+            pattern: {
+              value: /[0-9]/,
+              message: "Format tidak sesuai",
+            },
+          })}
+        />
+      </div>
 
-      <Input
-        required={isMainAddress}
-        type="text"
-        label="Rukun Tetangga / RT"
-        placeholder="00x"
-        error={Boolean(errors?.[`${prefix}rt`])}
-        helper={errors?.[`${prefix}rt`]?.message}
-        className="col-span-4 md:col-span-1"
-        {...register(`${prefix}rt`, {
-          required: {
-            value: isMainAddress,
-            message: "Wajib diisi",
-          },
-          pattern: {
-            value: /[0-9]/,
-            message: "Format tidak sesuai",
-          },
-        })}
-      />
+      <div className="col-span-4 md:col-span-1">
+        <Label htmlFor={`${prefix}rt`} value="Rukun Tetangga / RT" />
+        <TextInput
+          required={isMainAddress}
+          type="text"
+          label="Rukun Tetangga / RT"
+          placeholder="00x"
+          error={Boolean(errors?.[`${prefix}rt`])}
+          helper={errors?.[`${prefix}rt`]?.message}
+          {...register(`${prefix}rt`, {
+            required: {
+              value: isMainAddress,
+              message: "Wajib diisi",
+            },
+            pattern: {
+              value: /[0-9]/,
+              message: "Format tidak sesuai",
+            },
+          })}
+        />
+      </div>
 
-      <Input
-        required={isMainAddress}
-        type="text"
-        label="Rukun Warga / RW"
-        placeholder="00x"
-        error={Boolean(errors?.[`${prefix}rw`])}
-        helper={errors?.[`${prefix}rw`]?.message}
-        className="col-span-4 md:col-span-1"
-        {...register(`${prefix}rw`, {
-          required: {
-            value: isMainAddress,
-            message: "Wajib diisi",
-          },
-          pattern: {
-            value: /[0-9]/,
-            message: "Format tidak sesuai",
-          },
-        })}
-      />
+      <div className="col-span-4 md:col-span-1">
+        <Label htmlFor={`${prefix}rw`} value="Rukun Warga / RW" />
+        <TextInput
+          required={isMainAddress}
+          type="text"
+          placeholder="00x"
+          error={Boolean(errors?.[`${prefix}rw`])}
+          helper={errors?.[`${prefix}rw`]?.message}
+          {...register(`${prefix}rw`, {
+            required: {
+              value: isMainAddress,
+              message: "Wajib diisi",
+            },
+            pattern: {
+              value: /[0-9]/,
+              message: "Format tidak sesuai",
+            },
+          })}
+        />
+      </div>
     </>
   );
 };

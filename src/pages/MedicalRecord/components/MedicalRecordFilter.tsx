@@ -1,13 +1,14 @@
 import { useForm } from "react-hook-form";
 import Card from "components/Card";
-import Input from "components/FormInput/Input";
 import Button from "components/Button";
 import { TbSearch } from "react-icons/tb";
+import { useLocation } from "react-router-dom";
+import { TextInput } from "flowbite-react";
 
 interface MedicalRecordFilterParam {
   id_card_number: string;
   patient_name: string;
-  medical_record_number: string;
+  mr_id: string;
 }
 
 interface MedicalRecordFilterProps {
@@ -15,7 +16,11 @@ interface MedicalRecordFilterProps {
 }
 
 const MedicalRecordFilter = ({ onSubmit }: MedicalRecordFilterProps) => {
-  const { register, handleSubmit } = useForm<MedicalRecordFilterParam>();
+  const location = useLocation();
+  const filter = Object.fromEntries(new URLSearchParams(location.search));
+  const { register, handleSubmit } = useForm<MedicalRecordFilterParam>({
+    defaultValues: filter,
+  });
 
   const submitForm = (val: MedicalRecordFilterParam) => {
     onSubmit(val);
@@ -25,21 +30,21 @@ const MedicalRecordFilter = ({ onSubmit }: MedicalRecordFilterProps) => {
     <Card className="rounded-2xl border-none p-3 shadow-sm">
       <form onSubmit={handleSubmit(submitForm)}>
         <div className="grid grid-cols-4 items-center gap-4">
-          <Input
+          <TextInput
             type="search"
             id="patient_name"
             placeholder="Nama pasien"
             className="col-span-4 md:col-span-1"
             {...register("patient_name")}
           />
-          <Input
+          <TextInput
             type="search"
-            id="medical_record_number"
+            id="mr_id"
             placeholder="Nomor Rekam Medis"
             className="col-span-4 md:col-span-1"
-            {...register("medical_record_number")}
+            {...register("mr_id")}
           />
-          <Input
+          <TextInput
             type="search"
             id="id_card_number"
             placeholder="NIK pasien"

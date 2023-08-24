@@ -20,6 +20,21 @@ export const useAddPatient = () => {
   })
 }
 
+
+export const useEditPatient = () => {
+  const signOut = useSignOut();
+  const headers = useAuthHeaders();
+
+  return useMutation(async ({ patient_id, ...payload }: PatientType) => {
+    try {
+      return await axios.put(`${process.env.REACT_APP_API_ENDPOINT}/patient/${patient_id}`, JSON.stringify(payload), { headers });
+    } catch (err) {
+      console.error(err);
+      if (err?.response?.status === 401) signOut();
+    }
+  })
+}
+
 interface DeletePatientPayload {
   patient_id: string;
 }

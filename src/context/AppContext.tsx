@@ -10,6 +10,7 @@ import {
   useContext,
   useEffect,
   useState,
+  useCallback,
 } from "react";
 
 const MOBILE_BREAKPOINT = 640;
@@ -49,9 +50,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setIsMobile(window.innerWidth <= MOBILE_BREAKPOINT);
   };
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setModal({ ...modal, open: false });
-  };
+  }, [modal]);
 
   useEffect(() => {
     const { state } = location;
@@ -69,13 +70,24 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
               navigate(`/rekam-medis/${state.modal.data.patient_id}`),
           });
           break;
+
+        case "edit-patient":
+          setModal({
+            open: true,
+            type: "success",
+            title: "Berhasil",
+            message: `Data pasien atas nama <b>${state.modal.data.patient_name}</b> berhasil disimpan.`,
+            primaryAction: "Tutup",
+            onPrimaryActionClick: () => navigate(`/pasien`),
+          });
+          break;
         default:
           break;
       }
     }
 
     window.history.replaceState({}, document.title);
-  }, [location, location.state, navigate]);
+  }, [handleCloseModal, location, location.state, modal, navigate]);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);

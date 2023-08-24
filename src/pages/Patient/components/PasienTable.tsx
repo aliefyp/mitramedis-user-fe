@@ -80,7 +80,7 @@ const PasienTable = ({
                   <Spinner size="lg" className="mx-auto w-full" />
                 </Table.Cell>
               )}
-              {!loading && data.length === 0 && (
+              {!loading && data?.length === 0 && (
                 <Table.Cell colSpan={6}>
                   <EmptyData>Data tidak ditemukan</EmptyData>
                 </Table.Cell>

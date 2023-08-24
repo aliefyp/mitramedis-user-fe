@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import PageHeading from "components/PageHeading";
 import Card from "components/Card";
 import Toggle from "components/Toggle";
-import FormNewborn from "./components/FormNewborn";
+// import FormNewborn from "./components/FormNewborn";
 import FormAdult from "./components/FormAdult";
 import { PatientType } from "types/patient";
-import { useAddPatient, usePatientDetail } from "api/patient";
-import { NEWBORN_PREFIX } from "./constants";
+import { useAddPatient, useEditPatient, usePatientDetail } from "api/patient";
+// import { NEWBORN_PREFIX } from "./constants";
 import { useNavigate, useParams } from "react-router-dom";
 import useToaster from "context/ToasterContext";
 
@@ -23,6 +23,7 @@ const PatientForm = ({ type }: PatientFormProps) => {
   const navigate = useNavigate();
   const { open: openToaster } = useToaster();
   const addPatient = useAddPatient();
+  const editPatient = useEditPatient();
   const { patient_id } = useParams();
 
   const isEdit = type === "edit";
@@ -35,11 +36,19 @@ const PatientForm = ({ type }: PatientFormProps) => {
   const handleSubmit = (values: PatientType) => {
     setCreatedPatient(values);
 
-    addPatient.mutate({
-      ...values,
-      is_baby: Number(isNewborn),
-      name_prefix: Number(isNewborn),
-    });
+    if (isEdit) {
+      editPatient.mutate({
+        ...values,
+        is_baby: Number(isNewborn),
+        name_prefix: Number(isNewborn),
+      });
+    } else {
+      addPatient.mutate({
+        ...values,
+        is_baby: Number(isNewborn),
+        name_prefix: Number(isNewborn),
+      });
+    }
   };
 
   useEffect(() => {
@@ -76,6 +85,38 @@ const PatientForm = ({ type }: PatientFormProps) => {
   ]);
 
   useEffect(() => {
+    if (editPatient.isSuccess) {
+      navigate("/pasien", {
+        state: {
+          modal: {
+            key: "edit-patient",
+            data: {
+              ...createdPatient,
+              ...editPatient.data.data,
+            },
+          },
+        },
+      });
+    }
+
+    if (editPatient.isError) {
+      openToaster({
+        title: "Data pasien gagal disimpan",
+        message: "Silahkan ulangi kembali setelah beberapa saat",
+        variant: "error",
+        autoClose: false,
+      });
+    }
+  }, [
+    createdPatient,
+    editPatient.data?.data,
+    editPatient.isError,
+    editPatient.isSuccess,
+    navigate,
+    openToaster,
+  ]);
+
+  useEffect(() => {
     if (data?.data?.data?.patient) {
       const patientData = data?.data?.data?.patient;
       setNewborn(Boolean(patientData.is_baby));
@@ -104,16 +145,20 @@ const PatientForm = ({ type }: PatientFormProps) => {
         </div>
         {((isEdit && defaultValue) || !isEdit) && (
           <>
-            {isNewborn && (
+            {/* {isNewborn && (
               <FormNewborn
                 namePrefix={NEWBORN_PREFIX}
                 defaultValue={defaultValue}
                 onSubmit={handleSubmit}
               />
-            )}
-            {!isNewborn && (
-              <FormAdult defaultValue={defaultValue} onSubmit={handleSubmit} />
-            )}
+            )} */}
+            {/* {!isNewborn && ( */}
+            <FormAdult
+              isBaby={isNewborn}
+              defaultValue={defaultValue}
+              onSubmit={handleSubmit}
+            />
+            {/* )} */}
           </>
         )}
       </Card>

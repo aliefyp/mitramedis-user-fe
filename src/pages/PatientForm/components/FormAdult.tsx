@@ -1,6 +1,7 @@
+import { Checkbox, Label, Select, TextInput } from "flowbite-react";
 import Button from "components/Button";
-import Input from "components/FormInput/Input";
-import Toggle from "components/Toggle";
+// import Input from "components/FormInput/Input";
+// import Toggle from "components/Toggle";
 import Typography from "components/Typography";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -13,19 +14,18 @@ import {
   OPTIONS_PAYMENT_METHOD,
 } from "../constants";
 import FormSection from "components/FormSection";
-import CheckBox from "components/FormInput/CheckBox";
-import ComboBox from "components/FormInput/ComboBox";
+// import ComboBox from "components/FormInput/ComboBox";
 import AddressForm from "./AddressForm";
 import constructSummaryAdult from "../helpers/constructSummaryAdult";
 import NewPatientSummary from "./NewPatientSummary";
 
 interface FormAdultProps {
+  isBaby: boolean;
   defaultValue?: PatientTypeForm;
   onSubmit: (values: PatientTypeForm) => void;
 }
 
-const FormAdult = ({ defaultValue, onSubmit }: FormAdultProps) => {
-  const [sameAsAddress1, setSameAsAddress1] = useState(false);
+const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [formData, setFormData] = useState<PatientTypeForm | undefined>(
     undefined
@@ -40,10 +40,10 @@ const FormAdult = ({ defaultValue, onSubmit }: FormAdultProps) => {
     formState: { errors },
   } = useForm<PatientTypeForm>({ defaultValues: defaultValue });
 
-  const showOtherPaymentMethod = watch("payment_method") === 3;
+  const showOtherPaymentMethod = Number(watch("payment_method")) === 3;
 
   const submitForm = (val: PatientTypeForm) => {
-    setFormData({ ...val, is_same_domicile: String(Number(sameAsAddress1)) });
+    setFormData({ ...val });
     setShowConfirmation(true);
   };
 
@@ -56,129 +56,163 @@ const FormAdult = ({ defaultValue, onSubmit }: FormAdultProps) => {
     if (!showOtherPaymentMethod) setValue("payment_method_other", "");
   }, [setValue, showOtherPaymentMethod]);
 
-  useEffect(() => {
-    if (defaultValue.is_same_domicile) {
-      setSameAsAddress1(Boolean(Number(defaultValue.is_same_domicile)));
-    }
-  }, [defaultValue.is_same_domicile, setValue]);
-
   return (
     <>
       <form onSubmit={handleSubmit(submitForm)}>
         <FormSection title="Identitas">
           <div className="grid grid-cols-4 gap-6">
             {/* patient_name */}
-            <Input
-              required
-              type="text"
-              label="Nama Lengkap"
-              placeholder="Nama pasien sesuai KTP"
-              error={Boolean(errors?.patient_name)}
-              helper={errors?.patient_name?.message}
-              className="col-span-4"
-              {...register("patient_name", {
-                required: {
-                  value: true,
-                  message: "Wajib diisi",
-                },
-              })}
-            />
+            <div className="col-span-4">
+              <Label htmlFor="patient_name" value="Nama Lengkap" />
+              <TextInput
+                required
+                type="text"
+                addon={isBaby ? "Bayi Ny." : ""}
+                placeholder={
+                  isBaby ? "Nama ibu bayi" : "Nama pasien sesuai KTP"
+                }
+                color={Boolean(errors?.patient_name) ? "error" : "gray"}
+                helperText={errors?.patient_name?.message}
+                {...register("patient_name", {
+                  required: {
+                    value: true,
+                    message: "Wajib diisi",
+                  },
+                })}
+              />
+            </div>
 
             {/* id_card_number */}
-            <Input
-              required
-              type="text"
-              label="NIK"
-              placeholder="16 digit nomor KTP"
-              error={Boolean(errors?.id_card_number)}
-              helper={errors?.id_card_number?.message}
-              className="col-span-4 md:col-span-2"
-              {...register("id_card_number", {
-                required: {
-                  value: true,
-                  message: "Wajib diisi",
-                },
-                pattern: {
-                  value: /[0-9]{16}/,
-                  message: "Format tidak sesuai",
-                },
-              })}
-            />
+            <div className="col-span-4 md:col-span-2">
+              <Label
+                htmlFor="id_card_number"
+                value={isBaby ? "NIK Ibu Kandung" : "NIK"}
+              />
+              <TextInput
+                required
+                type="text"
+                placeholder="16 digit nomor KTP"
+                color={Boolean(errors?.id_card_number) ? "error" : "gray"}
+                helperText={errors?.id_card_number?.message}
+                {...register("id_card_number", {
+                  required: {
+                    value: true,
+                    message: "Wajib diisi",
+                  },
+                  pattern: {
+                    value: /[0-9]{16}/,
+                    message: "Format tidak sesuai",
+                  },
+                })}
+              />
+            </div>
 
-            {/* id_card_number_2 */}
-            <Input
-              type="text"
-              label="Nomor Identitas Lain (Khusus WNA)"
-              placeholder="Nomor PASPOR / KITAS"
-              className="col-span-4 md:col-span-2"
-              {...register("other_id_card_number")}
-            />
+            {/* other_id_card_number */}
+            {!isBaby && (
+              <div className="col-span-4 md:col-span-2">
+                <Label
+                  htmlFor="other_id_card_number"
+                  value="Nomor Identitas Lain (Khusus WNA)"
+                />
+                <TextInput
+                  type="text"
+                  placeholder="Nomor PASPOR / KITAS"
+                  {...register("other_id_card_number")}
+                />
+              </div>
+            )}
 
             {/* mother_name */}
-            <Input
-              required
-              type="text"
-              label="Nama Ibu Kandung"
-              placeholder="Nama ibu kandung sesuai KTP"
-              className="col-span-4"
-              {...register("mother_name")}
-            />
+            {!isBaby && (
+              <div className="col-span-4">
+                <Label htmlFor="mother_name" value="Nama Ibu Kandung" />
+                <TextInput
+                  required
+                  type="text"
+                  placeholder="Nama ibu kandung sesuai KTP"
+                  {...register("mother_name")}
+                />
+              </div>
+            )}
 
             {/* birthplace */}
-            <Input
-              required
-              type="text"
-              label="Tempat Lahir"
-              placeholder="Nama Kota/Kabupaten"
-              error={Boolean(errors?.birthplace)}
-              helper={errors?.birthplace?.message}
-              className="col-span-4 md:col-span-2"
-              {...register("birthplace", {
-                required: {
-                  value: true,
-                  message: "Wajib diisi",
-                },
-              })}
-            />
+            {!isBaby && (
+              <div className="col-span-4 md:col-span-2">
+                <Label htmlFor="birthplace" value="Tempat Lahir" />
+                <TextInput
+                  required
+                  type="text"
+                  placeholder="Nama Kota/Kabupaten"
+                  color={Boolean(errors?.birthplace) ? "error" : "gray"}
+                  helperText={errors?.birthplace?.message}
+                  {...register("birthplace", {
+                    required: {
+                      value: true,
+                      message: "Wajib diisi",
+                    },
+                  })}
+                />
+              </div>
+            )}
 
             {/* birthdate */}
-            <Input
-              required
-              type="date"
-              label="Tanggal Lahir"
-              placeholder="DD/MM/YYYY"
-              error={Boolean(errors?.birthdate)}
-              helper={errors?.birthdate?.message}
-              className="col-span-4 md:col-span-2"
-              {...register("birthdate", {
-                required: {
-                  value: true,
-                  message: "Wajib diisi",
-                },
-              })}
-            />
+            <div className="col-span-4 md:col-span-1">
+              <Label htmlFor="birthdate" value="Tanggal Lahir" />
+              <TextInput
+                required
+                type="date"
+                placeholder="DD/MM/YYYY"
+                color={Boolean(errors?.birthdate) ? "error" : "gray"}
+                helperText={errors?.birthdate?.message}
+                {...register("birthdate", {
+                  required: {
+                    value: true,
+                    message: "Wajib diisi",
+                  },
+                })}
+              />
+            </div>
+
+            {/* birth_time */}
+            {isBaby && (
+              <div className="col-span-4 md:col-span-1">
+                <Label htmlFor="birth_time" value="Jam Lahir" />
+                <TextInput
+                  required
+                  type="time"
+                  placeholder="00:00"
+                  color={Boolean(errors?.birth_time) ? "error" : "gray"}
+                  helperText={errors?.birth_time?.message}
+                  {...register("birth_time", {
+                    required: {
+                      value: true,
+                      message: "Wajib diisi",
+                    },
+                  })}
+                />
+              </div>
+            )}
 
             {/* gender */}
-            <ComboBox
-              required
-              id="gender"
-              label="Jenis Kelamin"
-              placeholder="Pilih jenis kelamin"
-              options={OPTIONS_GENDER}
-              error={Boolean(errors?.gender)}
-              helper={errors?.gender?.message}
-              className="col-span-4 md:col-span-2"
-              onValueChange={(val: { key: number; label: string }) => {
-                setValue("gender", val.key);
-                setValue("gender_string", val.label);
-              }}
-              {...register("gender", {
-                required: {
-                  value: true,
-                  message: "Wajib diisi",
-                },
-              })}
-            />
+            <div className="col-span-4 md:col-span-2">
+              <Label htmlFor="gender" value="Jenis Kelamin" />
+              <Select
+                required
+                placeholder="Pilih jenis kelamin"
+                color={Boolean(errors?.gender) ? "error" : "gray"}
+                helperText={errors?.gender?.message}
+                {...register("gender", {
+                  required: {
+                    value: true,
+                    message: "Wajib diisi",
+                  },
+                })}
+              >
+                {OPTIONS_GENDER.map((item) => (
+                  <option value={item.key}>{item.label}</option>
+                ))}
+              </Select>
+            </div>
           </div>
         </FormSection>
 
@@ -193,12 +227,13 @@ const FormAdult = ({ defaultValue, onSubmit }: FormAdultProps) => {
               errors={errors}
             />
 
-            <div className="col-span-4">
-              <Toggle value={sameAsAddress1} onSwitch={setSameAsAddress1}>
+            <div className="col-span-4 flex items-start gap-2">
+              <Checkbox {...register("is_same_domicile")} />
+              <Label htmlFor="is_same_domicile">
                 Alamat domisili sama dengan alamat pada kartu identitas
-              </Toggle>
+              </Label>
             </div>
-            {!sameAsAddress1 && (
+            {Boolean(!watch("is_same_domicile")) && (
               <AddressForm
                 isMainAddress={false}
                 watch={watch}
@@ -213,124 +248,149 @@ const FormAdult = ({ defaultValue, onSubmit }: FormAdultProps) => {
 
         <FormSection title="Kontak">
           <div className="grid grid-cols-4 gap-6">
-            <Input
-              required
-              type="text"
-              label="No. HP"
-              placeholder="08123xxxxxxx"
-              error={Boolean(errors?.phone_number)}
-              helper={errors?.phone_number?.message}
-              className="col-span-4 md:col-span-2"
-              {...register("phone_number", {
-                required: {
-                  value: true,
-                  message: "Wajib diisi",
-                },
-                pattern: {
-                  value: /[0-9]/,
-                  message: "Format tidak sesuai",
-                },
-              })}
-            />
-            <Input
-              type="text"
-              label="No. Telepon Rumah"
-              placeholder="08123xxxxxxx"
-              className="col-span-4 md:col-span-2"
-              {...register("other_phone_number", {
-                pattern: {
-                  value: /[0-9]/,
-                  message: "Format tidak sesuai",
-                },
-              })}
-            />
+            <div className="col-span-4 md:col-span-2">
+              <Label htmlFor="phone_number" value="No. HP" />
+              <TextInput
+                required={!isBaby}
+                type="text"
+                placeholder="08123xxxxxxx"
+                color={Boolean(errors?.phone_number) ? "error" : "gray"}
+                helperText={errors?.phone_number?.message}
+                {...register("phone_number", {
+                  required: {
+                    value: !isBaby,
+                    message: "Wajib diisi",
+                  },
+                  pattern: {
+                    value: /[0-9]/,
+                    message: "Format tidak sesuai",
+                  },
+                })}
+              />
+            </div>
+
+            <div className="col-span-4 md:col-span-2">
+              <Label htmlFor="other_phone_number" value="No. Telepon Rumah" />
+              <TextInput
+                type="text"
+                placeholder="08123xxxxxxx"
+                {...register("other_phone_number", {
+                  pattern: {
+                    value: /[0-9]/,
+                    message: "Format tidak sesuai",
+                  },
+                })}
+              />
+            </div>
           </div>
         </FormSection>
 
         <FormSection title="Lain-lain">
           <div className="grid grid-cols-3 gap-6">
-            <ComboBox
-              label="Pendidikan Terakhir"
-              placeholder="Pilih pendidikan terakhir"
-              options={OPTIONS_EDUCATION}
-              className="col-span-3 md:col-span-1"
-              onValueChange={(val: { key: number; label: string }) => {
-                setValue("education", val.key);
-                setValue("education_string", val.label);
-              }}
-              {...register("education")}
-            />
+            {!isBaby && (
+              <div className="col-span-3 md:col-span-1">
+                <Label htmlFor="education" value="Pendidikan Terakhir" />
+                <Select
+                  placeholder="Pilih pendidikan terakhir"
+                  color={Boolean(errors?.education) ? "error" : "gray"}
+                  helperText={errors?.education?.message}
+                  {...register("education")}
+                >
+                  {OPTIONS_EDUCATION.map((item) => (
+                    <option value={item.key}>{item.label}</option>
+                  ))}
+                </Select>
+              </div>
+            )}
 
-            <ComboBox
-              label="Pekerjaan"
-              placeholder="Pekerjaan saat ini"
-              options={OPTIONS_OCCUPATION}
-              className="col-span-3 md:col-span-1"
-              onValueChange={(val: { key: number; label: string }) => {
-                setValue("job", val.label);
-              }}
-              {...register("job")}
-            />
+            {!isBaby && (
+              <div className="col-span-3 md:col-span-1">
+                <Label htmlFor="job" value="Pekerjaan" />
+                <Select
+                  placeholder="Pekerjaan saat ini"
+                  color={Boolean(errors?.job) ? "error" : "gray"}
+                  helperText={errors?.job?.message}
+                  {...register("job")}
+                >
+                  {OPTIONS_OCCUPATION.map((item) => (
+                    <option value={item.key}>{item.label}</option>
+                  ))}
+                </Select>
+              </div>
+            )}
 
-            <ComboBox
-              required
-              id="marital"
-              label="Status pernikahan"
-              placeholder="Status pernikahan"
-              options={OPTIONS_MARITAL_STATUS}
-              error={Boolean(errors?.marital)}
-              helper={errors?.marital?.message}
-              className="col-span-3 md:col-span-1"
-              onValueChange={(val: { key: number; label: string }) => {
-                setValue("marital", val.key);
-                setValue("marital_string", val.label);
-              }}
-              {...register("marital", {
-                required: {
-                  value: true,
-                  message: "Wajib diisi",
-                },
-              })}
-            />
-            <ComboBox
-              label="Metode Pembayaran"
-              placeholder="Pilih metode pembayaran"
-              className="col-span-3 md:col-span-2"
-              onValueChange={(val: { key: number; label: string }) => {
-                setValue("payment_method", val.key);
-                setValue("payment_method_string", val.label);
-              }}
-              options={OPTIONS_PAYMENT_METHOD}
-              {...register("payment_method")}
-            />
+            {!isBaby && (
+              <div className="col-span-3 md:col-span-1">
+                <Label htmlFor="marital" value="Status pernikahan" />
+                <Select
+                  required
+                  placeholder="Status pernikahan"
+                  color={Boolean(errors?.marital) ? "error" : "gray"}
+                  helperText={errors?.marital?.message}
+                  {...register("marital", {
+                    required: {
+                      value: true,
+                      message: "Wajib diisi",
+                    },
+                  })}
+                >
+                  {OPTIONS_MARITAL_STATUS.map((item) => (
+                    <option value={item.key}>{item.label}</option>
+                  ))}
+                </Select>
+              </div>
+            )}
+
+            <div className="col-span-3 md:col-span-2">
+              <Label htmlFor="payment_method" value="Metode Pembayaran" />
+              <Select
+                placeholder="Pilih metode pembayaran"
+                color={Boolean(errors?.payment_method) ? "error" : "gray"}
+                helperText={errors?.payment_method?.message}
+                {...register("payment_method")}
+              >
+                {OPTIONS_PAYMENT_METHOD.map((item) => (
+                  <option value={item.key}>{item.label}</option>
+                ))}
+              </Select>
+            </div>
+
             {showOtherPaymentMethod && (
-              <Input
-                type="text"
-                label="Asuransi Lainnya"
-                placeholder="Tulis jenis asuransi"
-                className="col-span-3 md:col-span-1"
-                error={Boolean(errors?.payment_method_other)}
-                helper={errors?.payment_method_other?.message}
-                {...register("payment_method_other", {
-                  required: {
-                    value: showOtherPaymentMethod,
-                    message: "Wajib diisi",
-                  },
-                })}
-              />
+              <div className="col-span-3 md:col-span-1">
+                <Label
+                  htmlFor="payment_method_other"
+                  value="Asuransi Lainnya"
+                />
+                <TextInput
+                  type="text"
+                  placeholder="Tulis jenis asuransi"
+                  color={
+                    Boolean(errors?.payment_method_other) ? "error" : "gray"
+                  }
+                  helperText={errors?.payment_method_other?.message}
+                  {...register("payment_method_other", {
+                    required: {
+                      value: showOtherPaymentMethod,
+                      message: "Wajib diisi",
+                    },
+                  })}
+                />
+              </div>
             )}
           </div>
         </FormSection>
 
         <div className="col-span-2 flex items-start gap-2 py-6">
-          <CheckBox {...register("general_consent")} />
-          <Typography>
-            Pasien telah diberikan penjelasan mengenai <i>General Consent</i>{" "}
-            atau Persetujuan Umum.
-            <Typography link as="span" className="cursor-pointer ">
-              Klik disini untuk cetak <i>General Consent</i>
+          <Checkbox {...register("general_consent")} />
+          <Label htmlFor="general_consent">
+            <Typography>
+              Pasien telah diberikan penjelasan mengenai <i>General Consent</i>{" "}
+              atau Persetujuan Umum.
+              <Typography link as="span" className="cursor-pointer ">
+                Klik disini untuk cetak <i>General Consent</i>
+              </Typography>
             </Typography>
-          </Typography>
+          </Label>
         </div>
         <Button type="submit" color="primary" className="w-full">
           Simpan
