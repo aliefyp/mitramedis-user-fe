@@ -1,7 +1,5 @@
 import { Checkbox, Label, Select, TextInput } from "flowbite-react";
 import Button from "components/Button";
-// import Input from "components/FormInput/Input";
-// import Toggle from "components/Toggle";
 import Typography from "components/Typography";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -14,10 +12,9 @@ import {
   OPTIONS_PAYMENT_METHOD,
 } from "../constants";
 import FormSection from "components/FormSection";
-// import ComboBox from "components/FormInput/ComboBox";
 import AddressForm from "./AddressForm";
-import constructSummaryAdult from "../helpers/constructSummaryAdult";
-import NewPatientSummary from "./NewPatientSummary";
+import constructSummaryAdult from "../helpers/constructSummary";
+import PatientSummary from "./PatientSummary";
 
 interface FormAdultProps {
   isBaby: boolean;
@@ -40,6 +37,11 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
     formState: { errors },
   } = useForm<PatientTypeForm>({ defaultValues: defaultValue });
 
+  const watchGender = watch("gender");
+  const watchEducation = watch("education");
+  const watchMarital = watch("marital");
+  const watchPaymentMethod = watch("payment_method");
+
   const showOtherPaymentMethod = Number(watch("payment_method")) === 3;
 
   const submitForm = (val: PatientTypeForm) => {
@@ -56,9 +58,37 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
     if (!showOtherPaymentMethod) setValue("payment_method_other", "");
   }, [setValue, showOtherPaymentMethod]);
 
+  useEffect(() => {
+    if (watchGender) {
+      setValue("gender_string", OPTIONS_GENDER.find((i) => i.key).label);
+    }
+    if (watchEducation) {
+      setValue("education_string", OPTIONS_EDUCATION.find((i) => i.key).label);
+    }
+    if (watchMarital) {
+      setValue(
+        "marital_string",
+        OPTIONS_MARITAL_STATUS.find((i) => i.key).label
+      );
+    }
+    if (watchPaymentMethod) {
+      setValue(
+        "payment_method_string",
+        OPTIONS_PAYMENT_METHOD.find((i) => i.key).label
+      );
+    }
+  }, [
+    setValue,
+    watch,
+    watchEducation,
+    watchGender,
+    watchMarital,
+    watchPaymentMethod,
+  ]);
+
   return (
     <>
-      <form onSubmit={handleSubmit(submitForm)}>
+      <form noValidate onSubmit={handleSubmit(submitForm)}>
         <FormSection title="Identitas">
           <div className="grid grid-cols-4 gap-6">
             {/* patient_name */}
@@ -71,7 +101,7 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
                 placeholder={
                   isBaby ? "Nama ibu bayi" : "Nama pasien sesuai KTP"
                 }
-                color={Boolean(errors?.patient_name) ? "error" : "gray"}
+                color={Boolean(errors?.patient_name) ? "failure" : "gray"}
                 helperText={errors?.patient_name?.message}
                 {...register("patient_name", {
                   required: {
@@ -92,7 +122,7 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
                 required
                 type="text"
                 placeholder="16 digit nomor KTP"
-                color={Boolean(errors?.id_card_number) ? "error" : "gray"}
+                color={Boolean(errors?.id_card_number) ? "failure" : "gray"}
                 helperText={errors?.id_card_number?.message}
                 {...register("id_card_number", {
                   required: {
@@ -110,10 +140,16 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
             {/* other_id_card_number */}
             {!isBaby && (
               <div className="col-span-4 md:col-span-2">
-                <Label
-                  htmlFor="other_id_card_number"
-                  value="Nomor Identitas Lain (Khusus WNA)"
-                />
+                <div className="mb-1 flex gap-1">
+                  <Label
+                    htmlFor="other_id_card_number"
+                    value="Nomor Identitas Lain (Khusus WNA)"
+                  />
+                  <Typography small className="italic !text-gray-500">
+                    (Opsional)
+                  </Typography>
+                </div>
+
                 <TextInput
                   type="text"
                   placeholder="Nomor PASPOR / KITAS"
@@ -125,7 +161,12 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
             {/* mother_name */}
             {!isBaby && (
               <div className="col-span-4">
-                <Label htmlFor="mother_name" value="Nama Ibu Kandung" />
+                <div className="mb-1 flex gap-1">
+                  <Label htmlFor="mother_name" value="Nama Ibu Kandung" />
+                  <Typography small className="italic !text-gray-500">
+                    (Opsional)
+                  </Typography>
+                </div>
                 <TextInput
                   required
                   type="text"
@@ -143,7 +184,7 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
                   required
                   type="text"
                   placeholder="Nama Kota/Kabupaten"
-                  color={Boolean(errors?.birthplace) ? "error" : "gray"}
+                  color={Boolean(errors?.birthplace) ? "failure" : "gray"}
                   helperText={errors?.birthplace?.message}
                   {...register("birthplace", {
                     required: {
@@ -162,7 +203,7 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
                 required
                 type="date"
                 placeholder="DD/MM/YYYY"
-                color={Boolean(errors?.birthdate) ? "error" : "gray"}
+                color={Boolean(errors?.birthdate) ? "failure" : "gray"}
                 helperText={errors?.birthdate?.message}
                 {...register("birthdate", {
                   required: {
@@ -181,7 +222,7 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
                   required
                   type="time"
                   placeholder="00:00"
-                  color={Boolean(errors?.birth_time) ? "error" : "gray"}
+                  color={Boolean(errors?.birth_time) ? "failure" : "gray"}
                   helperText={errors?.birth_time?.message}
                   {...register("birth_time", {
                     required: {
@@ -197,9 +238,9 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
             <div className="col-span-4 md:col-span-2">
               <Label htmlFor="gender" value="Jenis Kelamin" />
               <Select
+                defaultValue=""
                 required
-                placeholder="Pilih jenis kelamin"
-                color={Boolean(errors?.gender) ? "error" : "gray"}
+                color={Boolean(errors?.gender) ? "failure" : "gray"}
                 helperText={errors?.gender?.message}
                 {...register("gender", {
                   required: {
@@ -208,8 +249,13 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
                   },
                 })}
               >
+                <option value="" disabled>
+                  Pilih jenis kelamin
+                </option>
                 {OPTIONS_GENDER.map((item) => (
-                  <option value={item.key}>{item.label}</option>
+                  <option key={item.key} value={item.key}>
+                    {item.label}
+                  </option>
                 ))}
               </Select>
             </div>
@@ -249,12 +295,19 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
         <FormSection title="Kontak">
           <div className="grid grid-cols-4 gap-6">
             <div className="col-span-4 md:col-span-2">
-              <Label htmlFor="phone_number" value="No. HP" />
+              <div className="mb-1 flex gap-1">
+                <Label htmlFor="phone_number" value="No. HP" />
+                {isBaby && (
+                  <Typography small className="italic !text-gray-500">
+                    (Opsional)
+                  </Typography>
+                )}
+              </div>
               <TextInput
                 required={!isBaby}
                 type="text"
                 placeholder="08123xxxxxxx"
-                color={Boolean(errors?.phone_number) ? "error" : "gray"}
+                color={Boolean(errors?.phone_number) ? "failure" : "gray"}
                 helperText={errors?.phone_number?.message}
                 {...register("phone_number", {
                   required: {
@@ -270,7 +323,12 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
             </div>
 
             <div className="col-span-4 md:col-span-2">
-              <Label htmlFor="other_phone_number" value="No. Telepon Rumah" />
+              <div className="mb-1 flex gap-1">
+                <Label htmlFor="other_phone_number" value="No. Telepon Rumah" />
+                <Typography small className="italic !text-gray-500">
+                  (Opsional)
+                </Typography>
+              </div>
               <TextInput
                 type="text"
                 placeholder="08123xxxxxxx"
@@ -289,15 +347,25 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
           <div className="grid grid-cols-3 gap-6">
             {!isBaby && (
               <div className="col-span-3 md:col-span-1">
-                <Label htmlFor="education" value="Pendidikan Terakhir" />
+                <div className="mb-1 flex gap-1">
+                  <Label htmlFor="education" value="Pendidikan Terakhir" />
+                  <Typography small className="italic !text-gray-500">
+                    (Opsional)
+                  </Typography>
+                </div>
                 <Select
-                  placeholder="Pilih pendidikan terakhir"
-                  color={Boolean(errors?.education) ? "error" : "gray"}
+                  defaultValue=""
+                  color={Boolean(errors?.education) ? "failure" : "gray"}
                   helperText={errors?.education?.message}
                   {...register("education")}
                 >
+                  <option value="" disabled>
+                    Pilih pendidikan terakhir
+                  </option>
                   {OPTIONS_EDUCATION.map((item) => (
-                    <option value={item.key}>{item.label}</option>
+                    <option key={item.key} value={item.key}>
+                      {item.label}
+                    </option>
                   ))}
                 </Select>
               </div>
@@ -305,15 +373,25 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
 
             {!isBaby && (
               <div className="col-span-3 md:col-span-1">
-                <Label htmlFor="job" value="Pekerjaan" />
+                <div className="mb-1 flex gap-1">
+                  <Label htmlFor="job" value="Pekerjaan" />
+                  <Typography small className="italic !text-gray-500">
+                    (Opsional)
+                  </Typography>
+                </div>
                 <Select
-                  placeholder="Pekerjaan saat ini"
-                  color={Boolean(errors?.job) ? "error" : "gray"}
+                  defaultValue=""
+                  color={Boolean(errors?.job) ? "failure" : "gray"}
                   helperText={errors?.job?.message}
                   {...register("job")}
                 >
+                  <option value="" disabled>
+                    Pilih pekerjaan saat ini
+                  </option>
                   {OPTIONS_OCCUPATION.map((item) => (
-                    <option value={item.key}>{item.label}</option>
+                    <option key={item.key} value={item.label}>
+                      {item.label}
+                    </option>
                   ))}
                 </Select>
               </div>
@@ -323,9 +401,9 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
               <div className="col-span-3 md:col-span-1">
                 <Label htmlFor="marital" value="Status pernikahan" />
                 <Select
+                  defaultValue=""
                   required
-                  placeholder="Status pernikahan"
-                  color={Boolean(errors?.marital) ? "error" : "gray"}
+                  color={Boolean(errors?.marital) ? "failure" : "gray"}
                   helperText={errors?.marital?.message}
                   {...register("marital", {
                     required: {
@@ -334,23 +412,38 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
                     },
                   })}
                 >
+                  <option value="" disabled>
+                    Pilih status pernikahan
+                  </option>
                   {OPTIONS_MARITAL_STATUS.map((item) => (
-                    <option value={item.key}>{item.label}</option>
+                    <option key={item.key} value={item.key}>
+                      {item.label}
+                    </option>
                   ))}
                 </Select>
               </div>
             )}
 
             <div className="col-span-3 md:col-span-2">
-              <Label htmlFor="payment_method" value="Metode Pembayaran" />
+              <div className="mb-1 flex gap-1">
+                <Label htmlFor="payment_method" value="Metode Pembayaran" />
+                <Typography small className="italic !text-gray-500">
+                  (Opsional)
+                </Typography>
+              </div>
               <Select
-                placeholder="Pilih metode pembayaran"
-                color={Boolean(errors?.payment_method) ? "error" : "gray"}
+                defaultValue=""
+                color={Boolean(errors?.payment_method) ? "failure" : "gray"}
                 helperText={errors?.payment_method?.message}
                 {...register("payment_method")}
               >
+                <option value="" disabled>
+                  Pilih metode pembayaran
+                </option>
                 {OPTIONS_PAYMENT_METHOD.map((item) => (
-                  <option value={item.key}>{item.label}</option>
+                  <option key={item.key} value={item.key}>
+                    {item.label}
+                  </option>
                 ))}
               </Select>
             </div>
@@ -362,10 +455,11 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
                   value="Asuransi Lainnya"
                 />
                 <TextInput
+                  required={showOtherPaymentMethod}
                   type="text"
                   placeholder="Tulis jenis asuransi"
                   color={
-                    Boolean(errors?.payment_method_other) ? "error" : "gray"
+                    Boolean(errors?.payment_method_other) ? "failure" : "gray"
                   }
                   helperText={errors?.payment_method_other?.message}
                   {...register("payment_method_other", {
@@ -381,7 +475,14 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
         </FormSection>
 
         <div className="col-span-2 flex items-start gap-2 py-6">
-          <Checkbox {...register("general_consent")} />
+          <Checkbox
+            {...register("general_consent", {
+              required: {
+                value: true,
+                message: "Wajib diisi",
+              },
+            })}
+          />
           <Label htmlFor="general_consent">
             <Typography>
               Pasien telah diberikan penjelasan mengenai <i>General Consent</i>{" "}
@@ -397,8 +498,8 @@ const FormAdult = ({ isBaby, defaultValue, onSubmit }: FormAdultProps) => {
         </Button>
       </form>
 
-      <NewPatientSummary
-        data={constructSummaryAdult({ data: formData })}
+      <PatientSummary
+        data={constructSummaryAdult({ isBaby, data: formData })}
         open={showConfirmation}
         onClose={() => setShowConfirmation(false)}
         onContinue={handleConfirm}

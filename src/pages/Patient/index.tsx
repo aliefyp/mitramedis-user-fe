@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAllPatient, useDeletePatient } from "api/patient";
 import PageHeading from "components/PageHeading";
 import PasienFilter from "./components/PasienFilter";
@@ -10,7 +10,18 @@ import { TbPlus } from "react-icons/tb";
 const PatientPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { data, isFetching, setPage, refetch } = useAllPatient();
+
+  const [page, setPage] = useState(1);
+  const [perPage] = useState(10);
+
+  const filter = Object.fromEntries(new URLSearchParams(location.search));
+  const query = new URLSearchParams({
+    page: String(page),
+    per_page: String(perPage),
+    ...filter,
+  }).toString();
+
+  const { data, isFetching, refetch } = useAllPatient(query);
   const deletePatient = useDeletePatient();
 
   const handleEditPatient = (id: string) => {

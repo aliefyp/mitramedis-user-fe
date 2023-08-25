@@ -8,7 +8,7 @@ import Card from "components/Card";
 import CardHeader from "components/CardHeader";
 import CardBody from "components/CardBody";
 import StatsTopDisease from "./components/StatsTopDisease";
-import SearchPasien from "components/SearchPasien";
+import SearchPasien from "components/organism/SearchPasien";
 import ChartIncome from "./components/ChartIncome";
 
 // const SUMMARY_CARD = [
