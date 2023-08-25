@@ -3,6 +3,9 @@ import Typography from "components/Typography";
 import Card from "components/Card";
 import { useEffect, useState } from "react";
 import Button from "components/Button";
+import ModalHeader from "components/ModalHeader";
+import ModalBody from "components/ModalBody";
+import ModalFooter from "components/ModalFooter";
 
 const DATA_ORGAN = [
   { key: "note_skin", label: "Kulit" },
@@ -70,16 +73,12 @@ const SearchPasien = ({
 
   return (
     <Modal open={open} onClose={onClose} className="md:max-w-2xl">
-      <div className="space-y-8 px-8 py-8">
-        <div>
-          <Typography as="h1" className="text-2xl font-bold">
-            Pilih Bagian Tubuh
-          </Typography>
-          <Typography>
-            Pilih bagian tubuh mana saja yang ingin diberi catatan
-          </Typography>
-        </div>
-        <div className="grid grid-cols-3 gap-4 md:grid-cols-6">
+      <ModalHeader>Pilih Bagian Tubuh</ModalHeader>
+      <ModalBody>
+        <Typography className="!text-gray-500">
+          Pilih bagian tubuh mana saja yang ingin diberi catatan
+        </Typography>
+        <div className="my-8 grid grid-cols-3 gap-4 md:grid-cols-6">
           {DATA_ORGAN.map((item) => {
             const isDisabled =
               defaultSelected.findIndex((i) => i.label === item.label) > -1;
@@ -111,25 +110,25 @@ const SearchPasien = ({
             );
           })}
         </div>
-        <div className="space-y-2">
-          <Button
-            className="w-full"
-            type="button"
-            color="secondary"
-            onClick={onClose}
-          >
-            Batal
-          </Button>
-          <Button
-            className="w-full"
-            type="button"
-            color="primary"
-            onClick={() => onSubmit([...defaultSelected, ...selected])}
-          >
-            Tambahkan
-          </Button>
-        </div>
-      </div>
+      </ModalBody>
+      <ModalFooter>
+        <Button
+          className="w-full"
+          type="button"
+          color="secondary"
+          onClick={onClose}
+        >
+          Batal
+        </Button>
+        <Button
+          className="w-full"
+          type="button"
+          color="primary"
+          onClick={() => onSubmit([...defaultSelected, ...selected])}
+        >
+          Tambahkan
+        </Button>
+      </ModalFooter>
     </Modal>
   );
 };

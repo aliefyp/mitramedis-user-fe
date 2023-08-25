@@ -35,6 +35,7 @@ export type PhysicalConditionNotesType = Record<PhysicalOrgans, string>;
 export interface FormAnamnesisType {
   main_complaint: string;
   medical_history_recent: string;
+  has_medical_history_past: boolean;
   medical_history_past: string;
   has_allergy_history: boolean;
   note_allergy_history: string;

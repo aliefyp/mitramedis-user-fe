@@ -20,12 +20,19 @@ import {
   DEFAULT_STEP_6,
 } from "./constants";
 import ConfirmationModal from "./components/ConfirmationModal";
+import { useParams } from "react-router-dom";
+import { usePatientDetail } from "api/patient";
 
 interface RekamMedisFormProps {
   type: "new" | "edit";
 }
 
 const MedicalRecordForm = ({ type }: RekamMedisFormProps) => {
+  const { patient_id } = useParams();
+  const { data: patientData, isFetching } = usePatientDetail({
+    patient_id,
+  });
+
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [formValues, setFormValues] = useState({
@@ -156,7 +163,10 @@ const MedicalRecordForm = ({ type }: RekamMedisFormProps) => {
             </Card>
           </div>
           <div className="order-1 w-full shrink-0 md:order-2 md:w-[240px] xl:w-[320px]">
-            <CardPatientSummary />
+            <CardPatientSummary
+              data={patientData?.data?.data?.patient}
+              loading={isFetching}
+            />
           </div>
         </div>
         <div

@@ -26,8 +26,13 @@ const customTheme: CustomFlowbiteTheme = {
     },
   },
   textInput: {
+    addon:
+      "inline-flex order-2 items-center justify-center rounded-r-md font-bold border border-l-0 border-gray-300 bg-gray-100 min-w-[80px] px-3 text-sm text-gray-600 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400",
     field: {
       input: {
+        withAddon: {
+          on: "rounded-l-md",
+        },
         withShadow: {
           on: "true",
         },

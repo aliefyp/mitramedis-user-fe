@@ -1,4 +1,3 @@
-import moment from "moment";
 import { Pagination, Spinner, Table, Tooltip } from "flowbite-react";
 import {
   FaBookMedical,
@@ -13,6 +12,7 @@ import { PatientTypeData } from "types/patient";
 import ModalConfirmation from "components/organism/ModalConfirmation";
 import { useState } from "react";
 import Typography from "components/Typography";
+import getAge from "helpers/getAge";
 
 const PATIENT_TABLE_ROW = [
   "No. Rekam Medis",
@@ -87,7 +87,6 @@ const PasienTable = ({
               )}
               {!loading &&
                 data?.map((item, index) => {
-                  const age = moment.duration(moment().diff(item.birthdate));
                   const displayedAddress = `RT${item.rt}/RW${item.rt}, ${item.village_name}, ${item.district_name}`;
 
                   return (
@@ -102,7 +101,9 @@ const PasienTable = ({
                         {item.is_baby && "Bayi Ny. "}
                         {item.patient_name}
                       </Table.Cell>
-                      <Table.Cell className="min-w-[80px]">{`${age.years()}th ${age.months()}bln ${age.days()}hr`}</Table.Cell>
+                      <Table.Cell className="min-w-[80px]">
+                        {getAge(item.birthdate)}
+                      </Table.Cell>
                       <Table.Cell>{item.id_card_number}</Table.Cell>
                       <Table.Cell>{displayedAddress}</Table.Cell>
                       <Table.Cell>

@@ -62,3 +62,19 @@ export const DEFAULT_STEP_5 = {
 export const DEFAULT_STEP_6 = {
   status: '',
 } as FormStatusType;
+
+export const OPTIONS_SENSES_LEVEL = [
+  { key: 1, label: "Sadar Baik / Alert" },
+  { key: 2, label: "Verbal" },
+  { key: 3, label: "Pain" },
+  { key: 4, label: "Unresponsive" },
+  { key: 5, label: "Apatis" },
+]
+
+export const OPTIONS_PHYSCOLOGYCAL_STATUS = [
+  { key: "Tidak ada kelainan", label: "Tidak ada kelainan" },
+  { key: "Cemas", label: "Cemas" },
+  { key: "Marah", label: "Marah" },
+  { key: "Sedih", label: "Sedih" },
+  { key: "Lain-lain", label: "Lain-lain" },
+]
