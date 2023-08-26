@@ -1,3 +1,4 @@
+import moment from "moment";
 import { FormActionType, FormAnamnesisType, FormPhysicalInspectionType, FormPrescriptionType, FormStatusType } from "./interface";
 
 export const MEDICAL_FORM_STEPS = [
@@ -40,8 +41,8 @@ export const DEFAULT_STEP_4 = {
   kie: '',
   consent: false,
   officer_name: '',
-  created_date: '',
-  created_time: '',
+  created_date: moment().format('YYYY-MM-DD'),
+  created_time: moment().format('HH:mm'),
   with_action: false,
   actions: [],
   bmhp: [],

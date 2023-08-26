@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import PageHeading from "components/PageHeading";
 import MedicalRecordFilter from "./components/MedicalRecordFilter";
 import MedicalRecordTable from "./components/MedicalRecordTable";
-// import ModalMedicalRecordPreview from "./components/ModalMedicalRecordPreview";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAllMedicalRecord, useDeleteMedicalRecord } from "api/medicalRecord";
 import Button from "components/Button";

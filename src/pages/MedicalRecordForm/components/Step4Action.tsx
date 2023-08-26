@@ -1,115 +1,120 @@
-import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import Typography from "components/Typography";
-import TextArea from "components/FormInput/TextArea";
-import Input from "components/FormInput/Input";
-import CheckBox from "components/FormInput/CheckBox";
+import Card from "components/Card";
 
 import CardAction from "./CardAction";
 import CardBMHP from "./CardBMHP";
-import Toggle from "components/Toggle";
-import Label from "components/FormInput/Label";
-import Card from "components/Card";
 import { FormActionType } from "../interface";
+import {
+  Checkbox,
+  Label,
+  Textarea,
+  TextInput,
+  ToggleSwitch,
+} from "flowbite-react";
 
 const Step4Action = ({ show, defaultValues, navigation, onSubmit }) => {
-  const [actions, setActions] = useState([]);
-  const [bmhp, setBmhp] = useState([]);
-  const [showKIE, setShowKIE] = useState(false);
-  const [showAction, setShowAction] = useState(false);
-  const { register, handleSubmit } = useForm<FormActionType>({ defaultValues });
+  const {
+    register,
+    watch,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<FormActionType>({
+    defaultValues,
+  });
 
-  const handleActionChange = (index, key, value) => {
-    setActions(
-      actions.map((item, i) => {
-        if (i !== index) return item;
-        return {
-          ...item,
-          [key]: value,
-        };
-      })
-    );
-  };
+  const {
+    fields: fieldsActions,
+    append: appendActions,
+    remove: removeActions,
+  } = useFieldArray({
+    control,
+    name: "actions",
+  });
 
-  const handleBmhpChange = (index, key, value) => {
-    setBmhp(
-      bmhp.map((item, i) => {
-        if (i !== index) return item;
-        return {
-          ...item,
-          [key]: value,
-        };
-      })
-    );
-  };
+  const {
+    fields: fieldsBmhp,
+    append: appendBmhp,
+    remove: removeBmhp,
+  } = useFieldArray({
+    control,
+    name: "bmhp",
+  });
 
-  const handleAddAction = () => {
-    setActions([...actions, { name: "", quantity: 1 }]);
-  };
-
-  const handleAddBmhp = () => {
-    setBmhp([...bmhp, { name: "", quantity: 1 }]);
-  };
-
-  const handleDeleteAction = (index) => {
-    setActions(actions.filter((_, i) => i !== index));
-  };
-
-  const handleDeleteBmhp = (index) => {
-    setBmhp(bmhp.filter((_, i) => i !== index));
-  };
+  const watchWithKie = watch("with_kie");
+  const watchAction = watch("with_action");
 
   const submitForm = (val: FormActionType) => {
     console.log(val);
-    onSubmit({ ...val, actions, bmhp });
+    // onSubmit({ ...val, actions, bmhp });
   };
 
   if (!show) return null;
 
   return (
-    <form onSubmit={handleSubmit(submitForm)}>
+    <form noValidate onSubmit={handleSubmit(submitForm)}>
       <div className="grid gap-6 p-6">
         <div className="grid gap-2">
-          <Toggle
-            value={showKIE}
-            onSwitch={setShowKIE}
-            {...register("with_kie")}
-          >
-            <Label>Ada KIE (Komunikasi, Informasi, Edukasi)</Label>
-          </Toggle>
-          {showKIE && (
-            <TextArea
+          <Controller
+            control={control}
+            name="with_kie"
+            render={({ field: { onChange, value } }) => (
+              <ToggleSwitch
+                label="Ada KIE (Komunikasi, Informasi, Edukasi)"
+                checked={Boolean(value)}
+                onChange={onChange}
+              />
+            )}
+          />
+          {watchWithKie && (
+            <Textarea
               placeholder="Tuliskan KIE yang disarankan pada pasien"
-              {...register("kie")}
+              color={Boolean(errors?.kie) ? "failure" : "gray"}
+              helperText={Boolean(errors?.kie?.message)}
+              {...register("kie", {
+                required: {
+                  value: watchWithKie,
+                  message: "Wajib diisi",
+                },
+              })}
             />
           )}
         </div>
         <div className="grid gap-4">
-          <Toggle
-            value={showAction}
-            onSwitch={setShowAction}
-            {...register("with_action")}
-          >
-            <Label>Ada Tindakan</Label>
-          </Toggle>
-          {showAction && (
+          <Controller
+            control={control}
+            name="with_action"
+            render={({ field: { onChange, value } }) => (
+              <ToggleSwitch
+                label="Ada Tindakan"
+                checked={Boolean(value)}
+                onChange={onChange}
+              />
+            )}
+          />
+          {watchAction && (
             <Card className="grid grid-cols-4 items-end gap-6 rounded-lg border p-4">
-              <Input
-                label="Tanggal"
-                type="date"
-                className="col-span-2 md:col-span-1"
-                placeholder="DD/MM/YYYY"
-                {...register("created_date")}
-              />
+              <div className="col-span-2 md:col-span-1">
+                <Label htmlFor="created_date" value="Tanggal" />
+                <TextInput
+                  type="date"
+                  color={Boolean(errors?.created_date) ? "failure" : "gray"}
+                  helperText={errors?.created_date?.message}
+                  {...register("created_date")}
+                />
+              </div>
 
-              <Input
-                // suffix="WIB"
-                label="Waktu"
-                type="time"
-                className="col-span-2 md:col-span-1"
-                placeholder="HH:mm"
-                {...register("created_time")}
-              />
+              <div className="col-span-2 md:col-span-1">
+                <Label htmlFor="created_time" value="Waktu" />
+                <TextInput
+                  type="time"
+                  color={Boolean(errors?.created_time) ? "failure" : "gray"}
+                  helperText={errors?.created_time?.message}
+                  {...register("created_time")}
+                />
+              </div>
+
               <div className="col-span-4 md:col-span-2">
                 <Label>Petugas</Label>
                 <Typography className="text-md">
@@ -122,10 +127,12 @@ const Step4Action = ({ show, defaultValues, navigation, onSubmit }) => {
                   Tindakan
                 </Typography>
                 <CardAction
-                  items={actions}
-                  onAdd={handleAddAction}
-                  onDelete={handleDeleteAction}
-                  onChange={handleActionChange}
+                  register={register}
+                  errors={errors}
+                  control={control}
+                  fields={fieldsActions}
+                  append={appendActions}
+                  remove={removeActions}
                 />
               </div>
               <div className="col-span-4 my-4">
@@ -133,22 +140,24 @@ const Step4Action = ({ show, defaultValues, navigation, onSubmit }) => {
                   Bahan Medis Habis Pakai (BMHP)
                 </Typography>
                 <CardBMHP
-                  items={bmhp}
-                  onAdd={handleAddBmhp}
-                  onDelete={handleDeleteBmhp}
-                  onChange={handleBmhpChange}
+                  register={register}
+                  errors={errors}
+                  control={control}
+                  fields={fieldsBmhp}
+                  append={appendBmhp}
+                  remove={removeBmhp}
                 />
               </div>
-              <div className="col-span-4 flex items-start gap-6">
-                <CheckBox
-                  required
+              <div className="col-span-4 flex items-start gap-2 ">
+                <Checkbox
                   {...register("consent", {
                     required: {
                       value: true,
-                      message: "Consent belum disetujui",
+                      message: "Wajib diisi",
                     },
                   })}
-                >
+                />
+                <Label htmlFor="consent">
                   <Typography>
                     Pasien telah diberikan penjelasan dan menyetujui Persetujuan
                     Tindakan (<i>Informed Consent</i>).{" "}
@@ -156,7 +165,7 @@ const Step4Action = ({ show, defaultValues, navigation, onSubmit }) => {
                       Klik disini untuk cetak Informed Consent.
                     </Typography>
                   </Typography>
-                </CheckBox>
+                </Label>
               </div>
             </Card>
           )}
