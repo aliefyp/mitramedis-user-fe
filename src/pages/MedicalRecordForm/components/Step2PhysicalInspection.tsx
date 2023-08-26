@@ -251,7 +251,12 @@ const Step2PhysicalInspection = ({
               </div>
 
               <div className="col-span-6 md:col-span-4">
-                <Label htmlFor="spo2" value="SpO2" />
+                <div className="mb-1 flex gap-1">
+                  <Label htmlFor="spo2" value="SpO2" />
+                  <Typography small className="italic !text-gray-500">
+                    (Opsional)
+                  </Typography>
+                </div>
                 <TextInput
                   addon="%"
                   type="number"
@@ -373,7 +378,12 @@ const Step2PhysicalInspection = ({
             </div>
           </FormSection>
           <FormSection title="Pemeriksaan Penunjang">
-            <Label htmlFor="support_note" value="Catatan Penunjang" />
+            <div className="mb-1 flex gap-1">
+              <Label htmlFor="support_note" value="Catatan Penunjang" />
+              <Typography small className="italic !text-gray-500">
+                (Opsional)
+              </Typography>
+            </div>
             <Textarea
               rows={2}
               placeholder="Tuliskan catatan untuk pemeriksaan penunjang"

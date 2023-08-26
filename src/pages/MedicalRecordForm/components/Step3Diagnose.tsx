@@ -1,78 +1,56 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useMemo, useState } from "react";
+import { HiArrowDown } from "react-icons/hi";
 import { FaTrashAlt } from "react-icons/fa";
-import ComboBox from "components/FormInput/ComboBox";
+import { Label, Select, Table } from "flowbite-react";
 import Button from "components/Button";
-import { Table } from "flowbite-react";
-import { HiPlus } from "react-icons/hi";
-import EmptyData from "components/EmptyData";
 import Card from "components/Card";
+import ComboBox2 from "components/FormInput/ComboBox2";
+import EmptyData from "components/EmptyData";
 import IconButton from "components/IconButton";
+import { useIcd10 } from "api/icd10";
+import useToaster from "context/ToasterContext";
 import { FormDiagnoseType } from "../interface";
-import useIcd10 from "api/medicalRecord/useIcd10";
-// import { useAuthUser } from "react-auth-kit";
-import { Icd10Response } from "types/icd10";
-
-const DIAGNOSE_OPTION = [
-  { key: 1, label: "Diagnosis Utama / Primer" },
-  { key: 2, label: "Diagnosis Tambahan / Sekunder" },
-];
+import { DIAGNOSE_OPTION } from "../constants";
+import normalizeIcd10Data from "helpers/normalizer/normalizeIcd10Data";
 
 const FormDiagnosis = ({ show, defaultValues, navigation, onSubmit }) => {
-  // const auth = useAuthUser();
+  const toaster = useToaster();
   const [icdPage, setIcdPage] = useState(1);
   const [icdSearch, setIcdSearch] = useState("");
   const [diagnoses, setDiagnoses] = useState<FormDiagnoseType[]>([]);
+
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
+    control,
+    reset,
   } = useForm<FormDiagnoseType>({ defaultValues });
 
-  const { data, isLoading } = useIcd10();
+  const { data, isFetching } = useIcd10();
 
   const submitDiagnose = (val: FormDiagnoseType) => {
+    reset();
     setDiagnoses([...diagnoses, val]);
   };
 
   const submitForm = () => {
-    onSubmit(diagnoses);
+    if (diagnoses.length === 0) {
+      toaster.open({
+        title: "Diagnosis belum diisi",
+        message: "Tambahkan minimal 1 diagnosis",
+        variant: "error",
+        autoClose: false,
+      });
+      // return;
+    } else {
+      onSubmit(diagnoses);
+    }
   };
 
-  const icdList = useMemo(() => {
-    if (!data) return [];
-
-    const flattenIcd10 = (data as Icd10Response)?.data?.icd10
-      ?.map((lv1) => {
-        const { child: child1, ...lv1data } = lv1;
-        return [
-          lv1data,
-          ...child1
-            .map((lv2) => {
-              const { child: child2, ...lv2data } = lv2;
-              return [
-                lv2data,
-                ...child2
-                  .map((lv3) => {
-                    const { child: child3, ...lv3data } = lv3;
-                    return [lv3data, ...child3];
-                  })
-                  .flat(),
-              ];
-            })
-            .flat(),
-        ];
-      })
-      .flat();
-
-    return flattenIcd10?.map((item) => ({
-      key: item.code,
-      label: item.label,
-    }));
-  }, [data]);
-
   const displayedIcdList = useMemo(() => {
+    const icdList = normalizeIcd10Data(data?.data?.data?.icd10);
     if (!icdList?.length) return [];
 
     const copyIcd = [...icdList];
@@ -87,55 +65,75 @@ const FormDiagnosis = ({ show, defaultValues, navigation, onSubmit }) => {
           );
 
     return filtered.splice(0, 10 * icdPage);
-  }, [icdList, icdPage, icdSearch]);
-
-  console.log("icdSearch", icdSearch);
+  }, [data?.data?.data?.icd10, icdPage, icdSearch]);
 
   if (!show) return null;
 
   return (
     <div>
       <div className="space-y-8 p-6">
-        <form onSubmit={handleSubmit(submitDiagnose)}>
+        <form noValidate onSubmit={handleSubmit(submitDiagnose)}>
           <Card className="w-full space-y-4 rounded-md !bg-slate-100 p-4">
-            <ComboBox
-              placeholder="Ketik nama atau pilih kode ICD-10"
-              label="ICD-10"
-              options={displayedIcdList}
-              error={Boolean(errors?.icd_code)}
-              helper={errors?.icd_code?.message}
-              loading={isLoading}
-              onValueChange={(val) => setValue("icd_code", val.label)}
-              onSearch={(query) => setIcdSearch(query)}
-              onLoadMore={() => setIcdPage(icdPage + 1)}
-              {...register("icd_code", {
-                required: {
-                  value: true,
-                  message: "Wajib diisi",
-                },
-              })}
-            />
-            <ComboBox
-              placeholder="Pilih jenis Diagnosis"
-              label="Diagnosis"
-              options={DIAGNOSE_OPTION}
-              error={Boolean(errors?.type)}
-              helper={errors?.type?.message}
-              onValueChange={(val) => setValue("type", val.label)}
-              {...register("type", {
-                required: {
-                  value: true,
-                  message: "Wajib diisi",
-                },
-              })}
-            />
+            <div>
+              <Label htmlFor="icd_code" value="ICD-10" />
+              <Controller
+                control={control}
+                name="icd_code"
+                rules={{
+                  required: {
+                    value: true,
+                    message: "Wajib diisi",
+                  },
+                }}
+                render={({ field: { onChange, value } }) => (
+                  <ComboBox2
+                    loading={isFetching}
+                    placeholder="Ketik nama atau pilih kode ICD-10"
+                    options={displayedIcdList}
+                    query={icdSearch}
+                    value={value}
+                    setQuery={setIcdSearch}
+                    onChange={onChange}
+                    color={Boolean(errors?.icd_code) ? "failure" : "gray"}
+                    helperText={errors?.icd_code?.message}
+                    onLoadMore={() => setIcdPage(icdPage + 1)}
+                  />
+                )}
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="type" value="Diagnosis" />
+              <Select
+                required
+                defaultValue=""
+                color={Boolean(errors?.type) ? "failure" : "gray"}
+                helperText={errors?.type?.message}
+                {...register("type", {
+                  required: {
+                    value: true,
+                    message: "Wajib diisi",
+                  },
+                })}
+              >
+                <option value="" disabled>
+                  Pilih jenis diagnosis
+                </option>
+                {DIAGNOSE_OPTION.map((item) => (
+                  <option key={item.key} value={item.key}>
+                    {item.label}
+                  </option>
+                ))}
+              </Select>
+            </div>
+
             <div className="flex justify-end">
               <Button
                 type="submit"
                 color="secondary"
                 className="flex items-center gap-2"
               >
-                <HiPlus />
+                <HiArrowDown />
                 Tambahkan
               </Button>
             </div>
@@ -177,9 +175,12 @@ const FormDiagnosis = ({ show, defaultValues, navigation, onSubmit }) => {
                     key={index}
                     className="bg-white hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800"
                   >
-                    <Table.Cell>{item.icd_code}</Table.Cell>
+                    <Table.Cell>{item.icd_code.label}</Table.Cell>
                     <Table.Cell className=" w-[120px] md:w-[240px]">
-                      {item.type}
+                      {
+                        DIAGNOSE_OPTION.find((i) => i.key === Number(item.type))
+                          ?.label
+                      }
                     </Table.Cell>
                     <Table.Cell className="w-[64px]">
                       <IconButton
@@ -196,7 +197,9 @@ const FormDiagnosis = ({ show, defaultValues, navigation, onSubmit }) => {
           </Table>
         </Card>
       </div>
-      <form onSubmit={submitForm}>{navigation}</form>
+      <form noValidate onSubmit={submitForm}>
+        {navigation}
+      </form>
     </div>
   );
 };

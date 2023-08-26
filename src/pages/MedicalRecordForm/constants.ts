@@ -72,9 +72,14 @@ export const OPTIONS_SENSES_LEVEL = [
 ]
 
 export const OPTIONS_PHYSCOLOGYCAL_STATUS = [
-  { key: "Tidak ada kelainan", label: "Tidak ada kelainan" },
-  { key: "Cemas", label: "Cemas" },
-  { key: "Marah", label: "Marah" },
-  { key: "Sedih", label: "Sedih" },
-  { key: "Lain-lain", label: "Lain-lain" },
+  { key: 1, label: "Tidak ada kelainan" },
+  { key: 2, label: "Cemas" },
+  { key: 3, label: "Marah" },
+  { key: 4, label: "Sedih" },
+  { key: 5, label: "Lain-lain" },
 ]
+
+export const DIAGNOSE_OPTION = [
+  { key: 1, label: "Diagnosis Utama / Primer" },
+  { key: 2, label: "Diagnosis Tambahan / Sekunder" },
+];
