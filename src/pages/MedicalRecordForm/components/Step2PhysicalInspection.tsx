@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import {
   Badge,
@@ -13,18 +13,13 @@ import ButtonAddMore from "components/ButtonAddMore";
 import FormSection from "components/FormSection";
 import EmptyData from "components/EmptyData";
 import Typography from "components/Typography";
-import { FormPhysicalInspectionType, PhysicalOrgans } from "../interface";
+import { FormPhysicalInspectionType } from "../interface";
 import useBmi from "hooks/useBmi";
 import ModalSelectOrgan from "./ModalSelectOrgan";
 import {
   OPTIONS_PHYSCOLOGYCAL_STATUS,
   OPTIONS_SENSES_LEVEL,
 } from "../constants";
-
-interface Organ {
-  key: PhysicalOrgans;
-  label: string;
-}
 
 const Step2PhysicalInspection = ({
   show,
@@ -33,14 +28,23 @@ const Step2PhysicalInspection = ({
   onSubmit,
 }) => {
   const [showOrganModal, setShowOrganModal] = useState(false);
-  const [organNotes, setOrganNotes] = useState<Organ[]>([]);
   const {
     register,
     handleSubmit,
     watch,
     setValue,
+    control,
     formState: { errors },
   } = useForm<FormPhysicalInspectionType>({ defaultValues });
+
+  const {
+    fields: fieldsOrgans,
+    append: appendOrgans,
+    remove: removeOrgans,
+  } = useFieldArray({
+    control,
+    name: "organ_note",
+  });
 
   const watchHeight = watch("height");
   const watchWeight = watch("weight");
@@ -54,17 +58,16 @@ const Step2PhysicalInspection = ({
     setValue("bmi", Number(score));
   }, [score, setValue]);
 
-  const handleAddOrganNote = (values: Organ[]) => {
+  const handleAddOrganNote = (values) => {
     setShowOrganModal(false);
-    setOrganNotes(values);
+    appendOrgans(values);
   };
 
-  const handleDeleteNote = (key: string) => {
-    setOrganNotes(organNotes.filter((item) => item.key !== key));
+  const handleDeleteNote = (index: number) => {
+    removeOrgans(index);
   };
 
   const submitForm = (val: FormPhysicalInspectionType) => {
-    console.log(val);
     onSubmit(val);
   };
 
@@ -335,7 +338,7 @@ const Step2PhysicalInspection = ({
           </FormSection>
           <FormSection title="Catatan Kondisi Tubuh">
             <div className="grid grid-cols-2 gap-4">
-              {organNotes.map((item, index) => (
+              {fieldsOrgans.map((item, index) => (
                 <div
                   key={index}
                   className="col-span-2 flex items-center justify-between gap-4"
@@ -351,7 +354,7 @@ const Step2PhysicalInspection = ({
                       color={Boolean(errors?.[item.key]) ? "failure" : "gray"}
                       helperText={errors?.[item.key]?.message}
                       placeholder={`Tuliskan kondisi ${item.label.toLowerCase()} pasien`}
-                      {...register(item.key, {
+                      {...register(`organ_note.${index}.note`, {
                         required: {
                           value: true,
                           message: "Wajib diisi",
@@ -361,11 +364,11 @@ const Step2PhysicalInspection = ({
                   </div>
                   <FaTrashAlt
                     className="font-xl shrink-0 cursor-pointer text-gray-500 hover:text-gray-400"
-                    onClick={() => handleDeleteNote(item.key)}
+                    onClick={() => handleDeleteNote(index)}
                   />
                 </div>
               ))}
-              {organNotes.length === 0 && (
+              {fieldsOrgans.length === 0 && (
                 <div className="col-span-2">
                   <EmptyData>Belum ada catatan</EmptyData>
                 </div>
@@ -396,7 +399,7 @@ const Step2PhysicalInspection = ({
 
       <ModalSelectOrgan
         open={showOrganModal}
-        defaultSelected={organNotes}
+        defaultSelected={fieldsOrgans}
         onClose={() => setShowOrganModal(false)}
         onSubmit={handleAddOrganNote}
       />

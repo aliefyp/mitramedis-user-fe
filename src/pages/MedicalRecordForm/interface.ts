@@ -43,6 +43,11 @@ export interface FormAnamnesisType {
   note_medical_treatment_history: string;
 }
 
+export interface OrganNote {
+  key: PhysicalOrgans;
+  label: string;
+  note: string;
+}
 export interface FormPhysicalInspectionType extends PhysicalConditionNotesType {
   senses_level: string;
   psychological_state: string;
@@ -55,6 +60,7 @@ export interface FormPhysicalInspectionType extends PhysicalConditionNotesType {
   temperature: number;
   pulse_rate: number;
   respiration_rate: number;
+  organ_note: OrganNote[];
   support_note: string;
 }
 

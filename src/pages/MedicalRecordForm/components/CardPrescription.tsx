@@ -19,7 +19,6 @@ const CardPrescription = ({
   onDelete,
   onEdit,
 }: CardPrescriptionProps) => {
-  console.log("items", items);
   return (
     <Card className="min-w-lg rounded-xl border">
       <Table className="w-full rounded-xl">

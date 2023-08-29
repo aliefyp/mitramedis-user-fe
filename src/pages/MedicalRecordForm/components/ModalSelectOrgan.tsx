@@ -6,6 +6,7 @@ import Button from "components/Button";
 import ModalHeader from "components/ModalHeader";
 import ModalBody from "components/ModalBody";
 import ModalFooter from "components/ModalFooter";
+import { OrganNote } from "../interface";
 
 const DATA_ORGAN = [
   { key: "note_skin", label: "Kulit" },
@@ -37,33 +38,28 @@ const DATA_ORGAN = [
   { key: "note_toe_nails", label: "Kuku Kaki" },
   { key: "note_leg_joints", label: "Persendian Kaki" },
   { key: "note_other", label: "Lainnya" },
-];
+] as Pick<OrganNote, "key" | "label">[];
 
-interface Organ {
-  key: string;
-  label: string;
-}
-
-interface SearchPasienProps {
+interface ModalSelectOrganProps {
   open: boolean;
-  defaultSelected: Organ[];
+  defaultSelected: OrganNote[];
   onClose: () => void;
-  onSubmit: (values: Organ[]) => void;
+  onSubmit: (values: OrganNote[]) => void;
 }
 
-const SearchPasien = ({
+const ModalSelectOrgan = ({
   open,
   defaultSelected,
   onClose,
   onSubmit,
-}: SearchPasienProps) => {
-  const [selected, setSelected] = useState<Organ[]>([]);
+}: ModalSelectOrganProps) => {
+  const [selected, setSelected] = useState<OrganNote[]>([]);
 
-  const handleSelect = (item: Organ) => {
+  const handleSelect = (item: Pick<OrganNote, "key" | "label">) => {
     if (selected.findIndex((i) => i.label === item.label) > -1) {
       setSelected(selected.filter((i) => i.label !== item.label));
     } else {
-      setSelected([...selected, item]);
+      setSelected([...selected, { ...item, note: "" }]);
     }
   };
 
@@ -92,6 +88,7 @@ const SearchPasien = ({
 
             return (
               <Card
+                key={item.key}
                 className={`flex min-h-[52px] cursor-pointer flex-col items-center justify-center gap-1 border-2 p-2 shadow-xl  ${selectedCardClass} ${disabledCardClass}`}
                 onClick={isDisabled ? null : () => handleSelect(item)}
               >
@@ -133,4 +130,4 @@ const SearchPasien = ({
   );
 };
 
-export default SearchPasien;
+export default ModalSelectOrgan;

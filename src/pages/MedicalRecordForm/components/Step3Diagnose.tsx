@@ -11,7 +11,7 @@ import IconButton from "components/IconButton";
 import { useIcd10 } from "api/icd10";
 import useToaster from "context/ToasterContext";
 import { FormDiagnoseType } from "../interface";
-import { DIAGNOSE_OPTION } from "../constants";
+import { OPTIONS_DIAGNOSE } from "../constants";
 import normalizeIcd10Data from "helpers/normalizer/normalizeIcd10Data";
 
 const FormDiagnosis = ({ show, defaultValues, navigation, onSubmit }) => {
@@ -43,7 +43,6 @@ const FormDiagnosis = ({ show, defaultValues, navigation, onSubmit }) => {
         variant: "error",
         autoClose: false,
       });
-      // return;
     } else {
       onSubmit(diagnoses);
     }
@@ -119,7 +118,7 @@ const FormDiagnosis = ({ show, defaultValues, navigation, onSubmit }) => {
                 <option value="" disabled>
                   Pilih jenis diagnosis
                 </option>
-                {DIAGNOSE_OPTION.map((item) => (
+                {OPTIONS_DIAGNOSE.map((item) => (
                   <option key={item.key} value={item.key}>
                     {item.label}
                   </option>
@@ -161,10 +160,10 @@ const FormDiagnosis = ({ show, defaultValues, navigation, onSubmit }) => {
               )}
               {diagnoses
                 .sort((a, b) => {
-                  const aNoteKey = DIAGNOSE_OPTION.find(
+                  const aNoteKey = OPTIONS_DIAGNOSE.find(
                     (i) => i.label === a.type
                   )?.key;
-                  const bNoteKey = DIAGNOSE_OPTION.find(
+                  const bNoteKey = OPTIONS_DIAGNOSE.find(
                     (i) => i.label === b.type
                   )?.key;
 
@@ -178,8 +177,9 @@ const FormDiagnosis = ({ show, defaultValues, navigation, onSubmit }) => {
                     <Table.Cell>{item.icd_code.label}</Table.Cell>
                     <Table.Cell className=" w-[120px] md:w-[240px]">
                       {
-                        DIAGNOSE_OPTION.find((i) => i.key === Number(item.type))
-                          ?.label
+                        OPTIONS_DIAGNOSE.find(
+                          (i) => i.key === Number(item.type)
+                        )?.label
                       }
                     </Table.Cell>
                     <Table.Cell className="w-[64px]">

@@ -22,8 +22,8 @@ export const DEFAULT_STEP_1 = {
 } as FormAnamnesisType;
 
 export const DEFAULT_STEP_2 = {
-  senses_level: '',
-  psychological_state: '',
+  senses_level: '1',
+  psychological_state: '1',
   height: undefined,
   weight: undefined,
   bmi: undefined,
@@ -80,7 +80,16 @@ export const OPTIONS_PHYSCOLOGYCAL_STATUS = [
   { key: 5, label: "Lain-lain" },
 ]
 
-export const DIAGNOSE_OPTION = [
+export const OPTIONS_DIAGNOSE = [
   { key: 1, label: "Diagnosis Utama / Primer" },
   { key: 2, label: "Diagnosis Tambahan / Sekunder" },
+];
+
+export const OPTIONS_METHOD = [
+  { key: 1, label: "Injeksi" },
+  { key: 2, label: "Oral" },
+  { key: 3, label: "Suppositoria" },
+  { key: 4, label: "Topikal" },
+  { key: 5, label: "Sublingual" },
+  { key: 6, label: "Inhalasi" },
 ];
